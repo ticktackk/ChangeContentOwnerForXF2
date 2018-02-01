@@ -1,0 +1,9 @@
+{
+    "template": "xfmg_comment_macros",
+    "description": "Add \"Change post author\" in action bar",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<xf:if is=\"$comment.canEdit()\">",
+    "replace": "<xf:include template=\"changeContentOwner_xfmg_comment_macros_action_bar\" />\n\t\t\t\t\t\t\t\t\t\t\t\t$0"
+}

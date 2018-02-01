@@ -1,0 +1,72 @@
+{
+    "public/changeContentOwner_post_change_author.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "2130eb2adf98ff6dd380066d2d0b4201"
+    },
+    "public/changeContentOwner_post_macros_action_bar.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "c0c4fcc6f985a8a396b7a6b5ce68ec80"
+    },
+    "public/changeContentOwner_profile_post_change_author.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "e3d772d11b007fa210ce8823b7233f41"
+    },
+    "public/changeContentOwner_profile_post_macros_action_bar.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "433df801e393f8144a32be3d484525aa"
+    },
+    "public/changeContentOwner_thread_change_author.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "9917ed9bbb9e7dee4bee8b727a6621f9"
+    },
+    "public/changeContentOwner_thread_tools_menu_before_footer.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "8f7bf31427dd55ab436308643efe0c1b"
+    },
+    "public/changeContentOwner_xfmg_album_change_author.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "574b760bf50e8ef19acb352878a7bba2"
+    },
+    "public/changeContentOwner_xfmg_album_view_action_bar.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "a133c61b18eb1f3c43601cf7b36cb6a2"
+    },
+    "public/changeContentOwner_xfmg_album_view_album_tools_menu_top.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "e353757b97b59a1648aca1656f7748ce"
+    },
+    "public/changeContentOwner_xfmg_comment_change_author.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "9457c82d2c3dd7c89da7a63a51df96da"
+    },
+    "public/changeContentOwner_xfmg_comment_macros_action_bar.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "784ce6bb59d323d85bc78739a8b7bd87"
+    },
+    "public/changeContentOwner_xfmg_media_change_author.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "aceb1d2d2691d5a3b249c494fa57e13d"
+    },
+    "public/changeContentOwner_xfmg_media_view_action_bar.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "30c0914855cd1f7c3d1e859b3fa6860a"
+    },
+    "public/changeContentOwner_xfmg_media_view_tools_menu_top.html": {
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "613c53f606253260954596b6cfae251a"
+    }
+}

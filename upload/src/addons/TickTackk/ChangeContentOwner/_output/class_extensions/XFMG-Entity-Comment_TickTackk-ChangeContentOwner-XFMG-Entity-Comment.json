@@ -1,0 +1,6 @@
+{
+    "from_class": "XFMG\\Entity\\Comment",
+    "to_class": "TickTackk\\ChangeContentOwner\\XFMG\\Entity\\Comment",
+    "execute_order": 10,
+    "active": true
+}

@@ -1,0 +1,6 @@
+{
+    "from_class": "XFMG\\Pub\\Controller\\Media",
+    "to_class": "TickTackk\\ChangeContentOwner\\XFMG\\Pub\\Controller\\Media",
+    "execute_order": 10,
+    "active": true
+}

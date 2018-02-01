@@ -1,0 +1,6 @@
+{
+    "permission_type": "flag",
+    "interface_group_id": "xfmgCommentModerator",
+    "display_order": 200,
+    "depend_permission_id": ""
+}
