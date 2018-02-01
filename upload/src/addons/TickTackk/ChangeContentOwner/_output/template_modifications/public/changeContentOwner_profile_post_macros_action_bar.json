@@ -1,0 +1,9 @@
+{
+    "template": "profile_post_macros",
+    "description": "Add \"Change profile post author\" in action bar",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<xf:if is=\"$profilePost.canEdit()\">",
+    "replace": "<xf:include template=\"changeContentOwner_profile_post_macros_action_bar\" />\n\t\t\t\t\t\t\t\t\t$0"
+}

@@ -1,0 +1,16 @@
+<xf:title>{{ phrase('changeContentOwner_change_profile_post_author') }}</xf:title>
+
+<xf:breadcrumb href="{{ link('members', $profileUser) }}">{$profileUser.username}</xf:breadcrumb>
+
+<xf:form action="{{ link('profile-posts/change-author', $profilePost) }}"
+	class="block"
+	ajax="true">
+
+	<div class="block-container">
+		<div class="block-body">
+			<xf:textboxrow name="new_author_username" value="" ac="true" label="{{ phrase('changeContentOwner_new_author_name') }}" explain="{{ phrase('changeContentOwner_new_author_name_explain') }}" data-single="true" />
+		</div>
+
+		<xf:submitrow icon="save" sticky="true" />
+	</div>
+</xf:form>

@@ -1,0 +1,134 @@
+{
+    "changeContentOwner_change_album_owner.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "4ba07fd00bbfe92f55eac7460e0ca862"
+    },
+    "changeContentOwner_change_post_author.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "16e84c038e1fcb31965abeb336e002a3"
+    },
+    "changeContentOwner_change_profile_post_author.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "b75eab5f1218c9c30e66c78a51c7c00e"
+    },
+    "changeContentOwner_change_thread_author.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "9bdcfb248c7e88cee41d136ff2a2fc34"
+    },
+    "changeContentOwner_change_xfmg_album_owner.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "4ba07fd00bbfe92f55eac7460e0ca862"
+    },
+    "changeContentOwner_change_xfmg_comment_author.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "16fc7b7c6d4d05bdedca64cb3c5d185a"
+    },
+    "changeContentOwner_change_xfmg_media_author.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "b4703e309629e4575cde26086e211f09"
+    },
+    "changeContentOwner_first_post_of_the_thread_is_unavailable.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "c219c8dc77f89ad9a4a2707af82a888b"
+    },
+    "changeContentOwner_new_author_must_be_able_to_view_this_post.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "d6d8c3d194eb59f79ec6c85bc122144c"
+    },
+    "changeContentOwner_new_author_must_be_able_to_view_this_profile_post.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "38267d84bae6aa7eeafec6baef6b5bc2"
+    },
+    "changeContentOwner_new_author_must_be_able_to_view_this_thread.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "05088bbf97aec78f7c03d75998839a8e"
+    },
+    "changeContentOwner_new_author_must_be_able_to_view_this_xfmg_album.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "db826d7382556f2b6694162908634250"
+    },
+    "changeContentOwner_new_author_must_be_able_to_view_this_xfmg_comment.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "46ffcb758f8d015556b9e7d4dced5df7"
+    },
+    "changeContentOwner_new_author_must_be_able_to_view_this_xfmg_media.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "4cb046b31c89452cf42f7cfb89b36a9f"
+    },
+    "changeContentOwner_new_author_name.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "9bc5910205808d3b499609ec0948213f"
+    },
+    "changeContentOwner_new_author_name_explain.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "dadd2b2b360653bb62d49abb8efceb24"
+    },
+    "permission.forum_changePostAuthor.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "3babc5b4f8a8af06485d9a6a4af6b404"
+    },
+    "permission.forum_changeThreadAuthor.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "66811e060216ed5a53cb3b42cad70a7f"
+    },
+    "permission.profilePost_changeProfilePostAuthor.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "fd49a79015b83eb624eae6d233e07d6c"
+    },
+    "permission.xfmg_changeAlbumOwner.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "df2ddfe38f179e8df9d51e7f87bc5276"
+    },
+    "permission.xfmg_changeCommentAuthor.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "0bf8e2bbaf2f933a980e095227be20f9"
+    },
+    "permission.xfmg_changeMediaOwner.txt": {
+        "global_cache": false,
+        "version_id": 1000010,
+        "version_string": "1.0.0 Alpha",
+        "hash": "f646949ae876cca026c585ba344a5cfd"
+    }
+}

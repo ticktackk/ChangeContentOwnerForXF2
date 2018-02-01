@@ -1,0 +1,6 @@
+{
+    "from_class": "XFMG\\Entity\\Album",
+    "to_class": "TickTackk\\ChangeContentOwner\\XFMG\\Entity\\Album",
+    "execute_order": 10,
+    "active": true
+}
