@@ -38,7 +38,7 @@ class Post extends XFCP_Post
             $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Post\AuthorChanger', $thread, $post, $thread->Forum, $post->User, $newAuthor);
             $authorChangerService->changeAuthor();
 
-            return $this->redirect($this->buildLink('threads', $thread));
+            return $this->redirect($this->buildLink('posts', $post));
         }
         else
         {

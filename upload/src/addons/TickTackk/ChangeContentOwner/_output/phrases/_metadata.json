@@ -95,6 +95,78 @@
         "version_string": "1.0.0 Alpha",
         "hash": "7907ba9b40bb20e98b17e413c2a8ffea"
     },
+    "changeContentOwner_new_post_author_name.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "6fb9d651c6ee5190f151043b12a23d8e"
+    },
+    "changeContentOwner_new_post_author_name_explain.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "559c75229918294ec67ba4b2e22f2b9c"
+    },
+    "changeContentOwner_new_profile_post_author_name.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "0b84dbf9c173aed3f94c14811d0afd39"
+    },
+    "changeContentOwner_new_profile_post_author_name_explain.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "2d547aac1b304c7decfd421a350ef5f3"
+    },
+    "changeContentOwner_new_thread_author_name.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "352448bd0954351bfb6b7e0a297cf4cd"
+    },
+    "changeContentOwner_new_thread_author_name_explain.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "dadd2b2b360653bb62d49abb8efceb24"
+    },
+    "changeContentOwner_new_xfmg_album_owner_name.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "940014c30525ac2cbd60440a414ecf6e"
+    },
+    "changeContentOwner_new_xfmg_album_owner_name_explain.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "4e68e87bc4571b170a94ef728cab79e6"
+    },
+    "changeContentOwner_new_xfmg_comment_author_name.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "bb1a0f2e453446f84d8a656f5c3551f1"
+    },
+    "changeContentOwner_new_xfmg_comment_author_name_explain.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "4b91bfbfd19b7a824282e8e53df07c41"
+    },
+    "changeContentOwner_new_xfmg_media_author_name.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "b7c2aa624e845ee0f60357e9ea94cb47"
+    },
+    "changeContentOwner_new_xfmg_media_author_name_explain.txt": {
+        "global_cache": false,
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "d1d5eb7018aef3f3ce30f3648110e26c"
+    },
     "permission.forum_changePostAuthor.txt": {
         "global_cache": false,
         "version_id": 1000010,

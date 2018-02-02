@@ -1,8 +1,8 @@
 {
     "public/changeContentOwner_post_change_author.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
-        "hash": "2130eb2adf98ff6dd380066d2d0b4201"
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "e21c1d0987fdb28f62c5ca90ba10ac57"
     },
     "public/changeContentOwner_post_macros_action_bar.html": {
         "version_id": 1000010,
@@ -10,9 +10,9 @@
         "hash": "c0c4fcc6f985a8a396b7a6b5ce68ec80"
     },
     "public/changeContentOwner_profile_post_change_author.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
-        "hash": "e3d772d11b007fa210ce8823b7233f41"
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "10c7864b9183ccdbecfaa6ee30d9329c"
     },
     "public/changeContentOwner_profile_post_macros_action_bar.html": {
         "version_id": 1000010,
@@ -20,19 +20,19 @@
         "hash": "433df801e393f8144a32be3d484525aa"
     },
     "public/changeContentOwner_thread_change_author.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
-        "hash": "9917ed9bbb9e7dee4bee8b727a6621f9"
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "02c3695cc1f9c0d29472abb6310fb145"
     },
     "public/changeContentOwner_thread_tools_menu_before_footer.html": {
         "version_id": 1000010,
         "version_string": "1.0.0 Alpha",
         "hash": "8f7bf31427dd55ab436308643efe0c1b"
     },
-    "public/changeContentOwner_xfmg_album_change_author.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
-        "hash": "574b760bf50e8ef19acb352878a7bba2"
+    "public/changeContentOwner_xfmg_album_change_owner.html": {
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "3e177de48fdc27321e34f93ab5a4b66c"
     },
     "public/changeContentOwner_xfmg_album_view_action_bar.html": {
         "version_id": 1000010,
@@ -45,19 +45,19 @@
         "hash": "e353757b97b59a1648aca1656f7748ce"
     },
     "public/changeContentOwner_xfmg_comment_change_author.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
-        "hash": "9457c82d2c3dd7c89da7a63a51df96da"
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "068b1b8571ff0ffe353bd6c2db5de993"
     },
     "public/changeContentOwner_xfmg_comment_macros_action_bar.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
-        "hash": "784ce6bb59d323d85bc78739a8b7bd87"
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "f0e7ef7c8399ca50d4b41d836e2fe6d4"
     },
     "public/changeContentOwner_xfmg_media_change_author.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
-        "hash": "aceb1d2d2691d5a3b249c494fa57e13d"
+        "version_id": 1000012,
+        "version_string": "1.0.0 Alpha 2",
+        "hash": "e2e72aff5132ce2bd23878d8bd7de51d"
     },
     "public/changeContentOwner_xfmg_media_view_action_bar.html": {
         "version_id": 1000010,

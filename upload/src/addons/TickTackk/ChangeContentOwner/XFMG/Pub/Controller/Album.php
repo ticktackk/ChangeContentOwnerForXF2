@@ -17,7 +17,7 @@ class Album extends XFCP_Album
 
         if ($this->isPost())
         {
-            $newAuthor = $this->em()->findOne('XF:User', ['username' => $this->filter('new_author_username', 'str')]);
+            $newAuthor = $this->em()->findOne('XF:User', ['username' => $this->filter('new_owner_username', 'str')]);
             if (!$newAuthor)
             {
                 return $this->error(\XF::phrase('requested_user_not_found'));
@@ -45,7 +45,7 @@ class Album extends XFCP_Album
                 'addUsers' => $this->em()->findByIds('XF:User', $album->add_users ?: [])->pluckNamed('username'),
                 'viewUsers' => $this->em()->findByIds('XF:User', $album->view_users ?: [])->pluckNamed('username')
             ];
-            return $this->view('TickTackk\ChangeContentOwner\XFMG:Album\ChangeAuthor', 'changeContentOwner_xfmg_album_change_author', $viewParams);
+            return $this->view('TickTackk\ChangeContentOwner\XFMG:Album\ChangeAuthor', 'changeContentOwner_xfmg_album_change_owner', $viewParams);
         }
     }
 }
