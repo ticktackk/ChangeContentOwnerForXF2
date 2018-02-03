@@ -64,9 +64,9 @@
         "version_string": "1.0.0 Alpha",
         "hash": "30c0914855cd1f7c3d1e859b3fa6860a"
     },
-    "public/changeContentOwner_xfmg_media_view_tools_menu_top.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
+    "public/changeContentOwner_xfmg_media_view_tools_menu_before_footer.html": {
+        "version_id": 1000013,
+        "version_string": "1.0.0 Alpha 3",
         "hash": "613c53f606253260954596b6cfae251a"
     }
 }
