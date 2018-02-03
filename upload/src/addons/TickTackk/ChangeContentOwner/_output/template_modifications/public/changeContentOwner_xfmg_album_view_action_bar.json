@@ -4,6 +4,6 @@
     "execution_order": 10,
     "enabled": true,
     "action": "str_replace",
-    "find": "\t\t\t\t\t\t\t\t\t<xf:set var=\"$hasActionBarMenu\" value=\"{{ false }}\" />\n\t\t\t\t\t\t\t\t\t<xf:if is=\"$album.canEdit()\">",
-    "replace": "\t\t\t\t\t\t\t\t\t<xf:include template=\"changeContentOwner_xfmg_album_view_action_bar\" />\n$0"
+    "find": "<xf:if is=\"$hasActionBarMenu\">",
+    "replace": "<xf:include template=\"changeContentOwner_xfmg_album_view_action_bar\" />\n\t\t\t\t\t\t\t\t\t$0"
 }
