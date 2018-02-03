@@ -39,9 +39,9 @@
         "version_string": "1.0.0 Alpha",
         "hash": "a133c61b18eb1f3c43601cf7b36cb6a2"
     },
-    "public/changeContentOwner_xfmg_album_view_album_tools_menu_top.html": {
-        "version_id": 1000010,
-        "version_string": "1.0.0 Alpha",
+    "public/changeContentOwner_xfmg_album_view_album_tools_menu_bottom.html": {
+        "version_id": 1000013,
+        "version_string": "1.0.0 Alpha 3",
         "hash": "e353757b97b59a1648aca1656f7748ce"
     },
     "public/changeContentOwner_xfmg_comment_change_author.html": {
