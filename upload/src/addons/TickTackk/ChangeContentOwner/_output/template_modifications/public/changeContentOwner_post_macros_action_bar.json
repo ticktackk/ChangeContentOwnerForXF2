@@ -4,6 +4,6 @@
     "execution_order": 10,
     "enabled": true,
     "action": "str_replace",
-    "find": "<xf:if is=\"$post.canEdit()\">",
+    "find": "<xf:if is=\"$hasActionBarMenu\">",
     "replace": "<xf:include template=\"changeContentOwner_post_macros_action_bar\" />\n\t\t\t\t\t\t\t\t\t\t\t$0"
 }
