@@ -75,6 +75,11 @@ class AuthorChanger extends \XF\Service\AbstractService
         }
         $profilePost->save();
 
+        if ($profilePost->getOption('log_moderator'))
+        {
+            $this->app->logger()->logModeratorAction('profile_post', $profilePost, 'author_change');
+        }
+
         $db->commit();
     }
 }

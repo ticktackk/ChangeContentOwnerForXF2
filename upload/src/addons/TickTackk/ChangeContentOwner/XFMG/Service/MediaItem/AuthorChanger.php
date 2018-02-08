@@ -98,6 +98,11 @@ class AuthorChanger extends \XF\Service\AbstractService
             $this->adjustUserMediaQuotaIfNeeded($mediaItem, $newAuthor);
         }
 
+        if ($mediaItem->getOption('log_moderator'))
+        {
+            $this->app->logger()->logModeratorAction('xfmg_media', $mediaItem, 'author_change');
+        }
+
         $db->commit();
     }
 
