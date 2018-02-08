@@ -127,6 +127,11 @@ class AuthorChanger extends \XF\Service\AbstractService
             $album->save();
         }
 
+        if ($comment->getOption('log_moderator'))
+        {
+            $this->app->logger()->logModeratorAction('xfmg_comment', $comment, 'author_change');
+        }
+
         $db->commit();
     }
 }

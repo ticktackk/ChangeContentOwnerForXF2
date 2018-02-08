@@ -114,6 +114,11 @@ class AuthorChanger extends \XF\Service\AbstractService
             $this->adjustThreadUserPostCount($thread, $newAuthor, 1);
         }
 
+        if ($post->getOption('log_moderator'))
+        {
+            $this->app->logger()->logModeratorAction('post', $post, 'author_change');
+        }
+
         $db->commit();
     }
 

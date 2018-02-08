@@ -86,6 +86,11 @@ class AuthorChanger extends \XF\Service\AbstractService
             $this->adjustUserAlbumCountIfNeeded($newAuthor, -1);
         }
 
+        if ($album->getOption('log_moderator'))
+        {
+            $this->app->logger()->logModeratorAction('xfmg_album', $album, 'owner_change');
+        }
+
         $db->commit();
     }
 
