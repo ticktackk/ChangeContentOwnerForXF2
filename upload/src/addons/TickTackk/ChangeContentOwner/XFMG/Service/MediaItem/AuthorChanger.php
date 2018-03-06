@@ -2,12 +2,13 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\MediaItem;
 
+use \XF\Service\AbstractService;
 use \XFMG\Entity\MediaItem;
 use \XFMG\Entity\Album;
 use \XFMG\Entity\Category;
 use XF\Entity\User;
 
-class AuthorChanger extends \XF\Service\AbstractService
+class AuthorChanger extends AbstractService
 {
     /**
      * @var MediaItem
@@ -36,12 +37,12 @@ class AuthorChanger extends \XF\Service\AbstractService
 
     protected $performValidations = true;
 
-    public function __construct(\XF\App $app, Album $album, MediaItem $mediaItem, User $oldAuthor, User $newAuthor)
+    public function __construct(\XF\App $app, MediaItem $mediaItem, User $oldAuthor, User $newAuthor)
     {
         parent::__construct($app);
-        $this->category = $mediaItem->Category;
-        $this->album = $album;
         $this->mediaItem = $mediaItem;
+        $this->category = $mediaItem->Category;
+        $this->album = $mediaItem->Album;
         $this->oldAuthor = $oldAuthor;
         $this->newAuthor = $newAuthor;
     }

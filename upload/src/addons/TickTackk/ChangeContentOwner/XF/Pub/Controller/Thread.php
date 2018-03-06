@@ -34,7 +34,7 @@ class Thread extends XFCP_Thread
             }
 
             /** @var \TickTackk\ChangeContentOwner\XF\Service\Thread\AuthorChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Thread\AuthorChanger', $thread, $thread->FirstPost, $thread->Forum, $thread->User, $newAuthor);
+            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Thread\AuthorChanger', $thread, $thread->User, $newAuthor);
             $authorChangerService->changeAuthor();
 
             return $this->redirect($this->buildLink('threads', $thread));
