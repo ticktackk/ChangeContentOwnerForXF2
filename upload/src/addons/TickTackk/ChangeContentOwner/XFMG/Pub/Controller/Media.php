@@ -33,7 +33,7 @@ class Media extends XFCP_Media
             }
 
             /** @var \TickTackk\ChangeContentOwner\XFMG\Service\MediaItem\AuthorChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:MediaItem\AuthorChanger', $mediaItem->Album, $mediaItem, $mediaItem->User, $newAuthor);
+            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:MediaItem\AuthorChanger', $mediaItem, $mediaItem->User, $newAuthor);
             $authorChangerService->changeAuthor();
 
             return $this->redirect($this->buildLink('media', $mediaItem));

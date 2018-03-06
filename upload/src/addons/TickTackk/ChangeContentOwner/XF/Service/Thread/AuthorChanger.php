@@ -36,12 +36,12 @@ class AuthorChanger extends \XF\Service\AbstractService
 
     protected $performValidations = true;
 
-    public function __construct(\XF\App $app, Thread $thread, Post $firsPost, Forum $forum, User $oldAuthor, User $newAuthor)
+    public function __construct(\XF\App $app, Thread $thread, User $oldAuthor, User $newAuthor)
     {
         parent::__construct($app);
         $this->thread = $thread;
-        $this->firstPost = $firsPost;
-        $this->forum = $forum;
+        $this->firstPost = $thread->FirstPost;
+        $this->forum = $thread->Forum;
         $this->oldAuthor = $oldAuthor;
         $this->newAuthor = $newAuthor;
     }
@@ -55,7 +55,7 @@ class AuthorChanger extends \XF\Service\AbstractService
     {
         return $this->firstPost;
     }
-
+    
     public function getForum()
     {
         return $this->forum;
