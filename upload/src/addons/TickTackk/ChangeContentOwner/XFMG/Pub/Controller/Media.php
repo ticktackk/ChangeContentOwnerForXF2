@@ -9,6 +9,7 @@ class Media extends XFCP_Media
     public function actionChangeAuthor(ParameterBag $params)
     {
         /** @var \TickTackk\ChangeContentOwner\XFMG\Entity\MediaItem $mediaItem */
+        /** @noinspection PhpUndefinedFieldInspection */
         $mediaItem = $this->assertViewableMediaItem($params->media_id);
         if (!$mediaItem->canChangeAuthor($error))
         {

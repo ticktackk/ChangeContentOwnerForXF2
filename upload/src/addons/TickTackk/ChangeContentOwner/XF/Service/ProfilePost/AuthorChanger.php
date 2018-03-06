@@ -2,10 +2,11 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Service\ProfilePost;
 
+use XF\Service\AbstractService;
 use XF\Entity\ProfilePost;
 use XF\Entity\User;
 
-class AuthorChanger extends \XF\Service\AbstractService
+class AuthorChanger extends AbstractService
 {
     /**
      * @var ProfilePost
@@ -29,7 +30,8 @@ class AuthorChanger extends \XF\Service\AbstractService
 
     protected $performValidations = true;
 
-    public function __construct(\XF\App $app, ProfilePost $profilePost, User $profileUser, User $oldAuthor, User $newAuthor)
+    public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+        \XF\App $app, ProfilePost $profilePost, User $profileUser, User $oldAuthor, User $newAuthor)
     {
         parent::__construct($app);
         $this->profilePost = $profilePost;

@@ -4,7 +4,8 @@ namespace TickTackk\ChangeContentOwner\XF\Entity;
 
 class Post extends XFCP_Post
 {
-    public function canChangeAuthor(&$error = null)
+    public function canChangeAuthor(/** @noinspection PhpUnusedParameterInspection */
+        &$error = null)
     {
         $thread = $this->Thread;
         $visitor = \XF::visitor();

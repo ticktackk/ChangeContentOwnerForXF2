@@ -4,7 +4,8 @@ namespace TickTackk\ChangeContentOwner\XFMG\Entity;
 
 class Album extends XFCP_Album
 {
-    public function canChangeOwner(&$error = null)
+    public function canChangeOwner(/** @noinspection PhpUnusedParameterInspection */
+        &$error = null)
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)

@@ -37,7 +37,8 @@ class AuthorChanger extends AbstractService
 
     protected $performValidations = true;
 
-    public function __construct(\XF\App $app, MediaItem $mediaItem, User $oldAuthor, User $newAuthor)
+    public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+        \XF\App $app, MediaItem $mediaItem, User $oldAuthor, User $newAuthor)
     {
         parent::__construct($app);
         $this->mediaItem = $mediaItem;
@@ -121,14 +122,17 @@ class AuthorChanger extends AbstractService
         if ($mediaItem->Attachment && $user)
         {
             $fileSize = $mediaItem->Attachment->getFileSize();
+            /** @noinspection PhpUndefinedFieldInspection */
             $existing = $user->xfmg_media_quota;
 
             if ($delete)
             {
+                /** @noinspection PhpUndefinedFieldInspection */
                 $user->xfmg_media_quota = ($existing - $fileSize) / 1024;
             }
             else
             {
+                /** @noinspection PhpUndefinedFieldInspection */
                 $user->xfmg_media_quota = ($existing + $fileSize) / 1024;
             }
 

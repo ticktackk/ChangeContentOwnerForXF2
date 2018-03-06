@@ -2,13 +2,14 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Comment;
 
-use \XFMG\Entity\Comment;
-use \XFMG\Entity\MediaItem;
-use \XFMG\Entity\Album;
-use \XFMG\Entity\Category;
+use XF\Service\AbstractService;
+use XFMG\Entity\Comment;
+use XFMG\Entity\MediaItem;
+use XFMG\Entity\Album;
+use XFMG\Entity\Category;
 use XF\Entity\User;
 
-class AuthorChanger extends \XF\Service\AbstractService
+class AuthorChanger extends AbstractService
 {
     /**
      * @var Comment
@@ -42,7 +43,8 @@ class AuthorChanger extends \XF\Service\AbstractService
 
     protected $performValidations = true;
 
-    public function __construct(\XF\App $app, Comment $comment, User $oldAuthor, User $newAuthor)
+    public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+        \XF\App $app, Comment $comment, User $oldAuthor, User $newAuthor)
     {
         parent::__construct($app);
 
