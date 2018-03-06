@@ -9,6 +9,7 @@ class Thread extends XFCP_Thread
     public function actionChangeAuthor(ParameterBag $params)
     {
         /** @var \TickTackk\ChangeContentOwner\XF\Entity\Thread $thread */
+        /** @noinspection PhpUndefinedFieldInspection */
         $thread = $this->assertViewableThread($params->thread_id);
         if (!$thread->canChangeAuthor($error))
         {

@@ -9,6 +9,7 @@ class ProfilePost extends XFCP_ProfilePost
     public function actionChangeAuthor(ParameterBag $params)
     {
         /** @var \TickTackk\ChangeContentOwner\XF\Entity\ProfilePost $profilePost */
+        /** @noinspection PhpUndefinedFieldInspection */
         $profilePost = $this->assertViewableProfilePost($params->profile_post_id);
         if (!$profilePost->canChangeAuthor($error))
         {

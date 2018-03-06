@@ -9,6 +9,7 @@ class Comment extends XFCP_Comment
     public function actionChangeAuthor(ParameterBag $params)
     {
         /** @var \TickTackk\ChangeContentOwner\XFMG\Entity\Comment $comment */
+        /** @noinspection PhpUndefinedFieldInspection */
         $comment = $this->assertViewableComment($params->comment_id);
         if (!$comment->canChangeAuthor($error))
         {

@@ -9,6 +9,7 @@ class Album extends XFCP_Album
     public function actionChangeOwner(ParameterBag $params)
     {
         /** @var \TickTackk\ChangeContentOwner\XFMG\Entity\Album $album */
+        /** @noinspection PhpUndefinedFieldInspection */
         $album = $this->assertViewableAlbum($params->album_id);
         if (!$album->canChangeOwner($error))
         {

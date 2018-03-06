@@ -2,11 +2,12 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Album;
 
-use \XFMG\Entity\Album;
-use \XFMG\Entity\Category;
+use XF\Service\AbstractService;
 use XF\Entity\User;
+use XFMG\Entity\Album;
+use XFMG\Entity\Category;
 
-class AuthorChanger extends \XF\Service\AbstractService
+class AuthorChanger extends AbstractService
 {
     /**
      * @var Album
@@ -30,7 +31,8 @@ class AuthorChanger extends \XF\Service\AbstractService
 
     protected $performValidations = true;
 
-    public function __construct(\XF\App $app, Album $album, User $oldAuthor, User $newAuthor)
+    public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+        \XF\App $app, Album $album, User $oldAuthor, User $newAuthor)
     {
         parent::__construct($app);
         $this->category = $album->Category;

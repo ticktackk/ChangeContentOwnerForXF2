@@ -4,7 +4,8 @@ namespace TickTackk\ChangeContentOwner\XF\Entity;
 
 class Thread extends XFCP_Thread
 {
-    public function canChangeAuthor(&$error = null)
+    public function canChangeAuthor(/** @noinspection PhpUnusedParameterInspection */
+        &$error = null)
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
