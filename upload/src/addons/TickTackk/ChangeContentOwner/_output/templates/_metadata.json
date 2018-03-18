@@ -68,5 +68,10 @@
         "version_id": 1000013,
         "version_string": "1.0.0 Alpha 3",
         "hash": "613c53f606253260954596b6cfae251a"
+    },
+    "public/inline_mod_thread_change_author.html": {
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
     }
 }

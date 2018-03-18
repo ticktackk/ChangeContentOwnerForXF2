@@ -1,0 +1,9 @@
+{
+    "event_id": "inline_mod_actions",
+    "execute_order": 10,
+    "callback_class": "TickTackk\\ChangeContentOwner\\Listener",
+    "callback_method": "inlineModActions_xfmg_album",
+    "active": true,
+    "hint": "xfmg_album",
+    "description": "Add \"Change album owner\" to inline mod tools for media/album (XenForo Media Gallery)"
+}
