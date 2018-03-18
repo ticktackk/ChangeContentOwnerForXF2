@@ -2,8 +2,15 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Entity;
 
+use XF\Mvc\Entity\Structure;
+
 class Thread extends XFCP_Thread
 {
+    /**
+     * @param null|string $error
+     *
+     * @return bool
+     */
     public function canChangeAuthor(/** @noinspection PhpUnusedParameterInspection */
         &$error = null)
     {
@@ -16,5 +23,14 @@ class Thread extends XFCP_Thread
         $nodeId = $this->node_id;
 
         return $visitor->hasNodePermission($nodeId, 'changeThreadAuthor');
+    }
+
+    public static function getStructure(Structure $structure)
+    {
+        $structure = parent::getStructure($structure);
+
+        $structure->options['changeContentOwner_rebuildCounters'] = false;
+
+        return $structure;
     }
 }

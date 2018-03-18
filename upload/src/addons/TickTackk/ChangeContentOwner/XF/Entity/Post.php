@@ -4,6 +4,11 @@ namespace TickTackk\ChangeContentOwner\XF\Entity;
 
 class Post extends XFCP_Post
 {
+    /**
+     * @param null|string $error
+     *
+     * @return bool
+     */
     public function canChangeAuthor(/** @noinspection PhpUnusedParameterInspection */
         &$error = null)
     {

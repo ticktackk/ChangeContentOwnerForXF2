@@ -26,18 +26,14 @@ class Post extends XFCP_Post
                 return $this->error(\XF::phrase('requested_user_not_found'));
             }
 
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($post)
-            {
-                return $post->canView();
-            });
-            if (!$canTargetView)
-            {
-                return $this->error(\XF::phrase('changeContentOwner_new_author_must_be_able_to_view_this_post'));
-            }
-
             /** @var \TickTackk\ChangeContentOwner\XF\Service\Post\AuthorChanger $authorChangerService */
             $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Post\AuthorChanger', $post, $post->User, $newAuthor);
             $authorChangerService->changeAuthor();
+            if (!$authorChangerService->validate($errors))
+            {
+                return $this->error($errors);
+            }
+            $post = $authorChangerService->save();
 
             return $this->redirect($this->buildLink('posts', $post));
         }

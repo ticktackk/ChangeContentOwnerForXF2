@@ -11,6 +11,8 @@ use XF\Entity\User;
 
 class AuthorChanger extends AbstractService
 {
+    use \XF\Service\ValidateAndSavableTrait;
+
     /**
      * @var Comment
      */
@@ -60,6 +62,19 @@ class AuthorChanger extends AbstractService
         $this->newAuthor = $newAuthor;
     }
 
+    public function setPerformValidations($perform)
+    {
+        $this->performValidations = (bool)$perform;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPerformValidations()
+    {
+        return $this->performValidations;
+    }
+
     public function getCategory()
     {
         return $this->category;
@@ -94,38 +109,91 @@ class AuthorChanger extends AbstractService
     {
         $newAuthor = $this->getNewAuthor();
         $comment = $this->getComment();
+
+        $comment->user_id = $newAuthor->user_id;
+        $comment->username = $newAuthor->username;
+
+        if ($mediaItem = $this->getMediaItem())
+        {
+            if ($mediaItem->last_comment_id === $comment->comment_id)
+            {
+                $mediaItem->last_comment_user_id = $comment->user_id;
+                $mediaItem->last_comment_username = $comment->username ?: '-';
+            }
+        }
+
+        if ($album = $this->getAlbum())
+        {
+            if ($album->last_comment_id === $comment->comment_id)
+            {
+                $album->last_comment_username = $comment->user_id;
+                $album->last_comment_username = $comment->username ?: '-';
+            }
+        }
+    }
+
+    protected function finalSetup()
+    {
+    }
+
+    protected function _validate()
+    {
+        $this->finalSetup();
+
+        $newAuthor = $this->getNewAuthor();
+        $comment = $this->getComment();
+        $commentErrors = $comment->getErrors();
+        $albumErrors = [];
+        $mediaItemErrors = [];
+
+        if ($mediaItem = $this->getMediaItem())
+        {
+            $mediaItem->preSave();
+            $mediaItemErrors = $mediaItem->getErrors();
+        }
+
+        if ($album = $this->getAlbum())
+        {
+            $album->preSave();
+            $albumErrors = $album->getErrors();
+        }
+
+        $errors = array_merge($albumErrors, $mediaItemErrors, $commentErrors);
+
+        if ($this->performValidations)
+        {
+            $canTargetView = \XF::asVisitor($newAuthor, function() use ($comment)
+            {
+                return $comment->canView();
+            });
+
+            if (!$canTargetView)
+            {
+                $errors[] = \XF::phraseDeferred('changeContentOwner_new_author_must_be_able_to_view_this_xfmg_comment');
+            }
+        }
+
+        return $errors;
+    }
+
+    protected function _save()
+    {
+        $comment = $this->getComment();
         $mediaItem = $this->getMediaItem();
         $album = $this->getAlbum();
 
         $db = $this->db();
         $db->beginTransaction();
 
-        $comment->user_id = $newAuthor->user_id;
-        $comment->username = $newAuthor->username;
-
-        if (!$comment->preSave())
-        {
-            throw new \XF\PrintableException($comment->getErrors());
-        }
         $comment->save();
 
         if ($mediaItem)
         {
-            $mediaItem->rebuildCounters();
-            if (!$mediaItem->preSave())
-            {
-                throw new \XF\PrintableException($mediaItem->getErrors());
-            }
             $mediaItem->save();
         }
 
         if ($album)
         {
-            $album->rebuildLastCommentInfo();
-            if (!$album->preSave())
-            {
-                throw new \XF\PrintableException($album->getErrors());
-            }
             $album->save();
         }
 
@@ -135,5 +203,7 @@ class AuthorChanger extends AbstractService
         }
 
         $db->commit();
+
+        return $comment;
     }
 }

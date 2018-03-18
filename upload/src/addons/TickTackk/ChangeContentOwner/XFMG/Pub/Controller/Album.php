@@ -24,18 +24,14 @@ class Album extends XFCP_Album
                 return $this->error(\XF::phrase('requested_user_not_found'));
             }
 
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($album)
-            {
-                return $album->canView();
-            });
-            if (!$canTargetView)
-            {
-                return $this->error(\XF::phrase('changeContentOwner_new_author_must_be_able_to_view_this_xfmg_album'));
-            }
-
             /** @var \TickTackk\ChangeContentOwner\XFMG\Service\Album\AuthorChanger $authorChangerService */
             $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Album\AuthorChanger', $album, $album->User, $newAuthor);
             $authorChangerService->changeAuthor();
+            if (!$authorChangerService->validate($errors))
+            {
+                return $this->error($errors);
+            }
+            $album = $authorChangerService->save();
 
             return $this->redirect($this->buildLink('media/albums', $album));
         }
