@@ -24,18 +24,14 @@ class ProfilePost extends XFCP_ProfilePost
                 return $this->error(\XF::phrase('requested_user_not_found'));
             }
 
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($profilePost)
-            {
-                return $profilePost->canView();
-            });
-            if (!$canTargetView)
-            {
-                return $this->error(\XF::phrase('changeContentOwner_new_author_must_be_able_to_view_this_profile_post'));
-            }
-
             /** @var \TickTackk\ChangeContentOwner\XF\Service\ProfilePost\AuthorChanger $authorChangerService */
             $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:ProfilePost\AuthorChanger', $profilePost, $profilePost->ProfileUser, $profilePost->User, $newAuthor);
             $authorChangerService->changeAuthor();
+            if (!$authorChangerService->validate($errors))
+            {
+                return $this->error($errors);
+            }
+            $profilePost = $authorChangerService->save();
 
             return $this->redirect($this->buildLink('profile-posts', $profilePost));
         }

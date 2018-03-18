@@ -10,6 +10,8 @@ use XF\Entity\User;
 
 class AuthorChanger extends AbstractService
 {
+    use \XF\Service\ValidateAndSavableTrait;
+
     /**
      * @var Thread
      */
@@ -37,6 +39,13 @@ class AuthorChanger extends AbstractService
 
     protected $performValidations = true;
 
+    /**
+     * AuthorChanger constructor.
+     * @param \XF\App $app
+     * @param Post $post
+     * @param User $oldAuthor
+     * @param User $newAuthor
+     */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, Post $post, User $oldAuthor, User $newAuthor)
     {
@@ -46,6 +55,19 @@ class AuthorChanger extends AbstractService
         $this->forum = $post->Thread->Forum;
         $this->oldAuthor = $oldAuthor;
         $this->newAuthor = $newAuthor;
+    }
+
+    public function setPerformValidations($perform)
+    {
+        $this->performValidations = (bool)$perform;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPerformValidations()
+    {
+        return $this->performValidations;
     }
 
     public function getThread()
@@ -75,6 +97,69 @@ class AuthorChanger extends AbstractService
 
     public function changeAuthor()
     {
+        $newAuthor = $this->getNewAuthor();
+        $post = $this->getPost();
+        $thread = $this->getThread();
+        $forum = $this->getForum();
+
+        $post->user_id = $newAuthor->user_id;
+        $post->username = $newAuthor->username;
+
+        if ($thread->last_post_id === $post->post_id)
+        {
+            $thread->last_post_user_id = $post->user_id;
+            $thread->last_post_username = $post->username;
+        }
+
+        if ($forum->last_post_id === $post->post_id)
+        {
+            $forum->last_post_user_id = $post->user_id;
+            $forum->last_post_username = $post->username;
+        }
+    }
+
+    protected function finalSetup()
+    {
+    }
+
+    protected function _validate()
+    {
+        $this->finalSetup();
+
+        $newAuthor = $this->getNewAuthor();
+        $thread = $this->getThread();
+        $post = $this->getPost();
+        $forum = $this->getForum();
+
+        $post->preSave();
+        $postErrors = $post->getErrors();
+
+        $thread->preSave();
+        $threadErrors = $thread->getErrors();
+
+        $forum->preSave();
+        $forumErrors = $forum->getErrors();
+
+        $errors = array_merge($forumErrors, $threadErrors, $postErrors);
+
+        if ($this->performValidations)
+        {
+            $canTargetView = \XF::asVisitor($newAuthor, function() use ($post)
+            {
+                return $post->canView();
+            });
+
+            if (!$canTargetView)
+            {
+                $errors[] = \XF::phraseDeferred('changeContentOwner_new_author_must_be_able_to_view_this_post');
+            }
+        }
+
+        return $errors;
+    }
+
+    protected function _save()
+    {
         $oldAuthor = $this->getOldAuthor();
         $newAuthor = $this->getNewAuthor();
         $thread = $this->getThread();
@@ -84,27 +169,8 @@ class AuthorChanger extends AbstractService
         $db = $this->db();
         $db->beginTransaction();
 
-        $post->user_id = $newAuthor->user_id;
-        $post->username = $newAuthor->username;
-
-        if (!$post->preSave())
-        {
-            throw new \XF\PrintableException($thread->getErrors());
-        }
         $post->save();
-
-        $thread->rebuildCounters();
-        if (!$thread->preSave())
-        {
-            throw new \XF\PrintableException($thread->getErrors());
-        }
         $thread->save();
-
-        $forum->rebuildLastPost();
-        if (!$forum->preSave())
-        {
-            throw new \XF\PrintableException($thread->getErrors());
-        }
         $forum->save();
 
         if ($post->isVisible())
@@ -122,8 +188,15 @@ class AuthorChanger extends AbstractService
         }
 
         $db->commit();
+
+        return $post;
     }
 
+    /**
+     * @param Thread $thread
+     * @param User $user
+     * @param $amount
+     */
     protected function adjustUserMessageCountIfNeeded(Thread $thread, User $user, $amount)
     {
         if ($user->user_id
@@ -139,6 +212,11 @@ class AuthorChanger extends AbstractService
         }
     }
 
+    /**
+     * @param Thread $thread
+     * @param User $user
+     * @param $amount
+     */
     protected function adjustThreadUserPostCount(Thread $thread, User $user, $amount)
     {
         if ($user->user_id)

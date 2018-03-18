@@ -9,6 +9,8 @@ use XFMG\Entity\Category;
 
 class AuthorChanger extends AbstractService
 {
+    use \XF\Service\ValidateAndSavableTrait;
+
     /**
      * @var Album
      */
@@ -41,6 +43,19 @@ class AuthorChanger extends AbstractService
         $this->newAuthor = $newAuthor;
     }
 
+    public function setPerformValidations($perform)
+    {
+        $this->performValidations = (bool)$perform;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPerformValidations()
+    {
+        return $this->performValidations;
+    }
+
     public function getCategory()
     {
         return $this->category;
@@ -63,6 +78,44 @@ class AuthorChanger extends AbstractService
 
     public function changeAuthor()
     {
+        $newAuthor = $this->getNewAuthor();
+        $album = $this->getAlbum();
+
+        $album->user_id = $newAuthor->user_id;
+        $album->username = $newAuthor->username;
+    }
+
+    protected function finalSetup()
+    {
+    }
+
+    protected function _validate()
+    {
+        $this->finalSetup();
+
+        $newAuthor = $this->getNewAuthor();
+        $album = $this->getAlbum();
+        $album->preSave();
+        $errors = $album->getErrors();
+
+        if ($this->performValidations)
+        {
+            $canTargetView = \XF::asVisitor($newAuthor, function() use ($album)
+            {
+                return $album->canView();
+            });
+
+            if (!$canTargetView)
+            {
+                $errors[] = \XF::phraseDeferred('changeContentOwner_new_author_must_be_able_to_view_this_xfmg_album');
+            }
+        }
+
+        return $errors;
+    }
+
+    protected function _save()
+    {
         $oldAuthor = $this->getOldAuthor();
         $newAuthor = $this->getNewAuthor();
 
@@ -71,14 +124,6 @@ class AuthorChanger extends AbstractService
         $db = $this->db();
         $db->beginTransaction();
 
-        $album->user_id = $newAuthor->user_id;
-        $album->username = $newAuthor->username;
-
-        $album->rebuildCounters();
-        if (!$album->preSave())
-        {
-            throw new \XF\PrintableException($album->getErrors());
-        }
         $album->save();
 
         if ($album->isVisible())
@@ -94,6 +139,8 @@ class AuthorChanger extends AbstractService
         }
 
         $db->commit();
+
+        return $album;
     }
 
     protected function adjustUserAlbumCountIfNeeded(User $user, $amount)

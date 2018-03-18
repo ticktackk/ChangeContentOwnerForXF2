@@ -24,18 +24,14 @@ class Comment extends XFCP_Comment
                 return $this->error(\XF::phrase('requested_user_not_found'));
             }
 
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($comment)
-            {
-                return $comment->canView();
-            });
-            if (!$canTargetView)
-            {
-                return $this->error(\XF::phrase('changeContentOwner_new_author_must_be_able_to_view_this_xfmg_comment'));
-            }
-
             /** @var \TickTackk\ChangeContentOwner\XFMG\Service\Comment\AuthorChanger $authorChangerService */
             $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Comment\AuthorChanger', $comment, $comment->User, $newAuthor);
             $authorChangerService->changeAuthor();
+            if (!$authorChangerService->validate($errors))
+            {
+                return $this->error($errors);
+            }
+            $comment = $authorChangerService->save();
 
             return $this->redirect($this->buildLink('media/comments', $comment));
         }

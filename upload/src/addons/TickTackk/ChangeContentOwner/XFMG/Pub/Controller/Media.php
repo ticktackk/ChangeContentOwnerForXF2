@@ -24,18 +24,14 @@ class Media extends XFCP_Media
                 return $this->error(\XF::phrase('requested_user_not_found'));
             }
 
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($mediaItem)
-            {
-                return $mediaItem->canView();
-            });
-            if (!$canTargetView)
-            {
-                return $this->error(\XF::phrase('changeContentOwner_new_author_must_be_able_to_view_this_xfmg_media'));
-            }
-
             /** @var \TickTackk\ChangeContentOwner\XFMG\Service\MediaItem\AuthorChanger $authorChangerService */
             $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:MediaItem\AuthorChanger', $mediaItem, $mediaItem->User, $newAuthor);
             $authorChangerService->changeAuthor();
+            if (!$authorChangerService->validate($errors))
+            {
+                return $this->error($errors);
+            }
+            $mediaItem = $authorChangerService->save();
 
             return $this->redirect($this->buildLink('media', $mediaItem));
         }

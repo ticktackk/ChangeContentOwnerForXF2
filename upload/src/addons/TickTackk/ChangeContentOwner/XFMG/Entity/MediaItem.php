@@ -4,6 +4,11 @@ namespace TickTackk\ChangeContentOwner\XFMG\Entity;
 
 class MediaItem extends XFCP_MediaItem
 {
+    /**
+     * @param null|string $error
+     *
+     * @return bool
+     */
     public function canChangeAuthor(/** @noinspection PhpUnusedParameterInspection */
         &$error = null)
     {

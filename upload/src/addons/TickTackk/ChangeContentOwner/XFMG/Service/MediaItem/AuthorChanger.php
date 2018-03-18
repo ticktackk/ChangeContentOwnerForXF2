@@ -10,6 +10,8 @@ use XF\Entity\User;
 
 class AuthorChanger extends AbstractService
 {
+    use \XF\Service\ValidateAndSavableTrait;
+
     /**
      * @var MediaItem
      */
@@ -48,6 +50,19 @@ class AuthorChanger extends AbstractService
         $this->newAuthor = $newAuthor;
     }
 
+    public function setPerformValidations($perform)
+    {
+        $this->performValidations = (bool)$perform;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPerformValidations()
+    {
+        return $this->performValidations;
+    }
+
     public function getCategory()
     {
         return $this->category;
@@ -74,6 +89,44 @@ class AuthorChanger extends AbstractService
 
     public function changeAuthor()
     {
+        $newAuthor = $this->getNewAuthor();
+        $mediaItem = $this->getMediaItem();
+
+        $mediaItem->user_id = $newAuthor->user_id;
+        $mediaItem->username = $newAuthor->username;
+    }
+
+
+    protected function finalSetup()
+    {
+    }
+
+    protected function _validate()
+    {
+        $this->finalSetup();
+
+        $newAuthor = $this->getNewAuthor();
+        $mediaItem = $this->getMediaItem();
+        $errors = $mediaItem->getErrors();
+
+        if ($this->performValidations)
+        {
+            $canTargetView = \XF::asVisitor($newAuthor, function() use ($mediaItem)
+            {
+                return $mediaItem->canView();
+            });
+
+            if (!$canTargetView)
+            {
+                $errors[] = \XF::phraseDeferred('changeContentOwner_new_author_must_be_able_to_view_this_xfmg_media');
+            }
+        }
+
+        return $errors;
+    }
+
+    protected function _save()
+    {
         $oldAuthor = $this->getOldAuthor();
         $newAuthor = $this->getNewAuthor();
         $mediaItem = $this->getMediaItem();
@@ -81,14 +134,6 @@ class AuthorChanger extends AbstractService
         $db = $this->db();
         $db->beginTransaction();
 
-        $mediaItem->user_id = $newAuthor->user_id;
-        $mediaItem->username = $newAuthor->username;
-
-        $mediaItem->rebuildCounters();
-        if (!$mediaItem->preSave())
-        {
-            throw new \XF\PrintableException($mediaItem->getErrors());
-        }
         $mediaItem->save();
 
         if ($mediaItem->isVisible())
@@ -106,6 +151,8 @@ class AuthorChanger extends AbstractService
         }
 
         $db->commit();
+
+        return $mediaItem;
     }
 
     protected function adjustUserMediaCountIfNeeded(User $user, $amount)

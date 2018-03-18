@@ -25,18 +25,14 @@ class Thread extends XFCP_Thread
                 return $this->error(\XF::phrase('requested_user_not_found'));
             }
 
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($thread)
-            {
-                return $thread->canView();
-            });
-            if (!$canTargetView)
-            {
-                return $this->error(\XF::phrase('changeContentOwner_new_author_must_be_able_to_view_this_thread'));
-            }
-
             /** @var \TickTackk\ChangeContentOwner\XF\Service\Thread\AuthorChanger $authorChangerService */
             $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Thread\AuthorChanger', $thread, $thread->User, $newAuthor);
             $authorChangerService->changeAuthor();
+            if (!$authorChangerService->validate($errors))
+            {
+                return $this->error($errors);
+            }
+            $thread = $authorChangerService->save();
 
             return $this->redirect($this->buildLink('threads', $thread));
         }

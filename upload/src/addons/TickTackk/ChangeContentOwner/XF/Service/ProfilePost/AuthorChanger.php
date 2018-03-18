@@ -8,6 +8,8 @@ use XF\Entity\User;
 
 class AuthorChanger extends AbstractService
 {
+    use \XF\Service\ValidateAndSavableTrait;
+
     /**
      * @var ProfilePost
      */
@@ -30,6 +32,14 @@ class AuthorChanger extends AbstractService
 
     protected $performValidations = true;
 
+    /**
+     * AuthorChanger constructor.
+     * @param \XF\App $app
+     * @param ProfilePost $profilePost
+     * @param User $profileUser
+     * @param User $oldAuthor
+     * @param User $newAuthor
+     */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, ProfilePost $profilePost, User $profileUser, User $oldAuthor, User $newAuthor)
     {
@@ -38,6 +48,19 @@ class AuthorChanger extends AbstractService
         $this->profileUser = $profileUser;
         $this->oldAuthor = $oldAuthor;
         $this->newAuthor = $newAuthor;
+    }
+
+    public function setPerformValidations($perform)
+    {
+        $this->performValidations = (bool)$perform;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPerformValidations()
+    {
+        return $this->performValidations;
     }
 
     public function getProfilePost()
@@ -65,16 +88,47 @@ class AuthorChanger extends AbstractService
         $newAuthor = $this->getNewAuthor();
         $profilePost = $this->getProfilePost();
 
+        $profilePost->user_id = $newAuthor->user_id;
+        $profilePost->username = $newAuthor->username;
+    }
+
+    protected function finalSetup()
+    {
+    }
+
+    protected function _validate()
+    {
+        $this->finalSetup();
+
+        $newAuthor = $this->getNewAuthor();
+        $profilePost = $this->getProfilePost();
+
+        $profilePost->preSave();
+        $errors = $profilePost->getErrors();
+
+        if ($this->performValidations)
+        {
+            $canTargetView = \XF::asVisitor($newAuthor, function() use ($profilePost)
+            {
+                return $profilePost->canView();
+            });
+
+            if (!$canTargetView)
+            {
+                $errors[] = \XF::phraseDeferred('changeContentOwner_new_author_must_be_able_to_view_this_profile_post');
+            }
+        }
+
+        return $errors;
+    }
+
+    protected function _save()
+    {
+        $profilePost = $this->getProfilePost();
+
         $db = $this->db();
         $db->beginTransaction();
 
-        $profilePost->user_id = $newAuthor->user_id;
-        $profilePost->username = $newAuthor->username;
-
-        if (!$profilePost->preSave())
-        {
-            throw new \XF\PrintableException($profilePost->getErrors());
-        }
         $profilePost->save();
 
         if ($profilePost->getOption('log_moderator'))
@@ -83,5 +137,7 @@ class AuthorChanger extends AbstractService
         }
 
         $db->commit();
+
+        return $profilePost;
     }
 }
