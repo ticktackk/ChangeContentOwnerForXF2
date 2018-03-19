@@ -6,6 +6,13 @@ use XF\Mvc\ParameterBag;
 
 class Post extends XFCP_Post
 {
+    /**
+     * @param ParameterBag $params
+     *
+     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
+     *
+     * @throws \XF\Mvc\Reply\Exception
+     */
     public function actionChangeAuthor(ParameterBag $params)
     {
         /** @var \TickTackk\ChangeContentOwner\XF\Entity\Post $post */

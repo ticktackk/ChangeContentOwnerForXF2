@@ -24,13 +24,4 @@ class Thread extends XFCP_Thread
 
         return $visitor->hasNodePermission($nodeId, 'changeThreadAuthor');
     }
-
-    public static function getStructure(Structure $structure)
-    {
-        $structure = parent::getStructure($structure);
-
-        $structure->options['changeContentOwner_rebuildCounters'] = false;
-
-        return $structure;
-    }
 }

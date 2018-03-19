@@ -6,22 +6,38 @@ use XF\Http\Request;
 use XF\InlineMod\AbstractAction;
 use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\Entity\Entity;
+use XF\Mvc\Controller;
 
 class ChangeAuthor extends AbstractAction
 {
+    /**
+     * @return \XF\Phrase
+     */
     public function getTitle()
     {
         return \XF::phrase('changeContentOwner_change_thread_author...');
     }
 
+    /**
+     * @param Entity $entity
+     * @param array $options
+     * @param null $error
+     *
+     * @return bool
+     */
     protected function canApplyToEntity(Entity $entity, array $options, &$error = null)
     {
         /** @var \TickTackk\ChangeContentOwner\XF\Entity\Thread $entity */
         return $entity->canChangeAuthor($error);
     }
 
+    /**
+     * @param Entity $entity
+     * @param array $options
+     */
     protected function applyToEntity(Entity $entity, array $options)
     {
+        /** @var \TickTackk\ChangeContentOwner\XF\Entity\Thread $entity */
         if ($entity->discussion_type == 'redirect')
         {
             return;
@@ -43,6 +59,9 @@ class ChangeAuthor extends AbstractAction
         }
     }
 
+    /**
+     * @return array
+     */
     public function getBaseOptions()
     {
         return [
@@ -50,7 +69,13 @@ class ChangeAuthor extends AbstractAction
         ];
     }
 
-    public function renderForm(AbstractCollection $entities, \XF\Mvc\Controller $controller)
+    /**
+     * @param AbstractCollection $entities
+     * @param Controller $controller
+     *
+     * @return \XF\Mvc\Reply\View
+     */
+    public function renderForm(AbstractCollection $entities, Controller $controller)
     {
         $viewParams = [
             'threads' => $entities,
@@ -59,6 +84,12 @@ class ChangeAuthor extends AbstractAction
         return $controller->view('XF:Public:InlineMod\Thread\ChangeAuthor', 'inline_mod_thread_change_author', $viewParams);
     }
 
+    /**
+     * @param AbstractCollection $entities
+     * @param Request $request
+     *
+     * @return array
+     */
     public function getFormOptions(AbstractCollection $entities, Request $request)
     {
         return [

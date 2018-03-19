@@ -3,6 +3,7 @@
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Comment;
 
 use XF\Service\AbstractService;
+use XF\Service\ValidateAndSavableTrait;
 use XFMG\Entity\Comment;
 use XFMG\Entity\MediaItem;
 use XFMG\Entity\Album;
@@ -11,7 +12,7 @@ use XF\Entity\User;
 
 class AuthorChanger extends AbstractService
 {
-    use \XF\Service\ValidateAndSavableTrait;
+    use ValidateAndSavableTrait;
 
     /**
      * @var Comment
@@ -43,8 +44,19 @@ class AuthorChanger extends AbstractService
      */
     protected $oldAuthor;
 
+    /**
+     * @var bool
+     */
     protected $performValidations = true;
 
+    /**
+     * AuthorChanger constructor.
+     *
+     * @param \XF\App $app
+     * @param Comment $comment
+     * @param User $oldAuthor
+     * @param User $newAuthor
+     */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, Comment $comment, User $oldAuthor, User $newAuthor)
     {
@@ -75,31 +87,49 @@ class AuthorChanger extends AbstractService
         return $this->performValidations;
     }
 
+    /**
+     * @return Category
+     */
     public function getCategory()
     {
         return $this->category;
     }
 
+    /**
+     * @return Album
+     */
     public function getAlbum()
     {
         return $this->album;
     }
 
+    /**
+     * @return MediaItem
+     */
     public function getMediaItem()
     {
         return $this->mediaItem;
     }
 
+    /**
+     * @return Comment
+     */
     public function getComment()
     {
         return $this->comment;
     }
 
+    /**
+     * @return User
+     */
     public function getNewAuthor()
     {
         return $this->newAuthor;
     }
 
+    /**
+     * @return User
+     */
     public function getOldAuthor()
     {
         return $this->oldAuthor;

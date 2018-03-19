@@ -3,12 +3,13 @@
 namespace TickTackk\ChangeContentOwner\XF\Service\ProfilePost;
 
 use XF\Service\AbstractService;
+use XF\Service\ValidateAndSavableTrait;
 use XF\Entity\ProfilePost;
 use XF\Entity\User;
 
 class AuthorChanger extends AbstractService
 {
-    use \XF\Service\ValidateAndSavableTrait;
+    use ValidateAndSavableTrait;
 
     /**
      * @var ProfilePost
@@ -30,10 +31,14 @@ class AuthorChanger extends AbstractService
      */
     protected $oldAuthor;
 
+    /**
+     * @var bool
+     */
     protected $performValidations = true;
 
     /**
      * AuthorChanger constructor.
+     *
      * @param \XF\App $app
      * @param ProfilePost $profilePost
      * @param User $profileUser
@@ -50,6 +55,9 @@ class AuthorChanger extends AbstractService
         $this->newAuthor = $newAuthor;
     }
 
+    /**
+     * @param $perform
+     */
     public function setPerformValidations($perform)
     {
         $this->performValidations = (bool)$perform;
@@ -63,21 +71,33 @@ class AuthorChanger extends AbstractService
         return $this->performValidations;
     }
 
+    /**
+     * @return ProfilePost
+     */
     public function getProfilePost()
     {
         return $this->profilePost;
     }
 
+    /**
+     * @return User
+     */
     public function getProfileUser()
     {
         return $this->profileUser;
     }
 
+    /**
+     * @return User
+     */
     public function getNewAuthor()
     {
         return $this->newAuthor;
     }
 
+    /**
+     * @return User
+     */
     public function getOldAuthor()
     {
         return $this->oldAuthor;
