@@ -10,7 +10,7 @@ class Post extends XFCP_Post
     {
         /** @var \TickTackk\ChangeContentOwner\XF\Entity\Post $post */
         /** @noinspection PhpUndefinedFieldInspection */
-        $post = $this->assertViewablePost($params->post_id, ['Thread.Prefix']);
+        $post = $this->assertViewablePost($params->post_id);
         if (!$post->canChangeAuthor($error))
         {
             return $this->noPermission($error);

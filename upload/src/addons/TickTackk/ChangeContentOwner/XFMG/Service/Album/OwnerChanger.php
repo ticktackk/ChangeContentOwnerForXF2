@@ -7,7 +7,7 @@ use XF\Entity\User;
 use XFMG\Entity\Album;
 use XFMG\Entity\Category;
 
-class AuthorChanger extends AbstractService
+class OwnerChanger extends AbstractService
 {
     use \XF\Service\ValidateAndSavableTrait;
 
@@ -76,7 +76,7 @@ class AuthorChanger extends AbstractService
         return $this->oldAuthor;
     }
 
-    public function changeAuthor()
+    public function changeOwner()
     {
         $newAuthor = $this->getNewAuthor();
         $album = $this->getAlbum();

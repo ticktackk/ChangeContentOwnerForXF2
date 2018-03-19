@@ -1,0 +1,22 @@
+<xf:title>{{ phrase('inline_moderation_profile_post_change_author') }}</xf:title>
+
+<xf:form action="{{ link('inline-mod') }}" class="block" ajax="true">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">{{ phrase('you_sure_you_want_to_change_author_x_profile_posts', {'count': $total}) }}</xf:inforow>
+
+			<xf:textboxrow name="new_author_username" value="" ac="true" label="{{ phrase('changeContentOwner_new_profile_post_author_name') }}" explain="{{ phrase('changeContentOwner_new_profile_post_author_name_explain') }}" data-single="true" />
+		</div>
+		<xf:submitrow icon="confirm" />
+	</div>
+
+	<xf:foreach loop="$profilePosts" value="$profile_post">
+		<xf:hiddenval name="ids[]">{$profile_post.post_id}</xf:hiddenval>
+	</xf:foreach>
+
+	<xf:hiddenval name="type">profile_post</xf:hiddenval>
+	<xf:hiddenval name="action">change_profile_post_author</xf:hiddenval>
+	<xf:hiddenval name="confirmed">1</xf:hiddenval>
+
+	<xf:redirect url="{$redirect}" />
+</xf:form>
