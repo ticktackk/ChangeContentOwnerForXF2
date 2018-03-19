@@ -1,6 +1,6 @@
 <?php
 
-namespace TickTackk\ChangeContentOwner\XF\InlineMod\Thread;
+namespace TickTackk\ChangeContentOwner\XFMG\InlineMod\Media;
 
 use XF\Http\Request;
 use XF\InlineMod\AbstractAction;
@@ -11,30 +11,25 @@ class ChangeAuthor extends AbstractAction
 {
     public function getTitle()
     {
-        return \XF::phrase('changeContentOwner_change_thread_author...');
+        return \XF::phrase('changeContentOwner_change_xfmg_media_author...');
     }
 
     protected function canApplyToEntity(Entity $entity, array $options, &$error = null)
     {
-        /** @var \TickTackk\ChangeContentOwner\XF\Entity\Thread $entity */
+        /** @var \TickTackk\ChangeContentOwner\XFMG\Entity\MediaItem $entity */
         return $entity->canChangeAuthor($error);
     }
 
     protected function applyToEntity(Entity $entity, array $options)
     {
-        if ($entity->discussion_type == 'redirect')
-        {
-            return;
-        }
-
         $newAuthor = $this->app()->em()->findOne('XF:User', ['username' => $options['new_author_username']]);
         if (!$newAuthor)
         {
             return;
         }
 
-        /** @var \TickTackk\ChangeContentOwner\XF\Service\Thread\AuthorChanger $authorChanger */
-        $authorChanger = $this->app()->service('TickTackk\ChangeContentOwner\XF:Thread\AuthorChanger', $entity, $entity->User, $newAuthor);
+        /** @var \TickTackk\ChangeContentOwner\XFMG\Service\MediaItem\AuthorChanger $authorChanger */
+        $authorChanger = $this->app()->service('TickTackk\ChangeContentOwner\XFMG:MediaItem\AuthorChanger', $entity, $entity->User, $newAuthor);
         $authorChanger->setPerformValidations(false);
         $authorChanger->changeAuthor();
         if ($authorChanger->validate($errors))
@@ -53,10 +48,10 @@ class ChangeAuthor extends AbstractAction
     public function renderForm(AbstractCollection $entities, \XF\Mvc\Controller $controller)
     {
         $viewParams = [
-            'threads' => $entities,
+            'media_items' => $entities,
             'total' => count($entities)
         ];
-        return $controller->view('XF:Public:InlineMod\Thread\ChangeAuthor', 'inline_mod_thread_change_author', $viewParams);
+        return $controller->view('XFMG:Public:InlineMod\MediaItem\ChangeAuthor', 'inline_mod_xfmg_media_change_author', $viewParams);
     }
 
     public function getFormOptions(AbstractCollection $entities, Request $request)

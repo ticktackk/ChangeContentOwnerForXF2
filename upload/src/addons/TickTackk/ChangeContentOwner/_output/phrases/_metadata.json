@@ -167,6 +167,42 @@
         "version_string": "1.0.0 Alpha 2",
         "hash": "d1d5eb7018aef3f3ce30f3648110e26c"
     },
+    "inline_moderation_post_change_author.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "942d160642ed3f37bef9aa1e87c41021"
+    },
+    "inline_moderation_profile_post_change_author.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "e8f244a43ca9c99aed2ab0f94799c23a"
+    },
+    "inline_moderation_thread_change_author.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "ee5a483dd83dcbd5de7c618d3fd04f51"
+    },
+    "inline_moderation_xfmg_album_change_owner.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "b0a7781ca6491b7c620e21fe961768c2"
+    },
+    "inline_moderation_xfmg_comment_change_author.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "a5a31a0a54502d3f931c7907744d7905"
+    },
+    "inline_moderation_xfmg_media_change_author.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "6684267f1e1f255eabf3b355c6173ee6"
+    },
     "mod_log.post_author_change.txt": {
         "global_cache": false,
         "version_id": 1000014,
@@ -238,5 +274,41 @@
         "version_id": 1000010,
         "version_string": "1.0.0 Alpha",
         "hash": "f646949ae876cca026c585ba344a5cfd"
+    },
+    "you_sure_you_want_to_change_author_x_posts.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "4d274e481c3f7898980d2761e6457196"
+    },
+    "you_sure_you_want_to_change_author_x_profile_posts.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "2d9fb5a4e757421fdcb7138063e4cfdd"
+    },
+    "you_sure_you_want_to_change_author_x_threads.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "ac9df3fdef2faf8303b99affe59d9d05"
+    },
+    "you_sure_you_want_to_change_author_x_xfmg_comments.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "a927d0fc7bab8e86a085ef0c42b52c53"
+    },
+    "you_sure_you_want_to_change_author_x_xfmg_media_items.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "9ff957a235cd5022edc15a8dd0032228"
+    },
+    "you_sure_you_want_to_change_owner_x_xfmg_albums.txt": {
+        "global_cache": false,
+        "version_id": 10000031,
+        "version_string": "10.0.0 Beta 1",
+        "hash": "5980ab72349638e3a57560abedfa8453"
     }
 }

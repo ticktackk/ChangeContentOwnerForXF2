@@ -24,9 +24,9 @@ class Album extends XFCP_Album
                 return $this->error(\XF::phrase('requested_user_not_found'));
             }
 
-            /** @var \TickTackk\ChangeContentOwner\XFMG\Service\Album\AuthorChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Album\AuthorChanger', $album, $album->User, $newAuthor);
-            $authorChangerService->changeAuthor();
+            /** @var \TickTackk\ChangeContentOwner\XFMG\Service\Album\OwnerChanger $authorChangerService */
+            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger', $album, $album->User, $newAuthor);
+            $authorChangerService->changeOwner();
             if (!$authorChangerService->validate($errors))
             {
                 return $this->error($errors);
@@ -42,7 +42,7 @@ class Album extends XFCP_Album
                 'addUsers' => $this->em()->findByIds('XF:User', $album->add_users ?: [])->pluckNamed('username'),
                 'viewUsers' => $this->em()->findByIds('XF:User', $album->view_users ?: [])->pluckNamed('username')
             ];
-            return $this->view('TickTackk\ChangeContentOwner\XFMG:Album\ChangeAuthor', 'changeContentOwner_xfmg_album_change_owner', $viewParams);
+            return $this->view('TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner', 'changeContentOwner_xfmg_album_change_owner', $viewParams);
         }
     }
 }
