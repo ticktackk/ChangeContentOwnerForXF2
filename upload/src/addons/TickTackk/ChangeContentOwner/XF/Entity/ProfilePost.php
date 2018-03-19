@@ -13,7 +13,6 @@ class ProfilePost extends XFCP_ProfilePost
         &$error = null)
     {
         $visitor = \XF::visitor();
-
         if (!$visitor->user_id)
         {
             return false;

@@ -6,6 +6,13 @@ use XF\Mvc\ParameterBag;
 
 class Album extends XFCP_Album
 {
+    /**
+     * @param ParameterBag $params
+     *
+     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
+     *
+     * @throws \XF\Mvc\Reply\Exception
+     */
     public function actionChangeOwner(ParameterBag $params)
     {
         /** @var \TickTackk\ChangeContentOwner\XFMG\Entity\Album $album */

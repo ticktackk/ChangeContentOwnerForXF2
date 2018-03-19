@@ -3,6 +3,7 @@
 namespace TickTackk\ChangeContentOwner\XF\Service\Thread;
 
 use XF\Service\AbstractService;
+use XF\Service\ValidateAndSavableTrait;
 use XF\Entity\Thread;
 use XF\Entity\Forum;
 use XF\Entity\Post;
@@ -10,7 +11,7 @@ use XF\Entity\User;
 
 class AuthorChanger extends AbstractService
 {
-    use \XF\Service\ValidateAndSavableTrait;
+    use ValidateAndSavableTrait;
 
     /**
      * @var Thread
@@ -44,6 +45,7 @@ class AuthorChanger extends AbstractService
 
     /**
      * AuthorChanger constructor.
+     *
      * @param \XF\App $app
      * @param Thread $thread
      * @param User $oldAuthor
@@ -60,6 +62,9 @@ class AuthorChanger extends AbstractService
         $this->newAuthor = $newAuthor;
     }
 
+    /**
+     * @param $perform
+     */
     public function setPerformValidations($perform)
     {
         $this->performValidations = (bool)$perform;

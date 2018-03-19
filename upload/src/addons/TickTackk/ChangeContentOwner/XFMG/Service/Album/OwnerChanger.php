@@ -3,13 +3,14 @@
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Album;
 
 use XF\Service\AbstractService;
+use XF\Service\ValidateAndSavableTrait;
 use XF\Entity\User;
 use XFMG\Entity\Album;
 use XFMG\Entity\Category;
 
 class OwnerChanger extends AbstractService
 {
-    use \XF\Service\ValidateAndSavableTrait;
+    use ValidateAndSavableTrait;
 
     /**
      * @var Album
@@ -31,8 +32,19 @@ class OwnerChanger extends AbstractService
      */
     protected $oldAuthor;
 
+    /**
+     * @var bool
+     */
     protected $performValidations = true;
 
+    /**
+     * OwnerChanger constructor.
+     *
+     * @param \XF\App $app
+     * @param Album $album
+     * @param User $oldAuthor
+     * @param User $newAuthor
+     */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, Album $album, User $oldAuthor, User $newAuthor)
     {
@@ -43,6 +55,9 @@ class OwnerChanger extends AbstractService
         $this->newAuthor = $newAuthor;
     }
 
+    /**
+     * @param $perform
+     */
     public function setPerformValidations($perform)
     {
         $this->performValidations = (bool)$perform;
@@ -56,21 +71,33 @@ class OwnerChanger extends AbstractService
         return $this->performValidations;
     }
 
+    /**
+     * @return Category
+     */
     public function getCategory()
     {
         return $this->category;
     }
 
+    /**
+     * @return Album
+     */
     public function getAlbum()
     {
         return $this->album;
     }
 
+    /**
+     * @return User
+     */
     public function getNewAuthor()
     {
         return $this->newAuthor;
     }
 
+    /**
+     * @return User
+     */
     public function getOldAuthor()
     {
         return $this->oldAuthor;
@@ -143,6 +170,10 @@ class OwnerChanger extends AbstractService
         return $album;
     }
 
+    /**
+     * @param User $user
+     * @param $amount
+     */
     protected function adjustUserAlbumCountIfNeeded(User $user, $amount)
     {
         $this->db()->query("
