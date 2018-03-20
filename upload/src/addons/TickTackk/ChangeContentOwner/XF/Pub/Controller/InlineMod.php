@@ -26,17 +26,21 @@ class InlineMod extends XFCP_InlineMod
             $ids = $handler->getCookieIds($this->request);
             $entities = $handler->getEntities($ids);
 
-            /** @noinspection PhpUndefinedMethodInspection */
-            $actions = $handler->getActions();
+            if (method_exists($handler, 'getActions'))
+            {
+                $actions = $handler->getActions();
+            }
+            else
+            {
+                $actions = $handler->getPossibleActions();
+            }
             $available = [];
             if ($entities->count())
             {
                 foreach ($actions AS $actionId => $action)
                 {
-                    /** @noinspection PhpUndefinedMethodInspection */
                     if ($action->canApply($entities))
                     {
-                        /** @noinspection PhpUndefinedMethodInspection */
                         $available[$actionId] = $action->getTitle();
                     }
                 }
