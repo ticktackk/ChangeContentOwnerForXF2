@@ -14,7 +14,7 @@ class Listener
      */
     public static function inlineModActions_thread(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */ App $app, array &$actions)
     {
-        $actions['change_thread_author'] = $handler->getActionHandler('TickTackk\ChangeContentowner\XF:Thread\ChangeAuthor');
+        $actions['change_thread_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XF:Thread\ChangeAuthor');
     }
 
     /**
@@ -24,7 +24,7 @@ class Listener
      */
     public static function inlineModActions_post(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */ App $app, array &$actions)
     {
-        $actions['change_post_author'] = $handler->getActionHandler('TickTackk\ChangeContentowner\XF:Post\ChangeAuthor');
+        $actions['change_post_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XF:Post\ChangeAuthor');
     }
 
     /**
@@ -34,7 +34,7 @@ class Listener
      */
     public static function inlineModActions_profile_post(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */ App $app, array &$actions)
     {
-        $actions['change_profile_post_author'] = $handler->getActionHandler('TickTackk\ChangeContentowner\XF:ProfilePost\ChangeAuthor');
+        $actions['change_profile_post_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeAuthor');
     }
 
     /**
@@ -44,7 +44,7 @@ class Listener
      */
     public static function inlineModActions_xfmg_album(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */ App $app, array &$actions)
     {
-        $actions['change_album_owner'] = $handler->getActionHandler('TickTackk\ChangeContentowner\XFMG:Album\ChangeOwner');
+        $actions['change_album_owner'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner');
     }
 
     /**
@@ -54,7 +54,7 @@ class Listener
      */
     public static function inlineModActions_xfmg_media(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */ App $app, array &$actions)
     {
-        $actions['change_media_author'] = $handler->getActionHandler('TickTackk\ChangeContentowner\XFMG:Media\ChangeAuthor');
+        $actions['change_media_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Media\ChangeAuthor');
     }
 
     /**
@@ -64,6 +64,6 @@ class Listener
      */
     public static function inlineModActions_xfmg_comment(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */ App $app, array &$actions)
     {
-        $actions['change_comment_author'] = $handler->getActionHandler('TickTackk\ChangeContentowner\XFMG:Comment\ChangeAuthor');
+        $actions['change_comment_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Comment\ChangeAuthor');
     }
 }
