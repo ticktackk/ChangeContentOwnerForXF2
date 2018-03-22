@@ -48,17 +48,16 @@ class AuthorChanger extends AbstractService
      *
      * @param \XF\App $app
      * @param MediaItem $mediaItem
-     * @param User $oldAuthor
      * @param User $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-        \XF\App $app, MediaItem $mediaItem, User $oldAuthor, User $newAuthor)
+        \XF\App $app, MediaItem $mediaItem, User $newAuthor)
     {
         parent::__construct($app);
         $this->mediaItem = $mediaItem;
         $this->category = $mediaItem->Category;
         $this->album = $mediaItem->Album;
-        $this->oldAuthor = $oldAuthor;
+        $this->oldAuthor = $mediaItem->User;
         $this->newAuthor = $newAuthor;
     }
 
@@ -169,8 +168,11 @@ class AuthorChanger extends AbstractService
 
         if ($mediaItem->isVisible())
         {
-            $this->adjustUserMediaCountIfNeeded($oldAuthor, -1);
-            $this->adjustUserMediaQuotaIfNeeded($mediaItem, $oldAuthor, true);
+            if (!empty($oldAuthor))
+            {
+                $this->adjustUserMediaCountIfNeeded($oldAuthor, -1);
+                $this->adjustUserMediaQuotaIfNeeded($mediaItem, $oldAuthor, true);
+            }
 
             $this->adjustUserMediaCountIfNeeded($newAuthor, -1);
             $this->adjustUserMediaQuotaIfNeeded($mediaItem, $newAuthor);

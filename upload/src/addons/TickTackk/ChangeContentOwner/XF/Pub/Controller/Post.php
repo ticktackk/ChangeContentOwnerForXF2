@@ -34,7 +34,7 @@ class Post extends XFCP_Post
             }
 
             /** @var \TickTackk\ChangeContentOwner\XF\Service\Post\AuthorChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Post\AuthorChanger', $post, $post->User, $newAuthor);
+            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Post\AuthorChanger', $post, $newAuthor);
             $authorChangerService->changeAuthor();
             if (!$authorChangerService->validate($errors))
             {

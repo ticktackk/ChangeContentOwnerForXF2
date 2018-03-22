@@ -54,11 +54,10 @@ class AuthorChanger extends AbstractService
      *
      * @param \XF\App $app
      * @param Comment $comment
-     * @param User $oldAuthor
      * @param User $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-        \XF\App $app, Comment $comment, User $oldAuthor, User $newAuthor)
+        \XF\App $app, Comment $comment, User $newAuthor)
     {
         parent::__construct($app);
 
@@ -70,7 +69,7 @@ class AuthorChanger extends AbstractService
         }
 
         $this->comment = $comment;
-        $this->oldAuthor = $oldAuthor;
+        $this->oldAuthor = $comment->User;
         $this->newAuthor = $newAuthor;
     }
 

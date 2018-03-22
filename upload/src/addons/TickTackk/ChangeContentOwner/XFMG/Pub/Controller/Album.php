@@ -32,7 +32,7 @@ class Album extends XFCP_Album
             }
 
             /** @var \TickTackk\ChangeContentOwner\XFMG\Service\Album\OwnerChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger', $album, $album->User, $newAuthor);
+            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger', $album, $newAuthor);
             $authorChangerService->changeOwner();
             if (!$authorChangerService->validate($errors))
             {

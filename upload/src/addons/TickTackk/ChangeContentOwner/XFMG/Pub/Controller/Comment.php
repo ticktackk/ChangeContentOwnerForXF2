@@ -32,7 +32,7 @@ class Comment extends XFCP_Comment
             }
 
             /** @var \TickTackk\ChangeContentOwner\XFMG\Service\Comment\AuthorChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Comment\AuthorChanger', $comment, $comment->User, $newAuthor);
+            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Comment\AuthorChanger', $comment, $newAuthor);
             $authorChangerService->changeAuthor();
             if (!$authorChangerService->validate($errors))
             {

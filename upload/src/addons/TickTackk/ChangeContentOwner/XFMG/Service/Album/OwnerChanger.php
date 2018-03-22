@@ -42,16 +42,15 @@ class OwnerChanger extends AbstractService
      *
      * @param \XF\App $app
      * @param Album $album
-     * @param User $oldAuthor
      * @param User $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-        \XF\App $app, Album $album, User $oldAuthor, User $newAuthor)
+        \XF\App $app, Album $album, User $newAuthor)
     {
         parent::__construct($app);
         $this->category = $album->Category;
         $this->album = $album;
-        $this->oldAuthor = $oldAuthor;
+        $this->oldAuthor = $album->User;
         $this->newAuthor = $newAuthor;
     }
 
@@ -155,7 +154,10 @@ class OwnerChanger extends AbstractService
 
         if ($album->isVisible())
         {
-            $this->adjustUserAlbumCountIfNeeded($oldAuthor, -1);
+            if (!empty($oldAuthor))
+            {
+                $this->adjustUserAlbumCountIfNeeded($oldAuthor, -1);
+            }
 
             $this->adjustUserAlbumCountIfNeeded($newAuthor, -1);
         }
