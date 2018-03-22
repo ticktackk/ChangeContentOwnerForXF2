@@ -70,33 +70,33 @@
         "hash": "613c53f606253260954596b6cfae251a"
     },
     "public/inline_mod_post_change_author.html": {
-        "version_id": 10000031,
-        "version_string": "10.0.0 Beta 1",
+        "version_id": 1000031,
+        "version_string": "1.0.0 Beta 1",
         "hash": "8de13007917a5ee85c0c9a73e07960f3"
     },
     "public/inline_mod_profile_post_change_author.html": {
-        "version_id": 10000031,
-        "version_string": "10.0.0 Beta 1",
+        "version_id": 1000031,
+        "version_string": "1.0.0 Beta 1",
         "hash": "95e2016b6fc7a637695bebb8352d2ea0"
     },
     "public/inline_mod_thread_change_author.html": {
-        "version_id": 10000031,
-        "version_string": "10.0.0 Beta 1",
+        "version_id": 1000031,
+        "version_string": "1.0.0 Beta 1",
         "hash": "2e85c2bc4ea1996eae675f09669e812e"
     },
     "public/inline_mod_xfmg_album_change_owner.html": {
-        "version_id": 10000031,
-        "version_string": "10.0.0 Beta 1",
+        "version_id": 1000031,
+        "version_string": "1.0.0 Beta 1",
         "hash": "ccd4ae6d7dcff412334de3d00f732499"
     },
     "public/inline_mod_xfmg_comment_change_author.html": {
-        "version_id": 10000031,
-        "version_string": "10.0.0 Beta 1",
+        "version_id": 1000031,
+        "version_string": "1.0.0 Beta 1",
         "hash": "8cfafda90d4199ee06fe2d055b675ea6"
     },
     "public/inline_mod_xfmg_media_change_author.html": {
-        "version_id": 10000031,
-        "version_string": "10.0.0 Beta 1",
+        "version_id": 1000031,
+        "version_string": "1.0.0 Beta 1",
         "hash": "72b748caadc8d65bd945dc865003c3c1"
     }
 }
