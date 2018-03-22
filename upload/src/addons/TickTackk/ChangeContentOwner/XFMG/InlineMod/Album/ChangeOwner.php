@@ -45,7 +45,7 @@ class ChangeOwner extends AbstractAction
         }
 
         /** @var \TickTackk\ChangeContentOwner\XFMG\Service\Album\OwnerChanger $ownerChanger */
-        $ownerChanger = $this->app()->service('TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger', $entity, $entity->User, $newOwner);
+        $ownerChanger = $this->app()->service('TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger', $entity, $newOwner);
         $ownerChanger->setPerformValidations(false);
         $ownerChanger->changeOwner();
         if ($ownerChanger->validate($errors))

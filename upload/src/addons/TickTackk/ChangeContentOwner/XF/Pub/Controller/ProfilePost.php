@@ -32,7 +32,7 @@ class ProfilePost extends XFCP_ProfilePost
             }
 
             /** @var \TickTackk\ChangeContentOwner\XF\Service\ProfilePost\AuthorChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:ProfilePost\AuthorChanger', $profilePost, $profilePost->ProfileUser, $profilePost->User, $newAuthor);
+            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:ProfilePost\AuthorChanger', $profilePost, $newAuthor);
             $authorChangerService->changeAuthor();
             if (!$authorChangerService->validate($errors))
             {

@@ -48,17 +48,16 @@ class AuthorChanger extends AbstractService
      *
      * @param \XF\App $app
      * @param Post $post
-     * @param User $oldAuthor
      * @param User $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-        \XF\App $app, Post $post, User $oldAuthor, User $newAuthor)
+        \XF\App $app, Post $post, User $newAuthor)
     {
         parent::__construct($app);
         $this->post = $post;
         $this->thread = $post->Thread;
         $this->forum = $post->Thread->Forum;
-        $this->oldAuthor = $oldAuthor;
+        $this->oldAuthor = $post->User;
         $this->newAuthor = $newAuthor;
     }
 
@@ -198,8 +197,11 @@ class AuthorChanger extends AbstractService
 
         if ($post->isVisible())
         {
-            $this->adjustUserMessageCountIfNeeded($thread, $oldAuthor, -1);
-            $this->adjustThreadUserPostCount($thread, $oldAuthor, -1);
+            if (!empty($oldAuthor))
+            {
+                $this->adjustUserMessageCountIfNeeded($thread, $oldAuthor, -1);
+                $this->adjustThreadUserPostCount($thread, $oldAuthor, -1);
+            }
 
             $this->adjustUserMessageCountIfNeeded($thread, $newAuthor, 1);
             $this->adjustThreadUserPostCount($thread, $newAuthor, 1);

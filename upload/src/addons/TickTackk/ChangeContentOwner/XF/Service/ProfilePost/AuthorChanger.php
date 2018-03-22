@@ -41,17 +41,15 @@ class AuthorChanger extends AbstractService
      *
      * @param \XF\App $app
      * @param ProfilePost $profilePost
-     * @param User $profileUser
-     * @param User $oldAuthor
      * @param User $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-        \XF\App $app, ProfilePost $profilePost, User $profileUser, User $oldAuthor, User $newAuthor)
+        \XF\App $app, ProfilePost $profilePost, User $newAuthor)
     {
         parent::__construct($app);
         $this->profilePost = $profilePost;
-        $this->profileUser = $profileUser;
-        $this->oldAuthor = $oldAuthor;
+        $this->profileUser = $profilePost->ProfileUser;
+        $this->oldAuthor = $profilePost->User;
         $this->newAuthor = $newAuthor;
     }
 

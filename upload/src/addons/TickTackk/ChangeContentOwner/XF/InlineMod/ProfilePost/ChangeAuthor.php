@@ -45,7 +45,7 @@ class ChangeAuthor extends AbstractAction
         }
 
         /** @var \TickTackk\ChangeContentOwner\XF\Service\ProfilePost\AuthorChanger $authorChanger */
-        $authorChanger = $this->app()->service('TickTackk\ChangeContentOwner\XF:ProfilePost\AuthorChanger', $entity, $entity->User, $newAuthor);
+        $authorChanger = $this->app()->service('TickTackk\ChangeContentOwner\XF:ProfilePost\AuthorChanger', $entity, $newAuthor);
         $authorChanger->setPerformValidations(false);
         $authorChanger->changeAuthor();
         if ($authorChanger->validate($errors))

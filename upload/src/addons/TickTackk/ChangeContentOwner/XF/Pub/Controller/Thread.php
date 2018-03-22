@@ -33,7 +33,7 @@ class Thread extends XFCP_Thread
             }
 
             /** @var \TickTackk\ChangeContentOwner\XF\Service\Thread\AuthorChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Thread\AuthorChanger', $thread, $thread->User, $newAuthor);
+            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Thread\AuthorChanger', $thread, $newAuthor);
             $authorChangerService->changeAuthor();
             if (!$authorChangerService->validate($errors))
             {
