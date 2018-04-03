@@ -4,9 +4,9 @@ namespace TickTackk\ChangeContentOwner\XFMG\InlineMod\Album;
 
 use XF\Http\Request;
 use XF\InlineMod\AbstractAction;
+use XF\Mvc\Controller;
 use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\Entity\Entity;
-use XF\Mvc\Controller;
 
 class ChangeOwner extends AbstractAction
 {
@@ -19,9 +19,47 @@ class ChangeOwner extends AbstractAction
     }
 
     /**
+     * @return array
+     */
+    public function getBaseOptions()
+    {
+        return [
+            'new_owner_username' => null
+        ];
+    }
+
+    /**
+     * @param AbstractCollection $entities
+     * @param Controller         $controller
+     *
+     * @return \XF\Mvc\Reply\View
+     */
+    public function renderForm(AbstractCollection $entities, Controller $controller)
+    {
+        $viewParams = [
+            'albums' => $entities,
+            'total' => count($entities)
+        ];
+        return $controller->view('XFMG:Public:InlineMod\Album\ChangeOwner', 'inline_mod_xfmg_album_change_owner', $viewParams);
+    }
+
+    /**
+     * @param AbstractCollection $entities
+     * @param Request            $request
+     *
+     * @return array
+     */
+    public function getFormOptions(AbstractCollection $entities, Request $request)
+    {
+        return [
+            'new_owner_username' => $request->filter('new_owner_username', 'str')
+        ];
+    }
+
+    /**
      * @param Entity $entity
-     * @param array $options
-     * @param null $error
+     * @param array  $options
+     * @param null   $error
      *
      * @return bool
      */
@@ -33,7 +71,7 @@ class ChangeOwner extends AbstractAction
 
     /**
      * @param Entity $entity
-     * @param array $options
+     * @param array  $options
      */
     protected function applyToEntity(Entity $entity, array $options)
     {
@@ -52,43 +90,5 @@ class ChangeOwner extends AbstractAction
         {
             $ownerChanger->save();
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getBaseOptions()
-    {
-        return [
-            'new_owner_username' => null
-        ];
-    }
-
-    /**
-     * @param AbstractCollection $entities
-     * @param Controller $controller
-     *
-     * @return \XF\Mvc\Reply\View
-     */
-    public function renderForm(AbstractCollection $entities, Controller $controller)
-    {
-        $viewParams = [
-            'albums' => $entities,
-            'total' => count($entities)
-        ];
-        return $controller->view('XFMG:Public:InlineMod\Album\ChangeOwner', 'inline_mod_xfmg_album_change_owner', $viewParams);
-    }
-
-    /**
-     * @param AbstractCollection $entities
-     * @param Request $request
-     *
-     * @return array
-     */
-    public function getFormOptions(AbstractCollection $entities, Request $request)
-    {
-        return [
-            'new_owner_username' => $request->filter('new_owner_username', 'str')
-        ];
     }
 }

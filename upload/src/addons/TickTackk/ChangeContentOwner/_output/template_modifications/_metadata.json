@@ -1,26 +1,26 @@
 {
-    "public/changeContentOwner_album_tools_menu_top.json": {
-        "hash": "34bc6b6940e87518468c4ca2ba573e99"
-    },
-    "public/changeContentOwner_post_macros_action_bar.json": {
-        "hash": "d6fc9100b0675f460d82b6dcd8ca696d"
-    },
-    "public/changeContentOwner_profile_post_macros_action_bar.json": {
-        "hash": "66ea61777167be8f93f45ead6545b7e8"
-    },
-    "public/changeContentOwner_thread_tools_menu_before_footer.json": {
-        "hash": "5649e8a90db6c1f0d921194c2dd3e17c"
-    },
-    "public/changeContentOwner_xfmg_album_view_action_bar.json": {
-        "hash": "9eebf1b04dff9805d61d4ea5cbb2dda1"
-    },
-    "public/changeContentOwner_xfmg_comment_macros_action_bar.json": {
-        "hash": "812e4930505eedeac286c205835660ac"
-    },
-    "public/changeContentOwner_xfmg_media_view_action_bar.json": {
-        "hash": "85c40ceab0f0210d7ec34c378d600f63"
-    },
-    "public/changeContentOwner_xfmg_media_view_tools_menu_foot.json": {
-        "hash": "4ec4d03895b938c8c25aad673b83b051"
-    }
+  "public/changeContentOwner_album_tools_menu_top.json": {
+    "hash": "34bc6b6940e87518468c4ca2ba573e99"
+  },
+  "public/changeContentOwner_post_macros_action_bar.json": {
+    "hash": "d6fc9100b0675f460d82b6dcd8ca696d"
+  },
+  "public/changeContentOwner_profile_post_macros_action_bar.json": {
+    "hash": "66ea61777167be8f93f45ead6545b7e8"
+  },
+  "public/changeContentOwner_thread_tools_menu_before_footer.json": {
+    "hash": "5649e8a90db6c1f0d921194c2dd3e17c"
+  },
+  "public/changeContentOwner_xfmg_album_view_action_bar.json": {
+    "hash": "9eebf1b04dff9805d61d4ea5cbb2dda1"
+  },
+  "public/changeContentOwner_xfmg_comment_macros_action_bar.json": {
+    "hash": "812e4930505eedeac286c205835660ac"
+  },
+  "public/changeContentOwner_xfmg_media_view_action_bar.json": {
+    "hash": "85c40ceab0f0210d7ec34c378d600f63"
+  },
+  "public/changeContentOwner_xfmg_media_view_tools_menu_foot.json": {
+    "hash": "4ec4d03895b938c8c25aad673b83b051"
+  }
 }

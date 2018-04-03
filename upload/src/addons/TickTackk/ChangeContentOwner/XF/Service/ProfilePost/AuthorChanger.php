@@ -2,10 +2,10 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Service\ProfilePost;
 
-use XF\Service\AbstractService;
-use XF\Service\ValidateAndSavableTrait;
 use XF\Entity\ProfilePost;
 use XF\Entity\User;
+use XF\Service\AbstractService;
+use XF\Service\ValidateAndSavableTrait;
 
 class AuthorChanger extends AbstractService
 {
@@ -39,9 +39,9 @@ class AuthorChanger extends AbstractService
     /**
      * AuthorChanger constructor.
      *
-     * @param \XF\App $app
+     * @param \XF\App     $app
      * @param ProfilePost $profilePost
-     * @param User $newAuthor
+     * @param User        $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, ProfilePost $profilePost, User $newAuthor)
@@ -54,14 +54,6 @@ class AuthorChanger extends AbstractService
     }
 
     /**
-     * @param $perform
-     */
-    public function setPerformValidations($perform)
-    {
-        $this->performValidations = (bool)$perform;
-    }
-
-    /**
      * @return bool
      */
     public function getPerformValidations()
@@ -70,11 +62,11 @@ class AuthorChanger extends AbstractService
     }
 
     /**
-     * @return ProfilePost
+     * @param $perform
      */
-    public function getProfilePost()
+    public function setPerformValidations($perform)
     {
-        return $this->profilePost;
+        $this->performValidations = (bool)$perform;
     }
 
     /**
@@ -83,14 +75,6 @@ class AuthorChanger extends AbstractService
     public function getProfileUser()
     {
         return $this->profileUser;
-    }
-
-    /**
-     * @return User
-     */
-    public function getNewAuthor()
-    {
-        return $this->newAuthor;
     }
 
     /**
@@ -110,8 +94,20 @@ class AuthorChanger extends AbstractService
         $profilePost->username = $newAuthor->username;
     }
 
-    protected function finalSetup()
+    /**
+     * @return User
+     */
+    public function getNewAuthor()
     {
+        return $this->newAuthor;
+    }
+
+    /**
+     * @return ProfilePost
+     */
+    public function getProfilePost()
+    {
+        return $this->profilePost;
     }
 
     protected function _validate()
@@ -126,7 +122,7 @@ class AuthorChanger extends AbstractService
 
         if ($this->performValidations)
         {
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($profilePost)
+            $canTargetView = \XF::asVisitor($newAuthor, function () use ($profilePost)
             {
                 return $profilePost->canView();
             });
@@ -138,6 +134,10 @@ class AuthorChanger extends AbstractService
         }
 
         return $errors;
+    }
+
+    protected function finalSetup()
+    {
     }
 
     protected function _save()

@@ -2,9 +2,9 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Album;
 
+use XF\Entity\User;
 use XF\Service\AbstractService;
 use XF\Service\ValidateAndSavableTrait;
-use XF\Entity\User;
 use XFMG\Entity\Album;
 use XFMG\Entity\Category;
 
@@ -41,8 +41,8 @@ class OwnerChanger extends AbstractService
      * OwnerChanger constructor.
      *
      * @param \XF\App $app
-     * @param Album $album
-     * @param User $newAuthor
+     * @param Album   $album
+     * @param User    $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, Album $album, User $newAuthor)
@@ -55,14 +55,6 @@ class OwnerChanger extends AbstractService
     }
 
     /**
-     * @param $perform
-     */
-    public function setPerformValidations($perform)
-    {
-        $this->performValidations = (bool)$perform;
-    }
-
-    /**
      * @return bool
      */
     public function getPerformValidations()
@@ -71,35 +63,19 @@ class OwnerChanger extends AbstractService
     }
 
     /**
+     * @param $perform
+     */
+    public function setPerformValidations($perform)
+    {
+        $this->performValidations = (bool)$perform;
+    }
+
+    /**
      * @return Category
      */
     public function getCategory()
     {
         return $this->category;
-    }
-
-    /**
-     * @return Album
-     */
-    public function getAlbum()
-    {
-        return $this->album;
-    }
-
-    /**
-     * @return User
-     */
-    public function getNewAuthor()
-    {
-        return $this->newAuthor;
-    }
-
-    /**
-     * @return User
-     */
-    public function getOldAuthor()
-    {
-        return $this->oldAuthor;
     }
 
     public function changeOwner()
@@ -111,8 +87,20 @@ class OwnerChanger extends AbstractService
         $album->username = $newAuthor->username;
     }
 
-    protected function finalSetup()
+    /**
+     * @return User
+     */
+    public function getNewAuthor()
     {
+        return $this->newAuthor;
+    }
+
+    /**
+     * @return Album
+     */
+    public function getAlbum()
+    {
+        return $this->album;
     }
 
     protected function _validate()
@@ -126,7 +114,7 @@ class OwnerChanger extends AbstractService
 
         if ($this->performValidations)
         {
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($album)
+            $canTargetView = \XF::asVisitor($newAuthor, function () use ($album)
             {
                 return $album->canView();
             });
@@ -138,6 +126,10 @@ class OwnerChanger extends AbstractService
         }
 
         return $errors;
+    }
+
+    protected function finalSetup()
+    {
     }
 
     protected function _save()
@@ -173,8 +165,16 @@ class OwnerChanger extends AbstractService
     }
 
     /**
+     * @return User
+     */
+    public function getOldAuthor()
+    {
+        return $this->oldAuthor;
+    }
+
+    /**
      * @param User $user
-     * @param $amount
+     * @param      $amount
      */
     protected function adjustUserAlbumCountIfNeeded(User $user, $amount)
     {

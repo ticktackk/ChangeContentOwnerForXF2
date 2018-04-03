@@ -2,13 +2,13 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Comment;
 
+use XF\Entity\User;
 use XF\Service\AbstractService;
 use XF\Service\ValidateAndSavableTrait;
-use XFMG\Entity\Comment;
-use XFMG\Entity\MediaItem;
 use XFMG\Entity\Album;
 use XFMG\Entity\Category;
-use XF\Entity\User;
+use XFMG\Entity\Comment;
+use XFMG\Entity\MediaItem;
 
 class AuthorChanger extends AbstractService
 {
@@ -54,7 +54,7 @@ class AuthorChanger extends AbstractService
      *
      * @param \XF\App $app
      * @param Comment $comment
-     * @param User $newAuthor
+     * @param User    $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, Comment $comment, User $newAuthor)
@@ -73,11 +73,6 @@ class AuthorChanger extends AbstractService
         $this->newAuthor = $newAuthor;
     }
 
-    public function setPerformValidations($perform)
-    {
-        $this->performValidations = (bool)$perform;
-    }
-
     /**
      * @return bool
      */
@@ -86,44 +81,17 @@ class AuthorChanger extends AbstractService
         return $this->performValidations;
     }
 
+    public function setPerformValidations($perform)
+    {
+        $this->performValidations = (bool)$perform;
+    }
+
     /**
      * @return Category
      */
     public function getCategory()
     {
         return $this->category;
-    }
-
-    /**
-     * @return Album
-     */
-    public function getAlbum()
-    {
-        return $this->album;
-    }
-
-    /**
-     * @return MediaItem
-     */
-    public function getMediaItem()
-    {
-        return $this->mediaItem;
-    }
-
-    /**
-     * @return Comment
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
-     * @return User
-     */
-    public function getNewAuthor()
-    {
-        return $this->newAuthor;
     }
 
     /**
@@ -161,8 +129,36 @@ class AuthorChanger extends AbstractService
         }
     }
 
-    protected function finalSetup()
+    /**
+     * @return User
+     */
+    public function getNewAuthor()
     {
+        return $this->newAuthor;
+    }
+
+    /**
+     * @return Comment
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @return MediaItem
+     */
+    public function getMediaItem()
+    {
+        return $this->mediaItem;
+    }
+
+    /**
+     * @return Album
+     */
+    public function getAlbum()
+    {
+        return $this->album;
     }
 
     protected function _validate()
@@ -191,7 +187,7 @@ class AuthorChanger extends AbstractService
 
         if ($this->performValidations)
         {
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($comment)
+            $canTargetView = \XF::asVisitor($newAuthor, function () use ($comment)
             {
                 return $comment->canView();
             });
@@ -203,6 +199,10 @@ class AuthorChanger extends AbstractService
         }
 
         return $errors;
+    }
+
+    protected function finalSetup()
+    {
     }
 
     protected function _save()
