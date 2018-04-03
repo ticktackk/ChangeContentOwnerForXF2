@@ -2,12 +2,12 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\MediaItem;
 
+use XF\Entity\User;
 use XF\Service\AbstractService;
 use XF\Service\ValidateAndSavableTrait;
-use XFMG\Entity\MediaItem;
 use XFMG\Entity\Album;
 use XFMG\Entity\Category;
-use XF\Entity\User;
+use XFMG\Entity\MediaItem;
 
 class AuthorChanger extends AbstractService
 {
@@ -46,9 +46,9 @@ class AuthorChanger extends AbstractService
     /**
      * AuthorChanger constructor.
      *
-     * @param \XF\App $app
+     * @param \XF\App   $app
      * @param MediaItem $mediaItem
-     * @param User $newAuthor
+     * @param User      $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, MediaItem $mediaItem, User $newAuthor)
@@ -62,19 +62,19 @@ class AuthorChanger extends AbstractService
     }
 
     /**
-     * @param $perform
-     */
-    public function setPerformValidations($perform)
-    {
-        $this->performValidations = (bool)$perform;
-    }
-
-    /**
      * @return bool
      */
     public function getPerformValidations()
     {
         return $this->performValidations;
+    }
+
+    /**
+     * @param $perform
+     */
+    public function setPerformValidations($perform)
+    {
+        $this->performValidations = (bool)$perform;
     }
 
     /**
@@ -93,12 +93,13 @@ class AuthorChanger extends AbstractService
         return $this->album;
     }
 
-    /**
-     * @return MediaItem
-     */
-    public function getMediaItem()
+    public function changeAuthor()
     {
-        return $this->mediaItem;
+        $newAuthor = $this->getNewAuthor();
+        $mediaItem = $this->getMediaItem();
+
+        $mediaItem->user_id = $newAuthor->user_id;
+        $mediaItem->username = $newAuthor->username;
     }
 
     /**
@@ -110,25 +111,11 @@ class AuthorChanger extends AbstractService
     }
 
     /**
-     * @return User
+     * @return MediaItem
      */
-    public function getOldAuthor()
+    public function getMediaItem()
     {
-        return $this->oldAuthor;
-    }
-
-    public function changeAuthor()
-    {
-        $newAuthor = $this->getNewAuthor();
-        $mediaItem = $this->getMediaItem();
-
-        $mediaItem->user_id = $newAuthor->user_id;
-        $mediaItem->username = $newAuthor->username;
-    }
-
-
-    protected function finalSetup()
-    {
+        return $this->mediaItem;
     }
 
     protected function _validate()
@@ -141,7 +128,7 @@ class AuthorChanger extends AbstractService
 
         if ($this->performValidations)
         {
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($mediaItem)
+            $canTargetView = \XF::asVisitor($newAuthor, function () use ($mediaItem)
             {
                 return $mediaItem->canView();
             });
@@ -153,6 +140,10 @@ class AuthorChanger extends AbstractService
         }
 
         return $errors;
+    }
+
+    protected function finalSetup()
+    {
     }
 
     protected function _save()
@@ -189,8 +180,16 @@ class AuthorChanger extends AbstractService
     }
 
     /**
+     * @return User
+     */
+    public function getOldAuthor()
+    {
+        return $this->oldAuthor;
+    }
+
+    /**
      * @param User $user
-     * @param $amount
+     * @param      $amount
      */
     protected function adjustUserMediaCountIfNeeded(User $user, $amount)
     {
@@ -203,8 +202,8 @@ class AuthorChanger extends AbstractService
 
     /**
      * @param MediaItem $mediaItem
-     * @param User $user
-     * @param bool $delete
+     * @param User      $user
+     * @param bool      $delete
      *
      * @throws \Exception
      *

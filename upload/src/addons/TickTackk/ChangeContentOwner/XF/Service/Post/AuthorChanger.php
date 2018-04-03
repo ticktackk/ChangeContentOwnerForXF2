@@ -2,12 +2,12 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Service\Post;
 
-use XF\Service\AbstractService;
-use XF\Service\ValidateAndSavableTrait;
-use XF\Entity\Thread;
 use XF\Entity\Forum;
 use XF\Entity\Post;
+use XF\Entity\Thread;
 use XF\Entity\User;
+use XF\Service\AbstractService;
+use XF\Service\ValidateAndSavableTrait;
 
 class AuthorChanger extends AbstractService
 {
@@ -47,8 +47,8 @@ class AuthorChanger extends AbstractService
      * AuthorChanger constructor.
      *
      * @param \XF\App $app
-     * @param Post $post
-     * @param User $newAuthor
+     * @param Post    $post
+     * @param User    $newAuthor
      */
     public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         \XF\App $app, Post $post, User $newAuthor)
@@ -62,14 +62,6 @@ class AuthorChanger extends AbstractService
     }
 
     /**
-     * @param $perform
-     */
-    public function setPerformValidations($perform)
-    {
-        $this->performValidations = (bool)$perform;
-    }
-
-    /**
      * @return bool
      */
     public function getPerformValidations()
@@ -78,43 +70,11 @@ class AuthorChanger extends AbstractService
     }
 
     /**
-     * @return Thread
+     * @param $perform
      */
-    public function getThread()
+    public function setPerformValidations($perform)
     {
-        return $this->thread;
-    }
-
-    /**
-     * @return Post
-     */
-    public function getPost()
-    {
-        return $this->post;
-    }
-
-    /**
-     * @return Forum
-     */
-    public function getForum()
-    {
-        return $this->forum;
-    }
-
-    /**
-     * @return User
-     */
-    public function getNewAuthor()
-    {
-        return $this->newAuthor;
-    }
-
-    /**
-     * @return User
-     */
-    public function getOldAuthor()
-    {
-        return $this->oldAuthor;
+        $this->performValidations = (bool)$perform;
     }
 
     public function changeAuthor()
@@ -140,8 +100,36 @@ class AuthorChanger extends AbstractService
         }
     }
 
-    protected function finalSetup()
+    /**
+     * @return User
+     */
+    public function getNewAuthor()
     {
+        return $this->newAuthor;
+    }
+
+    /**
+     * @return Post
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
+
+    /**
+     * @return Thread
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * @return Forum
+     */
+    public function getForum()
+    {
+        return $this->forum;
     }
 
     protected function _validate()
@@ -166,7 +154,7 @@ class AuthorChanger extends AbstractService
 
         if ($this->performValidations)
         {
-            $canTargetView = \XF::asVisitor($newAuthor, function() use ($post)
+            $canTargetView = \XF::asVisitor($newAuthor, function () use ($post)
             {
                 return $post->canView();
             });
@@ -178,6 +166,10 @@ class AuthorChanger extends AbstractService
         }
 
         return $errors;
+    }
+
+    protected function finalSetup()
+    {
     }
 
     protected function _save()
@@ -218,13 +210,22 @@ class AuthorChanger extends AbstractService
     }
 
     /**
+     * @return User
+     */
+    public function getOldAuthor()
+    {
+        return $this->oldAuthor;
+    }
+
+    /**
      * @param Thread $thread
-     * @param User $user
-     * @param $amount
+     * @param User   $user
+     * @param        $amount
      */
     protected function adjustUserMessageCountIfNeeded(Thread $thread, User $user, $amount)
     {
-        if ($user->user_id
+        if (
+            $user->user_id
             && !empty($thread->Forum->count_messages)
             && $thread->discussion_state == 'visible'
         )
@@ -239,8 +240,8 @@ class AuthorChanger extends AbstractService
 
     /**
      * @param Thread $thread
-     * @param User $user
-     * @param $amount
+     * @param User   $user
+     * @param        $amount
      */
     protected function adjustThreadUserPostCount(Thread $thread, User $user, $amount)
     {

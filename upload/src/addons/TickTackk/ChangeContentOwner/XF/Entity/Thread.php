@@ -2,8 +2,6 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Entity;
 
-use XF\Mvc\Entity\Structure;
-
 class Thread extends XFCP_Thread
 {
     /**
