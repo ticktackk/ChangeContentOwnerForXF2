@@ -240,7 +240,7 @@ class AuthorChanger extends AbstractService
         if (
             $user->user_id
             && !empty($thread->Forum->count_messages)
-            && $thread->discussion_state == 'visible'
+            && $thread->discussion_state === 'visible'
         )
         {
             $this->db()->query("
