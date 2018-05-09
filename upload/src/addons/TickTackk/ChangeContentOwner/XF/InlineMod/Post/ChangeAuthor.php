@@ -43,7 +43,7 @@ class ChangeAuthor extends AbstractAction
     {
         $viewParams = [
             'posts' => $entities,
-            'total' => count($entities)
+            'total' => \count($entities)
         ];
         return $controller->view('XF:Public:InlineMod\Post\ChangeAuthor', 'inline_mod_post_change_author', $viewParams);
     }

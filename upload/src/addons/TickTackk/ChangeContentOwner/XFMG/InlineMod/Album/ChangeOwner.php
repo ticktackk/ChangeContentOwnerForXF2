@@ -43,7 +43,7 @@ class ChangeOwner extends AbstractAction
     {
         $viewParams = [
             'albums' => $entities,
-            'total' => count($entities)
+            'total' => \count($entities)
         ];
         return $controller->view('XFMG:Public:InlineMod\Album\ChangeOwner', 'inline_mod_xfmg_album_change_owner', $viewParams);
     }

@@ -43,7 +43,7 @@ class ChangeAuthor extends AbstractAction
     {
         $viewParams = [
             'threads' => $entities,
-            'total' => count($entities)
+            'total' => \count($entities)
         ];
         return $controller->view('XF:Public:InlineMod\Thread\ChangeAuthor', 'inline_mod_thread_change_author', $viewParams);
     }
