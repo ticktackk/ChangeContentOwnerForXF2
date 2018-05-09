@@ -81,7 +81,7 @@ class ChangeAuthor extends AbstractAction
     protected function applyToEntity(Entity $entity, array $options)
     {
         /** @var \TickTackk\ChangeContentOwner\XF\Entity\Thread $entity */
-        if ($entity->discussion_type == 'redirect')
+        if ($entity->discussion_type === 'redirect')
         {
             return;
         }

@@ -26,6 +26,6 @@ class Post extends XFCP_Post
 
         $nodeId = $thread->node_id;
 
-        return ($visitor->hasNodePermission($nodeId, 'changePostAuthor') && !($thread->first_post_id == $this->post_id));
+        return ($visitor->hasNodePermission($nodeId, 'changePostAuthor') && !($thread->first_post_id === $this->post_id));
     }
 }
