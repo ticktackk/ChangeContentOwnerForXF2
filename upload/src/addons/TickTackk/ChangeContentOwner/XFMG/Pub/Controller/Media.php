@@ -4,6 +4,11 @@ namespace TickTackk\ChangeContentOwner\XFMG\Pub\Controller;
 
 use XF\Mvc\ParameterBag;
 
+/**
+ * Class Media
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Media extends XFCP_Media
 {
     /**

@@ -5,6 +5,11 @@ namespace TickTackk\ChangeContentOwner;
 use XF\InlineMod\AbstractHandler as InlineMod_AbstractHandler;
 use XF\Pub\App;
 
+/**
+ * Class Listener
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Listener
 {
     /**

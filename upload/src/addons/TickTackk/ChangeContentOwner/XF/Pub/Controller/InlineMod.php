@@ -4,6 +4,11 @@ namespace TickTackk\ChangeContentOwner\XF\Pub\Controller;
 
 use XF\Mvc\Reply\View;
 
+/**
+ * Class InlineMod
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class InlineMod extends XFCP_InlineMod
 {
     /**

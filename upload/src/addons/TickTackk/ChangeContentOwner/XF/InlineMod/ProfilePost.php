@@ -2,6 +2,11 @@
 
 namespace TickTackk\ChangeContentOwner\XF\InlineMod;
 
+/**
+ * Class ProfilePost
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class ProfilePost extends XFCP_ProfilePost
 {
     /**

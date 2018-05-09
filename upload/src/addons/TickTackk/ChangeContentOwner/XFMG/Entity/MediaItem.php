@@ -2,6 +2,11 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Entity;
 
+/**
+ * Class MediaItem
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class MediaItem extends XFCP_MediaItem
 {
     /**

@@ -10,6 +10,11 @@ use XFMG\Entity\Category;
 use XFMG\Entity\Comment;
 use XFMG\Entity\MediaItem;
 
+/**
+ * Class AuthorChanger
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class AuthorChanger extends AbstractService
 {
     use ValidateAndSavableTrait;
@@ -81,6 +86,9 @@ class AuthorChanger extends AbstractService
         return $this->performValidations;
     }
 
+    /**
+     * @param $perform
+     */
     public function setPerformValidations($perform)
     {
         $this->performValidations = (bool)$perform;
@@ -161,6 +169,10 @@ class AuthorChanger extends AbstractService
         return $this->album;
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     protected function _validate()
     {
         $this->finalSetup();
@@ -205,6 +217,10 @@ class AuthorChanger extends AbstractService
     {
     }
 
+    /**
+     * @return Comment
+     * @throws \XF\PrintableException
+     */
     protected function _save()
     {
         $comment = $this->getComment();

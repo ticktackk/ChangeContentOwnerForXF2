@@ -4,6 +4,11 @@ namespace TickTackk\ChangeContentOwner\XFMG\Pub\Controller;
 
 use XF\Mvc\ParameterBag;
 
+/**
+ * Class Comment
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Comment extends XFCP_Comment
 {
     /**

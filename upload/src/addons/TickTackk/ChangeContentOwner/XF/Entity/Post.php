@@ -2,6 +2,11 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Entity;
 
+/**
+ * Class Post
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Post extends XFCP_Post
 {
     /**
