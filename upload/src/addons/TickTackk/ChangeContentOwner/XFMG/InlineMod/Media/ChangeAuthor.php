@@ -43,7 +43,7 @@ class ChangeAuthor extends AbstractAction
     {
         $viewParams = [
             'media_items' => $entities,
-            'total' => count($entities)
+            'total' => \count($entities)
         ];
         return $controller->view('XFMG:Public:InlineMod\MediaItem\ChangeAuthor', 'inline_mod_xfmg_media_change_author', $viewParams);
     }

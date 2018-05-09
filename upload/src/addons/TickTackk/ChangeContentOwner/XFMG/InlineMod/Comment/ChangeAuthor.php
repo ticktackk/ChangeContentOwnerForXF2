@@ -43,7 +43,7 @@ class ChangeAuthor extends AbstractAction
     {
         $viewParams = [
             'comments' => $entities,
-            'total' => count($entities)
+            'total' => \count($entities)
         ];
         return $controller->view('XFMG:Public:InlineMod\Comment\ChangeAuthor', 'inline_mod_xfmg_comment_change_author', $viewParams);
     }
