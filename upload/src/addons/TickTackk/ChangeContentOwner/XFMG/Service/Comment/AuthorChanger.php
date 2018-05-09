@@ -131,7 +131,7 @@ class AuthorChanger extends AbstractService
         {
             if ($album->last_comment_id === $comment->comment_id)
             {
-                $album->last_comment_username = $comment->user_id;
+                $album->last_comment_user_id = $comment->user_id;
                 $album->last_comment_username = $comment->username ?: '-';
             }
         }
