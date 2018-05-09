@@ -2,6 +2,11 @@
 
 namespace TickTackk\ChangeContentOwner\XF\InlineMod;
 
+/**
+ * Class Thread
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Thread extends XFCP_Thread
 {
     /**

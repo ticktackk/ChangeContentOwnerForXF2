@@ -9,6 +9,11 @@ use XF\Entity\User;
 use XF\Service\AbstractService;
 use XF\Service\ValidateAndSavableTrait;
 
+/**
+ * Class AuthorChanger
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class AuthorChanger extends AbstractService
 {
     use ValidateAndSavableTrait;
@@ -119,6 +124,9 @@ class AuthorChanger extends AbstractService
         return $this->firstPost;
     }
 
+    /**
+     * @return Thread
+     */
     public function getThread()
     {
         return $this->thread;
@@ -132,6 +140,10 @@ class AuthorChanger extends AbstractService
         return $this->forum;
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     protected function _validate()
     {
         $this->finalSetup();
@@ -169,6 +181,10 @@ class AuthorChanger extends AbstractService
     {
     }
 
+    /**
+     * @return Thread
+     * @throws \XF\PrintableException
+     */
     protected function _save()
     {
         $oldAuthor = $this->getOldAuthor();

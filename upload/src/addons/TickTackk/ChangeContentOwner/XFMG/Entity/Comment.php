@@ -2,6 +2,11 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Entity;
 
+/**
+ * Class Comment
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Comment extends XFCP_Comment
 {
     /**

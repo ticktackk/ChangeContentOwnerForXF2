@@ -2,6 +2,11 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Entity;
 
+/**
+ * Class Album
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Album extends XFCP_Album
 {
     /**

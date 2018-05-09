@@ -4,6 +4,11 @@ namespace TickTackk\ChangeContentOwner\XF\Pub\Controller;
 
 use XF\Mvc\ParameterBag;
 
+/**
+ * Class Thread
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Thread extends XFCP_Thread
 {
     /**

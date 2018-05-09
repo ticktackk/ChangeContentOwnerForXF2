@@ -8,6 +8,11 @@ use XF\Service\ValidateAndSavableTrait;
 use XFMG\Entity\Album;
 use XFMG\Entity\Category;
 
+/**
+ * Class OwnerChanger
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class OwnerChanger extends AbstractService
 {
     use ValidateAndSavableTrait;
@@ -103,6 +108,10 @@ class OwnerChanger extends AbstractService
         return $this->album;
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     protected function _validate()
     {
         $this->finalSetup();
@@ -132,6 +141,10 @@ class OwnerChanger extends AbstractService
     {
     }
 
+    /**
+     * @return Album
+     * @throws \XF\PrintableException
+     */
     protected function _save()
     {
         $oldAuthor = $this->getOldAuthor();

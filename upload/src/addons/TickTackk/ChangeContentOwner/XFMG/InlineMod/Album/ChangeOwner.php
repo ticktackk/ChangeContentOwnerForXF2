@@ -8,6 +8,11 @@ use XF\Mvc\Controller;
 use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\Entity\Entity;
 
+/**
+ * Class ChangeOwner
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class ChangeOwner extends AbstractAction
 {
     /**

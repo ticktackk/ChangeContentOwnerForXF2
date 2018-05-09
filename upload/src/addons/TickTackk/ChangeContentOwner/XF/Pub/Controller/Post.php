@@ -4,6 +4,11 @@ namespace TickTackk\ChangeContentOwner\XF\Pub\Controller;
 
 use XF\Mvc\ParameterBag;
 
+/**
+ * Class Post
+ *
+ * @package TickTackk\ChangeContentOwner
+ */
 class Post extends XFCP_Post
 {
     /**
