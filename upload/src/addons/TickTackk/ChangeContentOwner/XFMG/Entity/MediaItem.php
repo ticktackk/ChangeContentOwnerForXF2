@@ -23,6 +23,6 @@ class MediaItem extends XFCP_MediaItem
             return false;
         }
 
-        return $this->hasPermission('changeCommentAuthor');
+        return $this->hasPermission('changeMediaOwner');
     }
 }
