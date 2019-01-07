@@ -6,6 +6,8 @@ namespace TickTackk\ChangeContentOwner\XF\Entity;
  * Class Thread
  *
  * @package TickTackk\ChangeContentOwner
+ *
+ * @property \TickTackk\ChangeContentOwner\XF\Entity\Forum Forum
  */
 class Thread extends XFCP_Thread
 {
@@ -14,17 +16,30 @@ class Thread extends XFCP_Thread
      *
      * @return bool
      */
-    public function canChangeAuthor(/** @noinspection PhpUnusedParameterInspection */
-        &$error = null)
+    public function canChangeAuthor(&$error = null)
     {
-        $visitor = \XF::visitor();
-        if (!$visitor->user_id)
+        $forum = $this->Forum;
+        if (!$forum)
         {
             return false;
         }
 
-        $nodeId = $this->node_id;
+        return $forum->canChangeThreadAuthor($error);
+    }
 
-        return $visitor->hasNodePermission($nodeId, 'changeThreadAuthor');
+    /**
+     * @param null $error
+     *
+     * @return bool
+     */
+    public function canChangePostAuthor(&$error = null)
+    {
+        $forum = $this->Forum;
+        if (!$forum)
+        {
+            return false;
+        }
+
+        return $forum->canChangePostAuthor($error);
     }
 }

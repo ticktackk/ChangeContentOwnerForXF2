@@ -157,9 +157,23 @@ class OwnerChanger extends AbstractService
 
         $album->save();
 
+        if (\XF::$versionId >= 2010010)
+        {
+            /** @noinspection PhpUndefinedFieldInspection */
+            if ($reactionContent = $album->Reactions[$newAuthor->user_id])
+            {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $reactionContent->delete();
+            }
+        }
+        else if ($likedContent = $album->Likes[$newAuthor->user_id])
+        {
+            $likedContent->delete();
+        }
+
         if ($album->isVisible())
         {
-            if (!empty($oldAuthor))
+            if ($oldAuthor)
             {
                 $this->adjustUserAlbumCountIfNeeded($oldAuthor, -1);
             }
@@ -191,10 +205,10 @@ class OwnerChanger extends AbstractService
      */
     protected function adjustUserAlbumCountIfNeeded(User $user, $amount)
     {
-        $this->db()->query("
+        $this->db()->query('
             UPDATE xf_user
             SET xfmg_album_count = GREATEST(0, xfmg_album_count + ?)
             WHERE user_id = ?
-        ", [$amount, $user->user_id]);
+        ', [$amount, $user->user_id]);
     }
 }

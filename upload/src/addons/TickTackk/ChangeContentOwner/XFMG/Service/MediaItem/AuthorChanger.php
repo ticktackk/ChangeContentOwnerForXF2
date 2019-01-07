@@ -170,9 +170,23 @@ class AuthorChanger extends AbstractService
 
         $mediaItem->save();
 
+        if (\XF::$versionId >= 2010010)
+        {
+            /** @noinspection PhpUndefinedFieldInspection */
+            if ($reactionContent = $mediaItem->Reactions[$newAuthor->user_id])
+            {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $reactionContent->delete();
+            }
+        }
+        else if ($likedContent = $mediaItem->Likes[$newAuthor->user_id])
+        {
+            $likedContent->delete();
+        }
+
         if ($mediaItem->isVisible())
         {
-            if (!empty($oldAuthor))
+            if ($oldAuthor)
             {
                 $this->adjustUserMediaCountIfNeeded($oldAuthor, -1);
                 $this->adjustUserMediaQuotaIfNeeded($mediaItem, $oldAuthor, true);
@@ -206,11 +220,11 @@ class AuthorChanger extends AbstractService
      */
     protected function adjustUserMediaCountIfNeeded(User $user, $amount)
     {
-        $this->db()->query("
+        $this->db()->query('
             UPDATE xf_user
             SET xfmg_media_count = GREATEST(0, xfmg_media_count + ?)
             WHERE user_id = ?
-        ", [$amount, $user->user_id]);
+        ', [$amount, $user->user_id]);
     }
 
     /**

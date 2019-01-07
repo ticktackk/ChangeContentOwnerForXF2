@@ -47,15 +47,13 @@ class Comment extends XFCP_Comment
 
             return $this->redirect($this->buildLink('media/comments', $comment));
         }
-        else
-        {
-            $content = $comment->Content;
 
-            $viewParams = [
-                'comment' => $comment,
-                'content' => $content
-            ];
-            return $this->view('TickTackk\ChangeContentOwner\XFMG:Comment\ChangeAuthor', 'changeContentOwner_xfmg_comment_change_author', $viewParams);
-        }
+        $content = $comment->Content;
+
+        $viewParams = [
+            'comment' => $comment,
+            'content' => $content
+        ];
+        return $this->view('TickTackk\ChangeContentOwner\XFMG:Comment\ChangeAuthor', 'changeContentOwner_xfmg_comment_change_author', $viewParams);
     }
 }

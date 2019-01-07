@@ -47,14 +47,12 @@ class Album extends XFCP_Album
 
             return $this->redirect($this->buildLink('media/albums', $album));
         }
-        else
-        {
-            $viewParams = [
-                'album' => $album,
-                'addUsers' => $this->em()->findByIds('XF:User', $album->add_users ?: [])->pluckNamed('username'),
-                'viewUsers' => $this->em()->findByIds('XF:User', $album->view_users ?: [])->pluckNamed('username')
-            ];
-            return $this->view('TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner', 'changeContentOwner_xfmg_album_change_owner', $viewParams);
-        }
+
+        $viewParams = [
+            'album' => $album,
+            'addUsers' => $this->em()->findByIds('XF:User', $album->add_users ?: [])->pluckNamed('username'),
+            'viewUsers' => $this->em()->findByIds('XF:User', $album->view_users ?: [])->pluckNamed('username')
+        ];
+        return $this->view('TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner', 'changeContentOwner_xfmg_album_change_owner', $viewParams);
     }
 }

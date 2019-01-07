@@ -48,13 +48,11 @@ class Thread extends XFCP_Thread
 
             return $this->redirect($this->buildLink('threads', $thread));
         }
-        else
-        {
-            $viewParams = [
-                'thread' => $thread,
-                'forum' => $forum
-            ];
-            return $this->view('TickTackk\ChangeContentOwner\XF:Thread\ChangeAuthor', 'changeContentOwner_thread_change_author', $viewParams);
-        }
+
+        $viewParams = [
+            'thread' => $thread,
+            'forum' => $forum
+        ];
+        return $this->view('TickTackk\ChangeContentOwner\XF:Thread\ChangeAuthor', 'changeContentOwner_thread_change_author', $viewParams);
     }
 }
