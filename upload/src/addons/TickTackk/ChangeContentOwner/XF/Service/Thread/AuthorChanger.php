@@ -202,7 +202,7 @@ class AuthorChanger extends AbstractService
 
         if ($firstPost->isVisible())
         {
-            if (!empty($oldAuthor))
+            if ($oldAuthor)
             {
                 $this->adjustUserMessageCountIfNeeded($thread, $oldAuthor, -1);
                 $this->adjustThreadUserPostCount($thread, $oldAuthor, -1);
@@ -243,11 +243,11 @@ class AuthorChanger extends AbstractService
             && $thread->discussion_state === 'visible'
         )
         {
-            $this->db()->query("
+            $this->db()->query('
 				UPDATE xf_user
 				SET message_count = GREATEST(0, message_count + ?)
 				WHERE user_id = ?
-			", [$amount, $user->user_id]);
+			', [$amount, $user->user_id]);
         }
     }
 
@@ -272,12 +272,12 @@ class AuthorChanger extends AbstractService
             }
             else
             {
-                $existingValue = $db->fetchOne("
+                $existingValue = $db->fetchOne('
 					SELECT post_count
 					FROM xf_thread_user_post
 					WHERE thread_id = ?
 						AND user_id = ?
-				", [$thread->thread_id, $user->user_id]);
+				', [$thread->thread_id, $user->user_id]);
                 if ($existingValue !== null)
                 {
                     $newValue = $existingValue + $amount;

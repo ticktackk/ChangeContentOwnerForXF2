@@ -47,13 +47,11 @@ class ProfilePost extends XFCP_ProfilePost
 
             return $this->redirect($this->buildLink('profile-posts', $profilePost));
         }
-        else
-        {
-            $viewParams = [
-                'profilePost' => $profilePost,
-                'profileUser' => $profilePost->ProfileUser
-            ];
-            return $this->view('TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeAuthor', 'changeContentOwner_profile_post_change_author', $viewParams);
-        }
+
+        $viewParams = [
+            'profilePost' => $profilePost,
+            'profileUser' => $profilePost->ProfileUser
+        ];
+        return $this->view('TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeAuthor', 'changeContentOwner_profile_post_change_author', $viewParams);
     }
 }

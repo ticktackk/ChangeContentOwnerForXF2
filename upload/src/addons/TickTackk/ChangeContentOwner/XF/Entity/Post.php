@@ -6,26 +6,29 @@ namespace TickTackk\ChangeContentOwner\XF\Entity;
  * Class Post
  *
  * @package TickTackk\ChangeContentOwner
+ *
+ * @property \TickTackk\ChangeContentOwner\XF\Entity\Thread Thread
  */
 class Post extends XFCP_Post
 {
     /**
-     * @param null|string $error
+     * @param null $error
      *
      * @return bool
      */
-    public function canChangeAuthor(/** @noinspection PhpUnusedParameterInspection */
-        &$error = null)
+    public function canChangeAuthor(&$error = null)
     {
-        $thread = $this->Thread;
-        $visitor = \XF::visitor();
-        if (!$visitor->user_id || !$thread)
+        if (!$this->Thread)
         {
             return false;
         }
 
-        $nodeId = $thread->node_id;
+        $thread = $this->Thread;
+        if ($thread->first_post_id === $this->post_id)
+        {
+            return \XF::visitor()->hasNodePermission($thread->node_id, 'manageAnyThread');
+        }
 
-        return ($visitor->hasNodePermission($nodeId, 'changePostAuthor') && !($thread->first_post_id === $this->post_id));
+        return $thread->canChangePostAuthor($error);
     }
 }

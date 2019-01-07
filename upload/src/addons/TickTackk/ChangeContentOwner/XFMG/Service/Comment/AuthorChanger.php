@@ -114,26 +114,22 @@ class AuthorChanger extends AbstractService
     {
         $newAuthor = $this->getNewAuthor();
         $comment = $this->getComment();
+        $mediaItem = $this->getMediaItem();
+        $album = $this->getAlbum();
 
         $comment->user_id = $newAuthor->user_id;
         $comment->username = $newAuthor->username;
 
-        if ($mediaItem = $this->getMediaItem())
+        if ($mediaItem->last_comment_id === $comment->comment_id)
         {
-            if ($mediaItem->last_comment_id === $comment->comment_id)
-            {
-                $mediaItem->last_comment_user_id = $comment->user_id;
-                $mediaItem->last_comment_username = $comment->username ?: '-';
-            }
+            $mediaItem->last_comment_user_id = $comment->user_id;
+            $mediaItem->last_comment_username = $comment->username ?: '-';
         }
 
-        if ($album = $this->getAlbum())
+        if ($album->last_comment_id === $comment->comment_id)
         {
-            if ($album->last_comment_id === $comment->comment_id)
-            {
-                $album->last_comment_user_id = $comment->user_id;
-                $album->last_comment_username = $comment->username ?: '-';
-            }
+            $album->last_comment_user_id = $comment->user_id;
+            $album->last_comment_username = $comment->username ?: '-';
         }
     }
 
@@ -223,6 +219,7 @@ class AuthorChanger extends AbstractService
      */
     protected function _save()
     {
+        $newAuthor = $this->getNewAuthor();
         $comment = $this->getComment();
         $mediaItem = $this->getMediaItem();
         $album = $this->getAlbum();
@@ -231,6 +228,20 @@ class AuthorChanger extends AbstractService
         $db->beginTransaction();
 
         $comment->save();
+
+        if (\XF::$versionId >= 2010010)
+        {
+            /** @noinspection PhpUndefinedFieldInspection */
+            if ($reactionContent = $comment->Reactions[$newAuthor->user_id])
+            {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $reactionContent->delete();
+            }
+        }
+        else if ($likedContent = $comment->Likes[$newAuthor->user_id])
+        {
+            $likedContent->delete();
+        }
 
         if ($mediaItem)
         {

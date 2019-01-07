@@ -200,11 +200,25 @@ class AuthorChanger extends AbstractService
         $thread->save();
         $forum->save();
 
+        if (\XF::$versionId >= 2010010)
+        {
+            /** @noinspection PhpUndefinedFieldInspection */
+            if ($reactionContent = $post->Reactions[$newAuthor->user_id])
+            {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $reactionContent->delete();
+            }
+        }
+        else if ($likedContent = $post->Likes[$newAuthor->user_id])
+        {
+            $likedContent->delete();
+        }
+
         if ($post->isVisible())
         {
-            if (!empty($oldAuthor))
+            if ($oldAuthor)
             {
-                $this->adjustUserMessageCountIfNeeded($thread, $oldAuthor, -1);
+                $this->adjustUserMessageCountIfNeeded($thread, $oldAuthor, 1);
                 $this->adjustThreadUserPostCount($thread, $oldAuthor, -1);
             }
 
@@ -233,28 +247,24 @@ class AuthorChanger extends AbstractService
     /**
      * @param Thread $thread
      * @param User   $user
-     * @param        $amount
+     * @param int $amount
      */
     protected function adjustUserMessageCountIfNeeded(Thread $thread, User $user, $amount)
     {
-        if (
-            $user->user_id
-            && !empty($thread->Forum->count_messages)
-            && $thread->discussion_state === 'visible'
-        )
+        if ($user->user_id && !$thread->Forum->count_messages && $thread->discussion_state === 'visible')
         {
-            $this->db()->query("
+            $this->db()->query('
 				UPDATE xf_user
 				SET message_count = GREATEST(0, message_count + ?)
 				WHERE user_id = ?
-			", [$amount, $user->user_id]);
+			', [$amount, $user->user_id]);
         }
     }
 
     /**
      * @param Thread $thread
      * @param User   $user
-     * @param        $amount
+     * @param int $amount
      */
     protected function adjustThreadUserPostCount(Thread $thread, User $user, $amount)
     {
@@ -262,7 +272,7 @@ class AuthorChanger extends AbstractService
         {
             $db = $this->db();
 
-            if ($amount > 0)
+            if (!$amount)
             {
                 $db->insert('xf_thread_user_post', [
                     'thread_id' => $thread->thread_id,
@@ -272,26 +282,33 @@ class AuthorChanger extends AbstractService
             }
             else
             {
-                $existingValue = $db->fetchOne("
+                $existingValue = $db->fetchOne('
 					SELECT post_count
 					FROM xf_thread_user_post
 					WHERE thread_id = ?
 						AND user_id = ?
-				", [$thread->thread_id, $user->user_id]);
+				', [$thread->thread_id, $user->user_id]);
+
                 if ($existingValue !== null)
                 {
                     $newValue = $existingValue + $amount;
                     if ($newValue <= 0)
                     {
                         $this->db()->delete('xf_thread_user_post',
-                            'thread_id = ? AND user_id = ?', [$thread->thread_id, $user->user_id]
+                            'thread_id = ? AND user_id = ?', [
+                                $thread->thread_id,
+                                $user->user_id
+                            ]
                         );
                     }
                     else
                     {
                         $this->db()->update('xf_thread_user_post',
                             ['post_count' => $newValue],
-                            'thread_id = ? AND user_id = ?', [$thread->thread_id, $user->user_id]
+                            'thread_id = ? AND user_id = ?', [
+                                $thread->thread_id,
+                                $user->user_id
+                            ]
                         );
                     }
                 }

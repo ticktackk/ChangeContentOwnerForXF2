@@ -49,17 +49,15 @@ class Post extends XFCP_Post
 
             return $this->redirect($this->buildLink('posts', $post));
         }
-        else
-        {
-            /** @var \XF\Entity\Forum $forum */
-            $forum = $post->Thread->Forum;
 
-            $viewParams = [
-                'post' => $post,
-                'thread' => $thread,
-                'forum' => $forum
-            ];
-            return $this->view('TickTackk\ChangeContentOwner\XF:Post\ChangeAuthor', 'changeContentOwner_post_change_author', $viewParams);
-        }
+        /** @var \XF\Entity\Forum $forum */
+        $forum = $post->Thread->Forum;
+
+        $viewParams = [
+            'post' => $post,
+            'thread' => $thread,
+            'forum' => $forum
+        ];
+        return $this->view('TickTackk\ChangeContentOwner\XF:Post\ChangeAuthor', 'changeContentOwner_post_change_author', $viewParams);
     }
 }

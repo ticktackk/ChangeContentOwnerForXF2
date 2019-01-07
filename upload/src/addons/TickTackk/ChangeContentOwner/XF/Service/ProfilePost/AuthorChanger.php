@@ -156,11 +156,26 @@ class AuthorChanger extends AbstractService
     protected function _save()
     {
         $profilePost = $this->getProfilePost();
+        $newAuthor = $this->getNewAuthor();
 
         $db = $this->db();
         $db->beginTransaction();
 
         $profilePost->save();
+
+        if (\XF::$versionId >= 2010010)
+        {
+            /** @noinspection PhpUndefinedFieldInspection */
+            if ($reactionContent = $profilePost->Reactions[$newAuthor->user_id])
+            {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $reactionContent->delete();
+            }
+        }
+        else if ($likedContent = $profilePost->Likes[$newAuthor->user_id])
+        {
+            $likedContent->delete();
+        }
 
         if ($profilePost->getOption('log_moderator'))
         {

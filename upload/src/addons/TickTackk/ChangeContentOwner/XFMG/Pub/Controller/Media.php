@@ -47,12 +47,10 @@ class Media extends XFCP_Media
 
             return $this->redirect($this->buildLink('media', $mediaItem));
         }
-        else
-        {
-            $viewParams = [
-                'mediaItem' => $mediaItem
-            ];
-            return $this->view('TickTackk\ChangeContentOwner\XFMG:Media\ChangeAuthor', 'changeContentOwner_xfmg_media_change_author', $viewParams);
-        }
+
+        $viewParams = [
+            'mediaItem' => $mediaItem
+        ];
+        return $this->view('TickTackk\ChangeContentOwner\XFMG:Media\ChangeAuthor', 'changeContentOwner_xfmg_media_change_author', $viewParams);
     }
 }
