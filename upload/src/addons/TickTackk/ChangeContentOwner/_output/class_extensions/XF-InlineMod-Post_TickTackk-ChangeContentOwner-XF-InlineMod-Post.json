@@ -1,6 +1,0 @@
-{
-    "from_class": "XF\\InlineMod\\Post",
-    "to_class": "TickTackk\\ChangeContentOwner\\XF\\InlineMod\\Post",
-    "execute_order": 10,
-    "active": true
-}
