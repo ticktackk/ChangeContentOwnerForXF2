@@ -1,6 +1,0 @@
-{
-    "from_class": "XFMG\\InlineMod\\Album",
-    "to_class": "TickTackk\\ChangeContentOwner\\XFMG\\InlineMod\\Album",
-    "execute_order": 10,
-    "active": true
-}
