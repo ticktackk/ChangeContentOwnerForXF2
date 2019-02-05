@@ -1,26 +1,26 @@
 {
-  "legacy_addon_id": "",
-  "title": "Change Content Owner",
-  "description": "Change Content Owner is an add-on that allows you to change content owner",
-  "version_id": 1000191,
-  "version_string": "1.0.1 Patch Level 1",
-  "dev": "TickTackk",
-  "dev_url": "https://xenforo.com/community/members/batpool52.90375/",
-  "faq_url": "",
-  "support_url": "https://xenforo.com/community/threads/change-content-owner.142141/",
-  "extra_urls": {
-    "Twitter": "https://twitter.com/t1cktackk",
-    "Discord": "https://discord.gg/qdwgUpP"
-  },
-  "require": {
-    "XF": [
-      2001070,
-      "XenForo 2.0.10+"
-    ],
-    "php": [
-      "5.6.0",
-      "PHP 5.6.0+"
-    ]
-  },
-  "icon": "fa-id-badge"
+    "legacy_addon_id": "",
+    "title": "Change Content Owner",
+    "description": "Change Content Owner is an add-on that allows you to change content owner",
+    "version_id": 1000191,
+    "version_string": "1.0.1 Patch Level 1",
+    "dev": "TickTackk",
+    "dev_url": "https://xenforo.com/community/members/batpool52.90375/",
+    "faq_url": "",
+    "support_url": "https://xenforo.com/community/threads/change-content-owner.142141/",
+    "extra_urls": {
+        "Twitter": "https://twitter.com/t1cktackk",
+        "Discord": "https://discord.gg/qdwgUpP"
+    },
+    "require": {
+        "XF": [
+            2001070,
+            "XenForo 2.0.10+"
+        ],
+        "php": [
+            "5.6.0",
+            "PHP 5.6.0+"
+        ]
+    },
+    "icon": "fa-id-badge"
 }
