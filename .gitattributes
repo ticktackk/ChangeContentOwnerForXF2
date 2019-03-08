@@ -1,0 +1,34 @@
+* text eol=lf
+*.php text eol=lf
+*.phps text eol=lf
+*.inc text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.ini text eol=lf
+*.json text eol=lf
+*.htm text eol=lf
+*.html text eol=lf
+*.xml text eol=lf
+*.xslt text eol=lf
+*.svg text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+LICENSE text eol=lf
+README text eol=lf
+RELEASENOTES text eol=lf
+CHANGELOG text eol=lf
+*.sln text eol=crlf
+*.acorn binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.z binary
+*.gif binary
+*.jpa binary
+*.jps binary
+*.zip binary
+*.dll binary
+*.exe binary
+*.jar binary
+*.phar binary
