@@ -3,7 +3,7 @@
     "description": "Add \"Change post author\" in action bar",
     "execution_order": 10,
     "enabled": true,
-    "action": "str_replace",
-    "find": "<a href=\"{{ link('media/comments/report', $comment) }}\" class=\"actionBar-action actionBar-action--report\" data-xf-click=\"overlay\">{{ phrase('report') }}</a>\n\t\t\t\t\t\t\t\t\t\t\t\t</xf:if>",
+    "action": "preg_replace",
+    "find": "#<xf:elseif is=\"\\$comment\\.warning_id AND \\$xf\\.visitor\\.canViewWarnings\\(\\).*?\" \\/>.*?\\/xf:if>#si",
     "replace": "$0\n\t\t\t\t\t\t\t\t\t\t\t\t<xf:include template=\"changeContentOwner_xfmg_comment_macros_action_bar\" />"
 }
