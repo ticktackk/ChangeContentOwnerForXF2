@@ -174,6 +174,7 @@ class AuthorChanger extends AbstractService
         }
         else if ($likedContent = $profilePost->Likes[$newAuthor->user_id])
         {
+            /** @noinspection PhpUndefinedMethodInspection */
             $likedContent->delete();
         }
 

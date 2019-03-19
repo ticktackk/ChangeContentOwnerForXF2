@@ -183,6 +183,7 @@ class AuthorChanger extends AbstractService
 
     /**
      * @return Post
+     * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
      */
     protected function _save()
@@ -211,6 +212,7 @@ class AuthorChanger extends AbstractService
         }
         else if ($likedContent = $post->Likes[$newAuthor->user_id])
         {
+            /** @noinspection PhpUndefinedMethodInspection */
             $likedContent->delete();
         }
 
@@ -218,7 +220,7 @@ class AuthorChanger extends AbstractService
         {
             if ($oldAuthor)
             {
-                $this->adjustUserMessageCountIfNeeded($thread, $oldAuthor, 1);
+                $this->adjustUserMessageCountIfNeeded($thread, $oldAuthor, -1);
                 $this->adjustThreadUserPostCount($thread, $oldAuthor, -1);
             }
 
@@ -248,16 +250,28 @@ class AuthorChanger extends AbstractService
      * @param Thread $thread
      * @param User   $user
      * @param int $amount
+     *
+     * @throws \XF\Db\Exception
      */
     protected function adjustUserMessageCountIfNeeded(Thread $thread, User $user, $amount)
     {
-        if ($user->user_id && !$thread->Forum->count_messages && $thread->discussion_state === 'visible')
+        if ($user->user_id && $thread->Forum->count_messages && $thread->discussion_state === 'visible')
         {
-            $this->db()->query('
+            if ($amount < 0)
+            {
+                $func = 'LEAST';
+                $sign = '-';
+            }
+            else
+            {
+                $func = 'GREATEST';
+                $sign = '+';
+            }
+            $this->db()->query("
 				UPDATE xf_user
-				SET message_count = GREATEST(0, message_count + ?)
+				SET message_count = {$func}(0, message_count {$sign} ?)
 				WHERE user_id = ?
-			', [$amount, $user->user_id]);
+			", [$amount, $user->user_id]);
         }
     }
 
