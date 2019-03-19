@@ -2,6 +2,7 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Service\ProfilePost;
 
+use TickTackk\ChangeContentOwner\Service\ContentTrait;
 use XF\Entity\ProfilePost;
 use XF\Entity\User;
 use XF\Service\AbstractService;
@@ -14,7 +15,7 @@ use XF\Service\ValidateAndSavableTrait;
  */
 class AuthorChanger extends AbstractService
 {
-    use ValidateAndSavableTrait;
+    use ValidateAndSavableTrait, ContentTrait;
 
     /**
      * @var ProfilePost
@@ -176,6 +177,12 @@ class AuthorChanger extends AbstractService
         {
             /** @noinspection PhpUndefinedMethodInspection */
             $likedContent->delete();
+        }
+
+        if ($profilePost->isVisible())
+        {
+            $oldAuthor = $this->getOldAuthor();
+            $this->updateNewsFeed($profilePost, $oldAuthor, $newAuthor);
         }
 
         if ($profilePost->getOption('log_moderator'))

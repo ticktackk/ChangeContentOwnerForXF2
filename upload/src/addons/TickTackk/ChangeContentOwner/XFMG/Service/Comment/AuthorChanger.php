@@ -2,6 +2,7 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Comment;
 
+use TickTackk\ChangeContentOwner\Service\ContentTrait;
 use XF\Entity\User;
 use XF\Service\AbstractService;
 use XF\Service\ValidateAndSavableTrait;
@@ -17,7 +18,7 @@ use XFMG\Entity\MediaItem;
  */
 class AuthorChanger extends AbstractService
 {
-    use ValidateAndSavableTrait;
+    use ValidateAndSavableTrait, ContentTrait;
 
     /**
      * @var Comment
@@ -251,6 +252,12 @@ class AuthorChanger extends AbstractService
         if ($album)
         {
             $album->save();
+        }
+
+        if ($comment->isVisible())
+        {
+            $oldAuthor = $this->getOldAuthor();
+            $this->updateNewsFeed($mediaItem, $oldAuthor, $newAuthor);
         }
 
         if ($comment->getOption('log_moderator'))

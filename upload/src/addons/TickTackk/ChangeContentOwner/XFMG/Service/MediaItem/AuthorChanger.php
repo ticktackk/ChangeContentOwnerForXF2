@@ -2,6 +2,7 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\MediaItem;
 
+use TickTackk\ChangeContentOwner\Service\ContentTrait;
 use XF\Entity\User;
 use XF\Service\AbstractService;
 use XF\Service\ValidateAndSavableTrait;
@@ -16,7 +17,7 @@ use XFMG\Entity\MediaItem;
  */
 class AuthorChanger extends AbstractService
 {
-    use ValidateAndSavableTrait;
+    use ValidateAndSavableTrait, ContentTrait;
 
     /**
      * @var MediaItem
@@ -157,6 +158,7 @@ class AuthorChanger extends AbstractService
 
     /**
      * @return MediaItem
+     * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
      */
     protected function _save()
@@ -194,6 +196,8 @@ class AuthorChanger extends AbstractService
 
             $this->adjustUserMediaCountIfNeeded($newAuthor, -1);
             $this->adjustUserMediaQuotaIfNeeded($mediaItem, $newAuthor);
+
+            $this->updateNewsFeed($mediaItem, $oldAuthor, $newAuthor);
         }
 
         if ($mediaItem->getOption('log_moderator'))
