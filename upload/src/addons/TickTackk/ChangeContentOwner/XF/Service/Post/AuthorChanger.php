@@ -2,6 +2,7 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Service\Post;
 
+use TickTackk\ChangeContentOwner\Service\ContentTrait;
 use XF\Entity\Forum;
 use XF\Entity\Post;
 use XF\Entity\Thread;
@@ -16,7 +17,7 @@ use XF\Service\ValidateAndSavableTrait;
  */
 class AuthorChanger extends AbstractService
 {
-    use ValidateAndSavableTrait;
+    use ValidateAndSavableTrait, ContentTrait;
 
     /**
      * @var Thread
@@ -226,6 +227,8 @@ class AuthorChanger extends AbstractService
 
             $this->adjustUserMessageCountIfNeeded($thread, $newAuthor, 1);
             $this->adjustThreadUserPostCount($thread, $newAuthor, 1);
+
+            $this->updateNewsFeed($post, $oldAuthor, $newAuthor);
         }
 
         if ($post->getOption('log_moderator'))

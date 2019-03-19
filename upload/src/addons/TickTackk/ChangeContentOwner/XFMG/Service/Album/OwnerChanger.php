@@ -2,6 +2,7 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Album;
 
+use TickTackk\ChangeContentOwner\Service\ContentTrait;
 use XF\Entity\User;
 use XF\Service\AbstractService;
 use XF\Service\ValidateAndSavableTrait;
@@ -15,7 +16,7 @@ use XFMG\Entity\Category;
  */
 class OwnerChanger extends AbstractService
 {
-    use ValidateAndSavableTrait;
+    use ValidateAndSavableTrait, ContentTrait;
 
     /**
      * @var Album
