@@ -234,20 +234,29 @@ class AuthorChanger extends AbstractService
      * @param Thread $thread
      * @param User   $user
      * @param        $amount
+     *
+     * @throws \XF\Db\Exception
      */
     protected function adjustUserMessageCountIfNeeded(Thread $thread, User $user, $amount)
     {
-        if (
-            $user->user_id
-            && !empty($thread->Forum->count_messages)
-            && $thread->discussion_state === 'visible'
-        )
+        if ($user->user_id && $thread->Forum->count_messages && $thread->discussion_state === 'visible')
         {
-            $this->db()->query('
+            if ($amount < 0)
+            {
+                $func = 'LEAST';
+                $sign = '-';
+            }
+            else
+            {
+                $func = 'GREATEST';
+                $sign = '+';
+            }
+
+            $this->db()->query("
 				UPDATE xf_user
-				SET message_count = GREATEST(0, message_count + ?)
+				SET message_count = {$func}(0, message_count {$sign} ?)
 				WHERE user_id = ?
-			', [$amount, $user->user_id]);
+			", [$amount, $user->user_id]);
         }
     }
 
