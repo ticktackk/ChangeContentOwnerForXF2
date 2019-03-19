@@ -260,21 +260,11 @@ class AuthorChanger extends AbstractService
     {
         if ($user->user_id && $thread->Forum->count_messages && $thread->discussion_state === 'visible')
         {
-            if ($amount < 0)
-            {
-                $func = 'LEAST';
-                $sign = '-';
-            }
-            else
-            {
-                $func = 'GREATEST';
-                $sign = '+';
-            }
-            $this->db()->query("
+            $this->db()->query('
 				UPDATE xf_user
-				SET message_count = {$func}(0, message_count {$sign} ?)
+				SET message_count = GREATEST(0, CAST(message_count AS SIGNED) + ?)
 				WHERE user_id = ?
-			", [$amount, $user->user_id]);
+			', [$amount, $user->user_id]);
         }
     }
 
