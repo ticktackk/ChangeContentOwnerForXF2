@@ -216,7 +216,9 @@ class AuthorChanger extends AbstractService
 
     /**
      * @param User $user
-     * @param      $amount
+     * @param int $amount
+     *
+     * @throws \XF\Db\Exception
      */
     protected function adjustUserMediaCountIfNeeded(User $user, $amount)
     {

@@ -183,6 +183,7 @@ class AuthorChanger extends AbstractService
 
     /**
      * @return Thread
+     * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
      */
     protected function _save()

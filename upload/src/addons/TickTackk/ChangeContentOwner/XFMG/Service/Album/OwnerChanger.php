@@ -201,7 +201,9 @@ class OwnerChanger extends AbstractService
 
     /**
      * @param User $user
-     * @param      $amount
+     * @param int $amount
+     *
+     * @throws \XF\Db\Exception
      */
     protected function adjustUserAlbumCountIfNeeded(User $user, $amount)
     {
