@@ -45,6 +45,11 @@ class AuthorChanger extends AbstractService
     protected $oldAuthor;
 
     /**
+     * @var array
+     */
+    protected $oldAuthorAlt;
+
+    /**
      * @var bool
      */
     protected $performValidations = true;
@@ -64,6 +69,10 @@ class AuthorChanger extends AbstractService
         $this->thread = $post->Thread;
         $this->forum = $post->Thread->Forum;
         $this->oldAuthor = $post->User;
+        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+            'user_id' => $post->user_id,
+            'username' => $post->username
+        ];
         $this->newAuthor = $newAuthor;
     }
 
@@ -228,7 +237,7 @@ class AuthorChanger extends AbstractService
             $this->adjustUserMessageCountIfNeeded($thread, $newAuthor, 1);
             $this->adjustThreadUserPostCount($thread, $newAuthor, 1);
 
-            $this->updateNewsFeed($post, $oldAuthor, $newAuthor);
+            $this->updateNewsFeed($post, $this->oldAuthorAlt, $newAuthor);
         }
 
         if ($post->getOption('log_moderator'))

@@ -39,6 +39,11 @@ class OwnerChanger extends AbstractService
     protected $oldAuthor;
 
     /**
+     * @var array
+     */
+    protected $oldAuthorAlt;
+
+    /**
      * @var bool
      */
     protected $performValidations = true;
@@ -57,6 +62,10 @@ class OwnerChanger extends AbstractService
         $this->category = $album->Category;
         $this->album = $album;
         $this->oldAuthor = $album->User;
+        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+            'user_id' => $album->user_id,
+            'username' => $album->username
+        ];
         $this->newAuthor = $newAuthor;
     }
 

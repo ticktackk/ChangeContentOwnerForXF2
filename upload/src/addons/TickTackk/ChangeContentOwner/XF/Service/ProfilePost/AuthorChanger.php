@@ -38,6 +38,11 @@ class AuthorChanger extends AbstractService
     protected $oldAuthor;
 
     /**
+     * @var array
+     */
+    protected $oldAuthorAlt;
+
+    /**
      * @var bool
      */
     protected $performValidations = true;
@@ -56,6 +61,10 @@ class AuthorChanger extends AbstractService
         $this->profilePost = $profilePost;
         $this->profileUser = $profilePost->ProfileUser;
         $this->oldAuthor = $profilePost->User;
+        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+            'user_id' => $profilePost->user_id,
+            'username' => $profilePost->username
+        ];
         $this->newAuthor = $newAuthor;
     }
 
@@ -181,8 +190,7 @@ class AuthorChanger extends AbstractService
 
         if ($profilePost->isVisible())
         {
-            $oldAuthor = $this->getOldAuthor();
-            $this->updateNewsFeed($profilePost, $oldAuthor, $newAuthor);
+            $this->updateNewsFeed($profilePost, $this->oldAuthorAlt, $newAuthor);
         }
 
         if ($profilePost->getOption('log_moderator'))

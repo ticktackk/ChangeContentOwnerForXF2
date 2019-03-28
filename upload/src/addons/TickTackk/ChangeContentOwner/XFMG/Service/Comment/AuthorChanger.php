@@ -51,6 +51,11 @@ class AuthorChanger extends AbstractService
     protected $oldAuthor;
 
     /**
+     * @var array
+     */
+    protected $oldAuthorAlt;
+
+    /**
      * @var bool
      */
     protected $performValidations = true;
@@ -76,6 +81,10 @@ class AuthorChanger extends AbstractService
 
         $this->comment = $comment;
         $this->oldAuthor = $comment->User;
+        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+            'user_id' => $comment->user_id,
+            'username' => $comment->username
+        ];
         $this->newAuthor = $newAuthor;
     }
 
@@ -256,8 +265,7 @@ class AuthorChanger extends AbstractService
 
         if ($comment->isVisible())
         {
-            $oldAuthor = $this->getOldAuthor();
-            $this->updateNewsFeed($mediaItem, $oldAuthor, $newAuthor);
+            $this->updateNewsFeed($mediaItem, $this->oldAuthorAlt, $newAuthor);
         }
 
         if ($comment->getOption('log_moderator'))
