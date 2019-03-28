@@ -45,6 +45,11 @@ class AuthorChanger extends AbstractService
     protected $oldAuthor;
 
     /**
+     * @var array
+     */
+    protected $oldAuthorAlt;
+
+    /**
      * @var bool
      */
     protected $performValidations = true;
@@ -64,6 +69,10 @@ class AuthorChanger extends AbstractService
         $this->category = $mediaItem->Category;
         $this->album = $mediaItem->Album;
         $this->oldAuthor = $mediaItem->User;
+        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+            'user_id' => $mediaItem->user_id,
+            'username' => $mediaItem->username
+        ];
         $this->newAuthor = $newAuthor;
     }
 
@@ -197,7 +206,7 @@ class AuthorChanger extends AbstractService
             $this->adjustUserMediaCountIfNeeded($newAuthor, -1);
             $this->adjustUserMediaQuotaIfNeeded($mediaItem, $newAuthor);
 
-            $this->updateNewsFeed($mediaItem, $oldAuthor, $newAuthor);
+            $this->updateNewsFeed($mediaItem, $this->oldAuthorAlt, $newAuthor);
         }
 
         if ($mediaItem->getOption('log_moderator'))
