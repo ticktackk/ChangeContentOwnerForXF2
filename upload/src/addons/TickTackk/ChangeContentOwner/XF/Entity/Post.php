@@ -26,7 +26,7 @@ class Post extends XFCP_Post
         $thread = $this->Thread;
         if ($thread->first_post_id === $this->post_id)
         {
-            return \XF::visitor()->hasNodePermission($thread->node_id, 'manageAnyThread');
+            return false;
         }
 
         return $thread->canChangePostAuthor($error);
