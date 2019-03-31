@@ -32,7 +32,15 @@ trait ContentTrait
         }
         else if (is_array($oldUser))
         {
-            $oldUserId = $oldUser['user_id'];
+            if (isset($oldUser['user_id']))
+            {
+                $oldUserId = $oldUser['user_id'];
+            }
+
+            if (isset($oldUser['username']))
+            {
+                $oldUsername = $oldUser['username'];
+            }
         }
 
         /** @var \XF\Db\AbstractAdapter $db */
@@ -54,6 +62,15 @@ trait ContentTrait
                 'username' => $newUser->username
             ], 'content_type = ? AND content_id = ? AND user_id = ?', [
                 $content->getEntityContentType(), $content->getEntityId(), $oldUserId
+            ]);
+        }
+        else if ($oldUsername)
+        {
+            $db->update('xf_news_feed', [
+                'user_id' => $newUser->user_id,
+                'username' => $newUser->username
+            ], 'content_type = ? AND content_id = ? AND username = ?', [
+                $content->getEntityContentType(), $content->getEntityId(), $oldUsername
             ]);
         }
         else
