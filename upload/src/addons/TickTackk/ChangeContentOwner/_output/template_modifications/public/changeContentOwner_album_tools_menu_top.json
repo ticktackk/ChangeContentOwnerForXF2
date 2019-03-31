@@ -5,5 +5,5 @@
     "enabled": true,
     "action": "str_replace",
     "find": "<!--[XF:album_tools_menu:bottom]-->",
-    "replace": "<xf:include template=\"changeContentOwner_xfmg_album_view_album_tools_menu_bottom\" />\n\t\t\t\t\t\t\t\t\t\t\t\t\t$0"
+    "replace": "$0\n\n<xf:include template=\"changeContentOwner_xfmg_album_view_album_tools_menu_bottom\" />"
 }
