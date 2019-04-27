@@ -69,7 +69,7 @@ class AuthorChanger extends AbstractService
         $this->firstPost = $thread->FirstPost;
         $this->forum = $thread->Forum;
         $this->oldAuthor = $thread->User;
-        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+        $this->oldAuthorAlt = $this->oldAuthor ?: [
             'user_id' => $thread->user_id,
             'username' => $thread->username
         ];
