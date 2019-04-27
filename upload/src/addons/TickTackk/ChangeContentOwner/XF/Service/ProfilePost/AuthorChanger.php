@@ -61,7 +61,7 @@ class AuthorChanger extends AbstractService
         $this->profilePost = $profilePost;
         $this->profileUser = $profilePost->ProfileUser;
         $this->oldAuthor = $profilePost->User;
-        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+        $this->oldAuthorAlt = $this->oldAuthor ?: [
             'user_id' => $profilePost->user_id,
             'username' => $profilePost->username
         ];

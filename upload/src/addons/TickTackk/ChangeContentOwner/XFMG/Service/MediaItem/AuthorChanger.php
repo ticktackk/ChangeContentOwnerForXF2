@@ -69,7 +69,7 @@ class AuthorChanger extends AbstractService
         $this->category = $mediaItem->Category;
         $this->album = $mediaItem->Album;
         $this->oldAuthor = $mediaItem->User;
-        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+        $this->oldAuthorAlt = $this->oldAuthor ?: [
             'user_id' => $mediaItem->user_id,
             'username' => $mediaItem->username
         ];
@@ -192,6 +192,7 @@ class AuthorChanger extends AbstractService
         }
         else if ($likedContent = $mediaItem->Likes[$newAuthor->user_id])
         {
+            /** @noinspection PhpUndefinedMethodInspection */
             $likedContent->delete();
         }
 

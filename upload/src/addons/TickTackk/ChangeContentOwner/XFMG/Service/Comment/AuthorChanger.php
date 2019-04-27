@@ -81,7 +81,7 @@ class AuthorChanger extends AbstractService
 
         $this->comment = $comment;
         $this->oldAuthor = $comment->User;
-        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+        $this->oldAuthorAlt = $this->oldAuthor ?: [
             'user_id' => $comment->user_id,
             'username' => $comment->username
         ];
@@ -250,6 +250,7 @@ class AuthorChanger extends AbstractService
         }
         else if ($likedContent = $comment->Likes[$newAuthor->user_id])
         {
+            /** @noinspection PhpUndefinedMethodInspection */
             $likedContent->delete();
         }
 

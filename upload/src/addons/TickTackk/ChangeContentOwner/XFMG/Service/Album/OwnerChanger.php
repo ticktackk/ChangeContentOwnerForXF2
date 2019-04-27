@@ -62,7 +62,7 @@ class OwnerChanger extends AbstractService
         $this->category = $album->Category;
         $this->album = $album;
         $this->oldAuthor = $album->User;
-        $this->oldAuthorAlt = $this->oldAuthor ? $this->oldAuthor : [
+        $this->oldAuthorAlt = $this->oldAuthor ?: [
             'user_id' => $album->user_id,
             'username' => $album->username
         ];
@@ -153,6 +153,7 @@ class OwnerChanger extends AbstractService
 
     /**
      * @return Album
+     * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
      */
     protected function _save()
@@ -178,6 +179,7 @@ class OwnerChanger extends AbstractService
         }
         else if ($likedContent = $album->Likes[$newAuthor->user_id])
         {
+            /** @noinspection PhpUndefinedMethodInspection */
             $likedContent->delete();
         }
 
