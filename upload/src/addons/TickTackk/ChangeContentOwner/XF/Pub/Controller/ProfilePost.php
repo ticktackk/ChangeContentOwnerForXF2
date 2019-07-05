@@ -34,7 +34,7 @@ class ProfilePost extends XFCP_ProfilePost
             $profilePost,
             'TickTackk\ChangeContentOwner\XF:ProfilePost\OwnerChanger',
             'XF:ProfilePost',
-            'TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeAuthor'
+            'TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeOwner'
         );
     }
 }

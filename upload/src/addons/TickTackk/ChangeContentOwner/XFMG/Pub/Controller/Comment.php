@@ -34,7 +34,7 @@ class Comment extends XFCP_Comment
             $comment,
             'TickTackk\ChangeContentOwner\XFMG:Comment\OwnerChanger',
             'XFMG:Comment',
-            'TickTackk\ChangeContentOwner\XFMG:Comment\ChangeAuthor'
+            'TickTackk\ChangeContentOwner\XFMG:Comment\ChangeOwner'
         );
     }
 }

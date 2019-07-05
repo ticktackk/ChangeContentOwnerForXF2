@@ -34,7 +34,7 @@ class Media extends XFCP_Media
             $mediaItem,
             'TickTackk\ChangeContentOwner\XFMG:Media\OwnerChanger',
             'XFMG:MediaItem',
-            'TickTackk\ChangeContentOwner\XFMG:Media\ChangeAuthor',
+            'TickTackk\ChangeContentOwner\XFMG:Media\ChangeOwner',
             'XFMG:Media'
         );
     }

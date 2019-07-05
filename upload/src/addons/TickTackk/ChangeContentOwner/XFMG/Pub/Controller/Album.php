@@ -34,7 +34,7 @@ class Album extends XFCP_Album
             $album,
             'TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger',
             'XFMG:Album',
-            'TickTackk\ChangeContentOwner\XFMG:Album\ChangeAuthor'
+            'TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner'
         );
     }
 }

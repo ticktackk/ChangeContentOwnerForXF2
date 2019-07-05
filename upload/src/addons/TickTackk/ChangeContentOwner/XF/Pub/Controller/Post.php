@@ -34,7 +34,7 @@ class Post extends XFCP_Post
             $post,
             'TickTackk\ChangeContentOwner\XF:Post\OwnerChanger',
             'XF:Post',
-            'TickTackk\ChangeContentOwner\XF:Post\ChangeAuthor'
+            'TickTackk\ChangeContentOwner\XF:Post\ChangeOwner'
         );
     }
 }

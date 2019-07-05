@@ -34,7 +34,7 @@ class Thread extends XFCP_Thread
             $thread,
             'TickTackk\ChangeContentOwner\XF:Thread\OwnerChanger',
             'XF:Thread',
-            'TickTackk\ChangeContentOwner\XF:Thread\ChangeAuthor'
+            'TickTackk\ChangeContentOwner\XF:Thread\ChangeOwner'
         );
     }
 }
