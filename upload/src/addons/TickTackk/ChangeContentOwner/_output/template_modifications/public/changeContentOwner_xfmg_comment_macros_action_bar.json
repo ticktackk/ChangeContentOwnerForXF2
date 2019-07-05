@@ -5,5 +5,5 @@
     "enabled": true,
     "action": "preg_replace",
     "find": "#<xf:elseif is=\"\\$comment\\.warning_id AND \\$xf\\.visitor\\.canViewWarnings\\(\\).*?\" \\/>.*?\\/xf:if>#si",
-    "replace": "$0\n\t\t\t\t\t\t\t\t\t\t\t\t<xf:include template=\"changeContentOwner_xfmg_comment_macros_action_bar\" />"
+    "replace": "$0\n\n<xf:macro template=\"tckChangeContentOwner_macros\" name=\"action_link\"\n\t\t  arg-content=\"{$comment}\"\n\t\t  arg-route=\"media/comments\"\n\t\t  arg-supportsActionBarMenu=\"{{ false }}\" />"
 }

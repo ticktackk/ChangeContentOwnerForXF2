@@ -1,0 +1,5 @@
+{
+    "content_type": "post",
+    "field_name": "change_owner_handler_class",
+    "field_value": "TickTackk\\ChangeContentOwner\\XF\\ChangeOwner\\Post"
+}

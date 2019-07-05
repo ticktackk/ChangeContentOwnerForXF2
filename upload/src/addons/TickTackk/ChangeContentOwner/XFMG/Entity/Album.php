@@ -2,20 +2,23 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Entity;
 
+use TickTackk\ChangeContentOwner\Entity\ContentInterface;
+use XF\Entity\User;
+
 /**
  * Class Album
  *
- * @package TickTackk\ChangeContentOwner
+ * @package TickTackk\ChangeContentOwner\XFMG\Entity
  */
-class Album extends XFCP_Album
+class Album extends XFCP_Album implements ContentInterface
 {
     /**
-     * @param null|string $error
+     * @param User|null $newUser
+     * @param null      $error
      *
      * @return bool
      */
-    public function canChangeOwner(/** @noinspection PhpUnusedParameterInspection */
-        &$error = null)
+    public function canChangeOwner(User $newUser = null, &$error = null): bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
@@ -24,5 +27,21 @@ class Album extends XFCP_Album
         }
 
         return $this->hasPermission('changeAlbumOwner');
+    }
+
+    /**
+     * @param null $error
+     *
+     * @return bool
+     */
+    public function canChangeDate(&$error = null): bool
+    {
+        $visitor = \XF::visitor();
+        if (!$visitor->user_id)
+        {
+            return false;
+        }
+
+        return $this->hasPermission('changeAlbumDate');
     }
 }

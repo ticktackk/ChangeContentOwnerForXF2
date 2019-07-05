@@ -1,0 +1,34 @@
+<xf:title><xf:trim>
+	<xf:if is="$content.canChangeOwner() && $content.canChangeDate()">
+		{{ phrase('tckChangeContentOwner_change_owner_or_date') }}
+	<xf:elseif is="$content.canChangeOwner()" />
+		{{ phrase('tckChangeContentOwner_change_owner') }}
+	<xf:elseif is="$content.canChangeDate()" />
+		{{ phrase('tckChangeContentOwner_change_date') }}
+	</xf:if>
+</xf:trim></xf:title>
+
+<xf:breadcrumb source="{$breadcrumbs}" />
+
+<xf:form action="{$changeOwnerLink}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:if is="$handler.canChangeOwner($content)">
+				<xf:textboxrow name="username"
+							   label="{{ phrase('tckChangeContentOwner_new_owner') }}"
+							   explain="{{ phrase('tckChangeContentOwner_new_owner_name_explain') }}"
+							   ac="true"
+							   data-single="true" />
+			</xf:if>
+			
+			<xf:if is="$handler.canChangeDate($content)">
+				<xf:dateinputrow name="date"
+							label="{{ phrase('tckChangeContentOwner_new_date') }}"
+							explain="{{ phrase('tckChangeContentOwner_new_date_explain') }}"
+							time="{$apiKey.last_use_date}"/>
+			</xf:if>
+		</div>
+
+		<xf:submitrow rowtype="simple" icon="save" />
+	</div>
+</xf:form>

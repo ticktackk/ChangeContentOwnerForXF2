@@ -2,20 +2,23 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Entity;
 
+use TickTackk\ChangeContentOwner\Entity\ContentInterface;
+use XF\Entity\User;
+
 /**
  * Class MediaItem
  *
- * @package TickTackk\ChangeContentOwner
+ * @package TickTackk\ChangeContentOwner\XFMG\Entity
  */
-class MediaItem extends XFCP_MediaItem
+class MediaItem extends XFCP_MediaItem implements ContentInterface
 {
     /**
-     * @param null|string $error
+     * @param User|null $newUser
+     * @param null      $error
      *
      * @return bool
      */
-    public function canChangeAuthor(/** @noinspection PhpUnusedParameterInspection */
-        &$error = null)
+    public function canChangeOwner(User $newUser = null, &$error = null): bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
@@ -24,5 +27,21 @@ class MediaItem extends XFCP_MediaItem
         }
 
         return $this->hasPermission('changeMediaOwner');
+    }
+
+    /**
+     * @param null $error
+     *
+     * @return bool
+     */
+    public function canChangeDate(&$error = null): bool
+    {
+        $visitor = \XF::visitor();
+        if (!$visitor->user_id)
+        {
+            return false;
+        }
+
+        return $this->hasPermission('changeMediaDate');
     }
 }

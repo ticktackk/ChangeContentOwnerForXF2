@@ -2,21 +2,26 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Entity;
 
+use TickTackk\ChangeContentOwner\Entity\ContentInterface;
+use XF\Entity\User as UserEntity;
+
 /**
  * Class Thread
  *
- * @package TickTackk\ChangeContentOwner
+ * @package TickTackk\ChangeContentOwner\XF\Entity
  *
- * @property \TickTackk\ChangeContentOwner\XF\Entity\Forum Forum
+ * RELATIONS
+ * @property Forum Forum
  */
-class Thread extends XFCP_Thread
+class Thread extends XFCP_Thread implements ContentInterface
 {
     /**
-     * @param null|string $error
+     * @param UserEntity|null $newUser
+     * @param null            $error
      *
      * @return bool
      */
-    public function canChangeAuthor(&$error = null)
+    public function canChangeOwner(UserEntity $newUser = null, &$error = null): bool
     {
         $forum = $this->Forum;
         if (!$forum)
@@ -24,7 +29,7 @@ class Thread extends XFCP_Thread
             return false;
         }
 
-        return $forum->canChangeThreadAuthor($error);
+        return $forum->canChangePostOwner($newUser, $error);
     }
 
     /**
@@ -32,7 +37,7 @@ class Thread extends XFCP_Thread
      *
      * @return bool
      */
-    public function canChangePostAuthor(&$error = null)
+    public function canChangeDate(&$error = null): bool
     {
         $forum = $this->Forum;
         if (!$forum)
@@ -40,6 +45,39 @@ class Thread extends XFCP_Thread
             return false;
         }
 
-        return $forum->canChangePostAuthor($error);
+        return $forum->canChangeThreadDate($error);
+    }
+
+    /**
+     * @param UserEntity|null $newOwner
+     * @param null            $error
+     *
+     * @return bool
+     */
+    public function canChangePostOwner(UserEntity $newOwner = null, &$error = null) : bool
+    {
+        $forum = $this->Forum;
+        if (!$forum)
+        {
+            return false;
+        }
+
+        return $forum->canChangePostOwner($newOwner, $error);
+    }
+
+    /**
+     * @param null $error
+     *
+     * @return bool
+     */
+    public function canChangePostDate(&$error = null) : bool
+    {
+        $forum = $this->Forum;
+        if (!$forum)
+        {
+            return false;
+        }
+
+        return $forum->canChangePostDate($error);
     }
 }

@@ -5,5 +5,5 @@
     "enabled": true,
     "action": "str_replace",
     "find": "<xf:if is=\"$hasActionBarMenu\">",
-    "replace": "<xf:include template=\"changeContentOwner_xfmg_media_view_action_bar\" />\n\t\t\t\t\t\t\t\t\t$0"
+    "replace": "<xf:macro template=\"tckChangeContentOwner_macros\" name=\"action_link\"\n\t\t  arg-content=\"{$mediaItem}\"\n\t\t  arg-route=\"media\" />\n\n$0"
 }

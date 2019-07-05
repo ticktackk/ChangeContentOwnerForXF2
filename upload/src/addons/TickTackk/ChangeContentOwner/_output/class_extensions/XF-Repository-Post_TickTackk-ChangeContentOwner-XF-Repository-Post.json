@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Repository\\Post",
+    "to_class": "TickTackk\\ChangeContentOwner\\XF\\Repository\\Post",
+    "execute_order": 10,
+    "active": true
+}

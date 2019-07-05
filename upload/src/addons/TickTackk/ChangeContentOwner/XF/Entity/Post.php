@@ -2,33 +2,64 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Entity;
 
+use TickTackk\ChangeContentOwner\Entity\ContentInterface;
+use XF\Entity\User;
+
 /**
  * Class Post
  *
- * @package TickTackk\ChangeContentOwner
+ * @package TickTackk\ChangeContentOwner\XF\Entity
  *
- * @property \TickTackk\ChangeContentOwner\XF\Entity\Thread Thread
+ * RELATIONS
+ * @property Thread Thread
  */
-class Post extends XFCP_Post
+class Post extends XFCP_Post implements ContentInterface
 {
     /**
-     * @param null $error
+     * @param User|null $newUser
+     * @param null      $error
      *
      * @return bool
      */
-    public function canChangeAuthor(&$error = null)
+    public function canChangeOwner(User $newUser = null, &$error = null): bool
     {
-        if (!$this->Thread)
+        $thread = $this->Thread;
+        if (!$thread)
         {
             return false;
         }
 
-        $thread = $this->Thread;
         if ($thread->first_post_id === $this->post_id)
         {
             return false;
         }
 
-        return $thread->canChangePostAuthor($error);
+        if ($newUser && $this->user_id === $newUser->user_id)
+        {
+            return false;
+        }
+
+        return $thread->canChangePostOwner($newUser, $error);
+    }
+
+    /**
+     * @param null $error
+     *
+     * @return bool
+     */
+    public function canChangeDate(&$error = null): bool
+    {
+        $thread = $this->Thread;
+        if (!$thread)
+        {
+            return false;
+        }
+
+        if ($thread->first_post_id === $this->post_id)
+        {
+            return false;
+        }
+
+        return $thread->canChangePostDate($error);
     }
 }

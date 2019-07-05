@@ -1,9 +1,0 @@
-{
-    "template": "xfmg_album_view",
-    "description": "Add \"Change album owner\" under more options",
-    "execution_order": 10,
-    "enabled": true,
-    "action": "str_replace",
-    "find": "<!--[XF:album_tools_menu:bottom]-->",
-    "replace": "$0\n\n<xf:include template=\"changeContentOwner_xfmg_album_view_album_tools_menu_bottom\" />"
-}

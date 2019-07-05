@@ -17,6 +17,13 @@ namespace TickTackk\ChangeContentOwner\XFMG\Pub\Controller
 	class XFCP_Media extends \XFMG\Pub\Controller\Media {}
 }
 
+namespace TickTackk\ChangeContentOwner\XFMG\Repository
+{
+	class XFCP_Album extends \XFMG\Repository\Album {}
+	class XFCP_Comment extends \XFMG\Repository\Comment {}
+	class XFCP_Media extends \XFMG\Repository\Media {}
+}
+
 namespace TickTackk\ChangeContentOwner\XF\Entity
 {
 	class XFCP_Forum extends \XF\Entity\Forum {}
@@ -27,8 +34,14 @@ namespace TickTackk\ChangeContentOwner\XF\Entity
 
 namespace TickTackk\ChangeContentOwner\XF\Pub\Controller
 {
-	class XFCP_InlineMod extends \XF\Pub\Controller\InlineMod {}
 	class XFCP_Post extends \XF\Pub\Controller\Post {}
 	class XFCP_ProfilePost extends \XF\Pub\Controller\ProfilePost {}
 	class XFCP_Thread extends \XF\Pub\Controller\Thread {}
+}
+
+namespace TickTackk\ChangeContentOwner\XF\Repository
+{
+	class XFCP_Post extends \XF\Repository\Post {}
+	class XFCP_ProfilePost extends \XF\Repository\ProfilePost {}
+	class XFCP_Thread extends \XF\Repository\Thread {}
 }

@@ -2,227 +2,62 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Album;
 
-use TickTackk\ChangeContentOwner\Service\ContentTrait;
-use XF\Entity\User;
-use XF\Service\AbstractService;
-use XF\Service\ValidateAndSavableTrait;
-use XFMG\Entity\Album;
-use XFMG\Entity\Category;
+use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
+use TickTackk\ChangeContentOwner\XFMG\Entity\Album as ExtendedAlbumEntity;
+use XF\Entity\User as UserEntity;
+use XF\Mvc\Entity\Entity;
 
 /**
  * Class OwnerChanger
  *
- * @package TickTackk\ChangeContentOwner
+ * @package TickTackk\ChangeContentOwner\XFMG\Service\Album
  */
-class OwnerChanger extends AbstractService
+class OwnerChanger extends AbstractOwnerChanger
 {
-    use ValidateAndSavableTrait, ContentTrait;
-
     /**
-     * @var Album
+     * @return string
      */
-    protected $album;
+    protected function getEntityIdentifier(): string
+    {
+        return 'XFMG:Album';
+    }
 
     /**
-     * @var Category
-     */
-    protected $category;
-
-    /**
-     * @var User
-     */
-    protected $newAuthor;
-
-    /**
-     * @var User
-     */
-    protected $oldAuthor;
-
-    /**
-     * @var array
-     */
-    protected $oldAuthorAlt;
-
-    /**
-     * @var bool
-     */
-    protected $performValidations = true;
-
-    /**
-     * OwnerChanger constructor.
+     * @param Entity|ExtendedAlbumEntity     $content
+     * @param UserEntity $newOwner
      *
-     * @param \XF\App $app
-     * @param Album   $album
-     * @param User    $newAuthor
+     * @return Entity
      */
-    public function __construct(/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-        \XF\App $app, Album $album, User $newAuthor)
+    protected function changeContentOwner(Entity $content, UserEntity $newOwner): Entity
     {
-        parent::__construct($app);
-        $this->category = $album->Category;
-        $this->album = $album;
-        $this->oldAuthor = $album->User;
-        $this->oldAuthorAlt = $this->oldAuthor ?: [
-            'user_id' => $album->user_id,
-            'username' => $album->username
-        ];
-        $this->newAuthor = $newAuthor;
-    }
+        $content->user_id = $newOwner->user_id;
+        $content->username = $newOwner->user_id;
 
-    /**
-     * @return bool
-     */
-    public function getPerformValidations()
-    {
-        return $this->performValidations;
-    }
-
-    /**
-     * @param $perform
-     */
-    public function setPerformValidations($perform)
-    {
-        $this->performValidations = (bool)$perform;
-    }
-
-    /**
-     * @return Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    public function changeOwner()
-    {
-        $newAuthor = $this->getNewAuthor();
-        $album = $this->getAlbum();
-
-        $album->user_id = $newAuthor->user_id;
-        $album->username = $newAuthor->username;
-    }
-
-    /**
-     * @return User
-     */
-    public function getNewAuthor()
-    {
-        return $this->newAuthor;
-    }
-
-    /**
-     * @return Album
-     */
-    public function getAlbum()
-    {
-        return $this->album;
-    }
-
-    /**
-     * @return array
-     * @throws \Exception
-     */
-    protected function _validate()
-    {
-        $this->finalSetup();
-
-        $newAuthor = $this->getNewAuthor();
-        $album = $this->getAlbum();
-        $album->preSave();
-        $errors = $album->getErrors();
-
-        if ($this->performValidations)
+        $oldUser = $this->getOldOwner($content);
+        if ($content->isVisible())
         {
-            $canTargetView = \XF::asVisitor($newAuthor, function () use ($album)
-            {
-                return $album->canView();
-            });
-
-            if (!$canTargetView)
-            {
-                $errors[] = \XF::phraseDeferred('changeContentOwner_new_author_must_be_able_to_view_this_xfmg_album');
-            }
+            $this->increaseContentCount($newOwner, 'xfmg_album_count');
+            $this->decreaseContentCount($oldUser, 'xfmg_album_count');
         }
 
-        return $errors;
-    }
-
-    protected function finalSetup()
-    {
+        return $content;
     }
 
     /**
-     * @return Album
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
-     */
-    protected function _save()
-    {
-        $oldAuthor = $this->getOldAuthor();
-        $newAuthor = $this->getNewAuthor();
-
-        $album = $this->getAlbum();
-
-        $db = $this->db();
-        $db->beginTransaction();
-
-        $album->save();
-
-        if (\XF::$versionId >= 2010010)
-        {
-            /** @noinspection PhpUndefinedFieldInspection */
-            if ($reactionContent = $album->Reactions[$newAuthor->user_id])
-            {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $reactionContent->delete();
-            }
-        }
-        else if ($likedContent = $album->Likes[$newAuthor->user_id])
-        {
-            /** @noinspection PhpUndefinedMethodInspection */
-            $likedContent->delete();
-        }
-
-        if ($album->isVisible())
-        {
-            if ($oldAuthor)
-            {
-                $this->adjustUserAlbumCountIfNeeded($oldAuthor, -1);
-            }
-
-            $this->adjustUserAlbumCountIfNeeded($newAuthor, -1);
-        }
-
-        if ($album->getOption('log_moderator'))
-        {
-            $this->app->logger()->logModeratorAction('xfmg_album', $album, 'owner_change');
-        }
-
-        $db->commit();
-
-        return $album;
-    }
-
-    /**
-     * @return User
-     */
-    public function getOldAuthor()
-    {
-        return $this->oldAuthor;
-    }
-
-    /**
-     * @param User $user
-     * @param int $amount
+     * @param Entity|ExtendedAlbumEntity $content
+     * @param int    $newDate
      *
-     * @throws \XF\Db\Exception
+     * @return Entity
      */
-    protected function adjustUserAlbumCountIfNeeded(User $user, $amount)
+    protected function changeContentDate(Entity $content, int $newDate): Entity
     {
-        $this->db()->query('
-            UPDATE xf_user
-            SET xfmg_album_count = GREATEST(0, xfmg_album_count + ?)
-            WHERE user_id = ?
-        ', [$amount, $user->user_id]);
+        return $content;
+    }
+
+    /**
+     * @param Entity $content
+     */
+    protected function additionalEntitySave(Entity $content): void
+    {
     }
 }

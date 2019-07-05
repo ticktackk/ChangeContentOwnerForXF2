@@ -1,0 +1,6 @@
+{
+    "from_class": "XFMG\\Repository\\Media",
+    "to_class": "TickTackk\\ChangeContentOwner\\XFMG\\Repository\\Media",
+    "execute_order": 10,
+    "active": true
+}

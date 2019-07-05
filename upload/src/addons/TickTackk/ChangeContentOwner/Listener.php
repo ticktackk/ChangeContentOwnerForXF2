@@ -2,8 +2,8 @@
 
 namespace TickTackk\ChangeContentOwner;
 
-use XF\InlineMod\AbstractHandler as InlineMod_AbstractHandler;
-use XF\Pub\App;
+use XF\InlineMod\AbstractHandler as InlineModAbstractHandler;
+use XF\Pub\App as XFApp;
 
 /**
  * Class Listener
@@ -13,68 +13,37 @@ use XF\Pub\App;
 class Listener
 {
     /**
-     * @param InlineMod_AbstractHandler $handler
-     * @param \XF\Pub\App               $app
-     * @param array                     $actions
+     * @param InlineModAbstractHandler $abstractHandler
+     * @param XFApp                    $app
+     * @param array                    $actions
      */
-    public static function inlineModActions_thread(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */
-                                                   App $app, array &$actions)
+    public static function inlineModActions(InlineModAbstractHandler $abstractHandler, XFApp $app, array $actions) : void
     {
-        $actions['change_thread_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XF:Thread\ChangeAuthor');
-    }
+        switch ($abstractHandler->getContentType())
+        {
+            case 'thread':
+                $actions['change_owner'] = $abstractHandler->getActionHandler('TickTackk\ChangeContentOwner\XF:Thread\ChangeOwner');
+                break;
 
-    /**
-     * @param InlineMod_AbstractHandler $handler
-     * @param \XF\Pub\App               $app
-     * @param array                     $actions
-     */
-    public static function inlineModActions_post(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */
-                                                 App $app, array &$actions)
-    {
-        $actions['change_post_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XF:Post\ChangeAuthor');
-    }
+            case 'post':
+                $actions['change_owner'] = $abstractHandler->getActionHandler('TickTackk\ChangeContentOwner\XF:Post\ChangeOwner');
+                break;
 
-    /**
-     * @param InlineMod_AbstractHandler $handler
-     * @param \XF\Pub\App               $app
-     * @param array                     $actions
-     */
-    public static function inlineModActions_profile_post(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */
-                                                         App $app, array &$actions)
-    {
-        $actions['change_profile_post_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeAuthor');
-    }
+            case 'profile_post':
+                $actions['change_owner'] = $abstractHandler->getActionHandler('TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeOwner');
+                break;
 
-    /**
-     * @param InlineMod_AbstractHandler $handler
-     * @param \XF\Pub\App               $app
-     * @param array                     $actions
-     */
-    public static function inlineModActions_xfmg_album(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */
-                                                       App $app, array &$actions)
-    {
-        $actions['change_album_owner'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner');
-    }
+            case 'xfmg_album':
+                $actions['change_owner'] = $abstractHandler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner');
+                break;
 
-    /**
-     * @param InlineMod_AbstractHandler $handler
-     * @param \XF\Pub\App               $app
-     * @param array                     $actions
-     */
-    public static function inlineModActions_xfmg_media(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */
-                                                       App $app, array &$actions)
-    {
-        $actions['change_media_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Media\ChangeAuthor');
-    }
+            case 'xfmg_media':
+                $actions['change_owner'] = $abstractHandler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Media\ChangeOwner');
+                break;
 
-    /**
-     * @param InlineMod_AbstractHandler $handler
-     * @param \XF\Pub\App               $app
-     * @param array                     $actions
-     */
-    public static function inlineModActions_xfmg_comment(InlineMod_AbstractHandler $handler, /** @noinspection PhpUnusedParameterInspection */
-                                                         App $app, array &$actions)
-    {
-        $actions['change_comment_author'] = $handler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Comment\ChangeAuthor');
+            case 'xfmg_comment':
+                $actions['change_owner'] = $abstractHandler->getActionHandler('TickTackk\ChangeContentOwner\XFMG:Comment\ChangeOwner');
+                break;
+        }
     }
 }

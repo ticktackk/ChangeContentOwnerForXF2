@@ -2,6 +2,8 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Entity;
 
+use XF\Entity\User as UserEntity;
+
 /**
  * Class Forum
  *
@@ -10,11 +12,12 @@ namespace TickTackk\ChangeContentOwner\XF\Entity;
 class Forum extends XFCP_Forum
 {
     /**
-     * @param null $error
+     * @param UserEntity|null $newOwner
+     * @param null            $error
      *
      * @return bool
      */
-    public function canChangeThreadAuthor(/** @noinspection PhpUnusedParameterInspection */ &$error = null)
+    public function canChangeThreadOwner(UserEntity $newOwner = null, &$error = null) : bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
@@ -22,7 +25,7 @@ class Forum extends XFCP_Forum
             return false;
         }
 
-        return $visitor->hasNodePermission($this->node_id, 'changeThreadAuthor');
+        return $visitor->hasNodePermission($this->node_id, 'changeThreadOwner');
     }
 
     /**
@@ -30,7 +33,7 @@ class Forum extends XFCP_Forum
      *
      * @return bool
      */
-    public function canChangePostAuthor(/** @noinspection PhpUnusedParameterInspection */ &$error = null)
+    public function canChangeThreadDate(&$error = null) : bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
@@ -38,6 +41,39 @@ class Forum extends XFCP_Forum
             return false;
         }
 
-        return $visitor->hasNodePermission($this->node_id, 'changePostAuthor');
+        return $visitor->hasNodePermission($this->node_id, 'changeThreadDate');
+    }
+
+    /**
+     * @param UserEntity|null $newOwner
+     * @param null            $error
+     *
+     * @return bool
+     */
+    public function canChangePostOwner(UserEntity $newOwner = null, &$error = null) : bool
+    {
+        $visitor = \XF::visitor();
+        if (!$visitor->user_id)
+        {
+            return false;
+        }
+
+        return $visitor->hasNodePermission($this->node_id, 'changePostOwner');
+    }
+
+    /**
+     * @param null $error
+     *
+     * @return bool
+     */
+    public function canChangePostDate(&$error = null) : bool
+    {
+        $visitor = \XF::visitor();
+        if (!$visitor->user_id)
+        {
+            return false;
+        }
+
+        return $visitor->hasNodePermission($this->node_id, 'changePostDate');
     }
 }

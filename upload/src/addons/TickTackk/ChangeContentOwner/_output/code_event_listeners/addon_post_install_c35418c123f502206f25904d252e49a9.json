@@ -1,0 +1,9 @@
+{
+    "event_id": "addon_post_install",
+    "execute_order": 10,
+    "callback_class": "TickTackk\\ChangeContentOwner\\SetupListener",
+    "callback_method": "addOnPostInstall",
+    "active": true,
+    "hint": "",
+    "description": "When supported add-ons are installed, set default permissions for their supported content types"
+}

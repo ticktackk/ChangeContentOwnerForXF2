@@ -1,0 +1,38 @@
+<xf:macro name="action_link" arg-content="!" arg-route="!" arg-supportsActionBarMenu="{{ true }}">
+	<xf:if contentcheck="true">
+		<xf:contentcheck>
+			<xf:if is="$content.canChangeOwner() && $content.canChangeDate()">
+				<a href="{{ link($route . '/change-owner', $content) }}"
+				   class="actionBar-action actionBar-action--changeOwnerAndDate actionBar-action--menuItem"
+				   data-xf-click="overlay">{{ phrase('tckChangeContentOwner_change_owner_or_date') }}</a>
+			<xf:elseif is="$content.canChangeOwner()" />
+				<a href="{{ link($route . '/change-owner', $content) }}"
+				   class="actionBar-action actionBar-action--changeOwner actionBar-action--menuItem"
+				   data-xf-click="overlay">{{ phrase('tckChangeContentOwner_change_owner') }}</a>
+			<xf:elseif is="$content.canChangeDate()" />
+				<a href="{{ link($route . '/change-owner', $content) }}"
+				   class="actionBar-action actionBar-action--changeDate actionBar-action--menuItem"
+				   data-xf-click="overlay">{{ phrase('tckChangeContentOwner_change_date') }}</a>
+			</xf:if>
+		</xf:contentcheck>
+		<xf:if is="$supportsActionBarMenu">
+			<xf:set var="$hasActionBarMenu" value="{{ true }}" />
+		</xf:if>
+	</xf:if>
+</xf:macro>
+
+<xf:macro name="menu_link_row" arg-content="!" arg-route="!">
+	<xf:if is="$content.canChangeOwner() && $content.canChangeDate()">
+		<a href="{{ link($route . '/change-owner', $content) }}"
+		   class="menu-linkRow"
+		   data-xf-click="overlay">{{ phrase('tckChangeContentOwner_change_owner_or_date') }}</a>
+	<xf:elseif is="$content.canChangeOwner()" />
+		<a href="{{ link($route . '/change-owner', $content) }}"
+		   class="menu-linkRow"
+		   data-xf-click="overlay">{{ phrase('tckChangeContentOwner_change_owner') }}</a>
+	<xf:elseif is="$content.canChangeDate()" />
+		<a href="{{ link($route . '/change-owner', $content) }}"
+		   class="menu-linkRow"
+		   data-xf-click="overlay">{{ phrase('tckChangeContentOwner_change_date') }}</a>
+	</xf:if>
+</xf:macro>

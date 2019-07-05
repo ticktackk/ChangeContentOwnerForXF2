@@ -1,0 +1,6 @@
+{
+    "permission_type": "flag",
+    "interface_group_id": "xfmgAlbumModerator",
+    "display_order": 210,
+    "depend_permission_id": ""
+}

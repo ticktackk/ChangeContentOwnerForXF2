@@ -2,57 +2,39 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Pub\Controller;
 
+use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\Exception as ExceptionReply;
+use XF\Mvc\Reply\Redirect as RedirectReply;
+use XF\Mvc\Reply\View as ViewReply;
 
 /**
  * Class Album
  *
- * @package TickTackk\ChangeContentOwner
+ * @package TickTackk\ChangeContentOwner\XFMG\Pub\Controller
  */
 class Album extends XFCP_Album
 {
     /**
-     * @param ParameterBag $params
+     * @param ParameterBag $parameterBag
      *
-     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
-     *
-     * @throws \XF\Mvc\Reply\Exception
+     * @return RedirectReply|ViewReply
+     * @throws ExceptionReply
+     * @throws \XF\Db\Exception
+     * @throws \XF\PrintableException
      */
-    public function actionChangeOwner(ParameterBag $params)
+    public function actionChangeOwner(ParameterBag $parameterBag)
     {
-        /** @var \TickTackk\ChangeContentOwner\XFMG\Entity\Album $album */
         /** @noinspection PhpUndefinedFieldInspection */
-        $album = $this->assertViewableAlbum($params->album_id);
-        if (!$album->canChangeOwner($error))
-        {
-            return $this->noPermission($error);
-        }
+        $album = $this->assertViewableAlbum($parameterBag->album_id);
 
-        if ($this->isPost())
-        {
-            $newAuthor = $this->em()->findOne('XF:User', ['username' => $this->filter('new_owner_username', 'str')]);
-            if (!$newAuthor)
-            {
-                return $this->error(\XF::phrase('requested_user_not_found'));
-            }
-
-            /** @var \TickTackk\ChangeContentOwner\XFMG\Service\Album\OwnerChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger', $album, $newAuthor);
-            $authorChangerService->changeOwner();
-            if (!$authorChangerService->validate($errors))
-            {
-                return $this->error($errors);
-            }
-            $album = $authorChangerService->save();
-
-            return $this->redirect($this->buildLink('media/albums', $album));
-        }
-
-        $viewParams = [
-            'album' => $album,
-            'addUsers' => $this->em()->findByIds('XF:User', $album->add_users ?: [])->pluckNamed('username'),
-            'viewUsers' => $this->em()->findByIds('XF:User', $album->view_users ?: [])->pluckNamed('username')
-        ];
-        return $this->view('TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner', 'changeContentOwner_xfmg_album_change_owner', $viewParams);
+        /** @var ContentPlugin $contentPlugin */
+        $contentPlugin = $this->plugin('TickTackk\ChangeContentOwner:Content');
+        return $contentPlugin->actionChangeOwner(
+            $album,
+            'TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger',
+            'XFMG:Album',
+            'TickTackk\ChangeContentOwner\XFMG:Album\ChangeAuthor'
+        );
     }
 }

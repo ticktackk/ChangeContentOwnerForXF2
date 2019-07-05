@@ -1,9 +1,0 @@
-{
-    "template": "xfmg_media_view",
-    "description": "Add \"Change media owner\" in more options",
-    "execution_order": 10,
-    "enabled": true,
-    "action": "str_replace",
-    "find": "<!--[XF:media_tools_menu:before_footer]-->",
-    "replace": "$0\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xf:include template=\"changeContentOwner_xfmg_media_view_tools_menu_before_footer\" />"
-}

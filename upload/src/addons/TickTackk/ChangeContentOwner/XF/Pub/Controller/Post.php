@@ -2,62 +2,39 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Pub\Controller;
 
+use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\View as ViewReply;
+use XF\Mvc\Reply\Exception as ExceptionReply;
+use XF\Mvc\Reply\Redirect as RedirectReply;
 
 /**
  * Class Post
  *
- * @package TickTackk\ChangeContentOwner
+ * @package TickTackk\ChangeContentOwner\XF\Pub\Controller
  */
 class Post extends XFCP_Post
 {
     /**
-     * @param ParameterBag $params
+     * @param ParameterBag $parameterBag
      *
-     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
-     *
-     * @throws \XF\Mvc\Reply\Exception
+     * @return RedirectReply|ViewReply
+     * @throws ExceptionReply
+     * @throws \XF\Db\Exception
+     * @throws \XF\PrintableException
      */
-    public function actionChangeAuthor(ParameterBag $params)
+    public function actionChangeOwner(ParameterBag $parameterBag)
     {
-        /** @var \TickTackk\ChangeContentOwner\XF\Entity\Post $post */
         /** @noinspection PhpUndefinedFieldInspection */
-        $post = $this->assertViewablePost($params->post_id);
-        if (!$post->canChangeAuthor($error))
-        {
-            return $this->noPermission($error);
-        }
+        $post = $this->assertViewablePost($parameterBag->post_id);
 
-        $thread = $post->Thread;
-
-        if ($this->isPost())
-        {
-            $newAuthor = $this->em()->findOne('XF:User', ['username' => $this->filter('new_author_username', 'str')]);
-            if (!$newAuthor)
-            {
-                return $this->error(\XF::phrase('requested_user_not_found'));
-            }
-
-            /** @var \TickTackk\ChangeContentOwner\XF\Service\Post\AuthorChanger $authorChangerService */
-            $authorChangerService = $this->service('TickTackk\ChangeContentOwner\XF:Post\AuthorChanger', $post, $newAuthor);
-            $authorChangerService->changeAuthor();
-            if (!$authorChangerService->validate($errors))
-            {
-                return $this->error($errors);
-            }
-            $post = $authorChangerService->save();
-
-            return $this->redirect($this->buildLink('posts', $post));
-        }
-
-        /** @var \XF\Entity\Forum $forum */
-        $forum = $post->Thread->Forum;
-
-        $viewParams = [
-            'post' => $post,
-            'thread' => $thread,
-            'forum' => $forum
-        ];
-        return $this->view('TickTackk\ChangeContentOwner\XF:Post\ChangeAuthor', 'changeContentOwner_post_change_author', $viewParams);
+        /** @var ContentPlugin $contentPlugin */
+        $contentPlugin = $this->plugin('TickTackk\ChangeContentOwner:Content');
+        return $contentPlugin->actionChangeOwner(
+            $post,
+            'TickTackk\ChangeContentOwner\XF:Post\OwnerChanger',
+            'XF:Post',
+            'TickTackk\ChangeContentOwner\XF:Post\ChangeAuthor'
+        );
     }
 }

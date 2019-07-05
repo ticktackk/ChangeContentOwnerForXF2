@@ -1,9 +1,0 @@
-{
-    "event_id": "inline_mod_actions",
-    "execute_order": 10,
-    "callback_class": "TickTackk\\ChangeContentOwner\\Listener",
-    "callback_method": "inlineModActions_post",
-    "active": true,
-    "hint": "post",
-    "description": "Add \"Change post author\" to inline mod tools"
-}

@@ -1,9 +1,9 @@
 {
     "template": "thread_view",
-    "description": "Add \"Change thread author\" under thread tools",
+    "description": "Add \"Change owner\" under thread tools",
     "execution_order": 10,
     "enabled": true,
     "action": "str_replace",
     "find": "<!--[XF:thread_tools_menu:before_footer]-->",
-    "replace": "$0\n\n<xf:include template=\"changeContentOwner_thread_tools_menu_before_footer\" />"
+    "replace": "$0\n\n<xf:macro template=\"tckChangeContentOwner_macros\" name=\"menu_link_row\"\n\t\t  arg-content=\"{$thread}\" arg-route=\"threads\" />"
 }
