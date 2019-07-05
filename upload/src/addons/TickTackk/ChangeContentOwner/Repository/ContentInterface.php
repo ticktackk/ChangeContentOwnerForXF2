@@ -3,6 +3,7 @@
 namespace TickTackk\ChangeContentOwner\Repository;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
+use XF\Mvc\Entity\Entity;
 
 /**
  * Interface ContentInterface
@@ -12,9 +13,10 @@ use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
 interface ContentInterface
 {
     /**
+     * @param Entity $content
      * @param bool $throw
      *
      * @return AbstractHandler
      */
-    public function getChangeOwnerHandler(bool $throw = false) : AbstractHandler;
+    public function getChangeOwnerHandler(Entity $content, bool $throw = false) : AbstractHandler;
 }

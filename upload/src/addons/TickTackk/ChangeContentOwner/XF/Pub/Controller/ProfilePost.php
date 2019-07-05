@@ -37,4 +37,28 @@ class ProfilePost extends XFCP_ProfilePost
             'TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeOwner'
         );
     }
+
+    /**
+     * @param ParameterBag $parameterBag
+     *
+     * @return RedirectReply|ViewReply
+     * @throws ExceptionReply
+     * @throws \XF\Db\Exception
+     * @throws \XF\PrintableException
+     */
+    public function actionCommentsChangeOwner(ParameterBag $parameterBag)
+    {
+        $comment = $this->assertViewableComment($parameterBag->profile_post_comment_id);
+        $profilePost = $this->assertViewableProfilePost($comment->profile_post_id);
+
+        /** @var ContentPlugin $contentPlugin */
+        $contentPlugin = $this->plugin('TickTackk\ChangeContentOwner:Content');
+        return $contentPlugin->actionChangeOwner(
+            $comment,
+            'TickTackk\ChangeContentOwner\XF:ProfilePost\CommentOwnerChanger',
+            'XF:ProfilePostComment',
+            'TickTackk\ChangeContentOwner\XF:ProfilePost\Comments\ChangeOwner',
+            'XF:ProfilePost'
+        );
+    }
 }

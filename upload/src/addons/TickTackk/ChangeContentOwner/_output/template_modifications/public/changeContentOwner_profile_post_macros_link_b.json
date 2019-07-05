@@ -1,0 +1,9 @@
+{
+    "template": "profile_post_macros",
+    "description": "Add \"Change owner or date\" in action bar for profile post comment",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "#(<xf:if is=\"\\$comment\\.canWarn\\(\\)\">.*?)(<xf:if is=\"\\$hasActionBarMenu.*?\">)#si",
+    "replace": "$1\n\n<xf:macro template=\"tckChangeContentOwner_macros\" name=\"action_link\"\n\t\t  arg-content=\"{$comment}\"\n\t\t  arg-route=\"profile-posts/comments\" />\n\n$2"
+}

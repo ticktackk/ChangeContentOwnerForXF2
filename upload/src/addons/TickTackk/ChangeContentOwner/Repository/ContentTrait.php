@@ -3,6 +3,7 @@
 namespace TickTackk\ChangeContentOwner\Repository;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
+use XF\Mvc\Entity\Entity;
 
 /**
  * Trait ContentTrait
@@ -12,27 +13,15 @@ use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
 trait ContentTrait
 {
     /**
-     * @return string
-     */
-    protected function getIdentifierForChangeOwner() : string
-    {
-        return $this->identifier;
-    }
-
-    /**
-     * @param bool $throw
+     * @param Entity $content
+     * @param bool   $throw
      *
      * @return AbstractHandler
      * @throws \Exception
      */
-    public function getChangeOwnerHandler(bool $throw = false) : AbstractHandler
+    public function getChangeOwnerHandler(Entity $content, bool $throw = false) : AbstractHandler
     {
-        /** @var \XF\App $app */
-        $app = $this->app();
-
-        $entityStructure = $app->em()->getEntityStructure($this->getIdentifierForChangeOwner());
-        $contentType = $entityStructure->contentType;
-
+        $contentType = $content->structure()->contentType;
         $handlerClass = \XF::app()->getContentTypeFieldValue($contentType, 'change_owner_handler_class');
         if (!$handlerClass)
         {

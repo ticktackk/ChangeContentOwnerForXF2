@@ -29,6 +29,7 @@ namespace TickTackk\ChangeContentOwner\XF\Entity
 	class XFCP_Forum extends \XF\Entity\Forum {}
 	class XFCP_Post extends \XF\Entity\Post {}
 	class XFCP_ProfilePost extends \XF\Entity\ProfilePost {}
+	class XFCP_ProfilePostComment extends \XF\Entity\ProfilePostComment {}
 	class XFCP_Thread extends \XF\Entity\Thread {}
 }
 

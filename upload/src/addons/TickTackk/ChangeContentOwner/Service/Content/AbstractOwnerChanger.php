@@ -124,7 +124,7 @@ abstract class AbstractOwnerChanger extends AbstractService
         $this->contents = $contents;
 
         $contentRepo = $this->getContentRepo();
-        $this->handler = $contentRepo->getChangeOwnerHandler(true);
+        $this->handler = $contentRepo->getChangeOwnerHandler($contents->first(), true);
     }
 
     /**

@@ -35,7 +35,7 @@ class Content extends AbstractPlugin
     {
         $repoIdentifier = $repoIdentifier ?: $entityIdentifier;
         $contentRepo = $this->getContentRepo($repoIdentifier);
-        $handler = $contentRepo->getChangeOwnerHandler(true);
+        $handler = $contentRepo->getChangeOwnerHandler($content, true);
 
         if (!$handler->canChangeOwner($content, null, $error) && !$handler->canChangeDate($content, $error))
         {

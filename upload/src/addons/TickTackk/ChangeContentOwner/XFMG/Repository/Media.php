@@ -13,12 +13,4 @@ use TickTackk\ChangeContentOwner\Repository\ContentTrait;
 class Media extends XFCP_Media implements ContentInterface
 {
     use ContentTrait;
-
-    /**
-     * @return string
-     */
-    protected function getIdentifierForChangeOwner(): string
-    {
-        return 'XFMG:MediaItem';
-    }
 }
