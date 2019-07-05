@@ -258,7 +258,7 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @return bool
      */
-    public function getLogModerator() : bool
+    public function getLogModerator() :? bool
     {
         return $this->logModerator;
     }
