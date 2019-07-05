@@ -68,14 +68,15 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected $logModerator;
 
     /**
-     * AbstractChanger constructor.
+     * AbstractOwnerChanger constructor.
      *
-     * @param \XF\App $app
+     * @param \XF\App   $app
      * @param array|Entity[]|ArrayCollection|ContentEntityInterface[]|Entity|ContentEntityInterface $contents
+     * @param bool|null $logModerator
      *
      * @throws \Exception
      */
-    public function __construct(\XF\App $app, $contents)
+    public function __construct(\XF\App $app, $contents, bool $logModerator = null)
     {
         parent::__construct($app);
 
@@ -87,6 +88,13 @@ abstract class AbstractOwnerChanger extends AbstractService
         {
             $this->setContents(new ArrayCollection($contents));
         }
+
+        if ($logModerator === null)
+        {
+            $logModerator = true;
+        }
+
+        $this->setLogModerator($logModerator);
     }
 
     /**
