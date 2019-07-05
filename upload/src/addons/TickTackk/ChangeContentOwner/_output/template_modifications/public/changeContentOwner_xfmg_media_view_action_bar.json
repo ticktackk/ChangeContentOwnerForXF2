@@ -1,6 +1,6 @@
 {
     "template": "xfmg_media_view",
-    "description": "Add \"Change media author\" in action bar",
+    "description": "Add \"Change owner or date\" in action bar for media item",
     "execution_order": 10,
     "enabled": true,
     "action": "str_replace",

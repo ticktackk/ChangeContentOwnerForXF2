@@ -1,6 +1,6 @@
 {
     "template": "post_macros",
-    "description": "Add \"Change owner\" in action bar",
+    "description": "Add \"Change owner or date\" in action bar for post",
     "execution_order": 10,
     "enabled": true,
     "action": "str_replace",

@@ -1,6 +1,6 @@
 {
     "template": "xfmg_album_view",
-    "description": "Add \"Change album owner\" in action bar",
+    "description": "Add \"Change owner or date\" in action bar for album (XFMG)",
     "execution_order": 10,
     "enabled": true,
     "action": "str_replace",

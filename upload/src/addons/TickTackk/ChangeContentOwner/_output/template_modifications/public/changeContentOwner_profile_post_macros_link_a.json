@@ -1,6 +1,6 @@
 {
     "template": "profile_post_macros",
-    "description": "Add \"Change profile post author\" in action bar",
+    "description": "Add \"Change owner or date\" in action bar for profile post",
     "execution_order": 10,
     "enabled": true,
     "action": "preg_replace",
