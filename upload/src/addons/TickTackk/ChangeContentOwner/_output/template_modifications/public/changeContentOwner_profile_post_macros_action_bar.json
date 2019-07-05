@@ -3,7 +3,7 @@
     "description": "Add \"Change profile post author\" in action bar",
     "execution_order": 10,
     "enabled": true,
-    "action": "str_replace",
-    "find": "<xf:if is=\"$profilePost.canEdit()\">",
-    "replace": "<xf:include template=\"changeContentOwner_profile_post_macros_action_bar\" />\n\t\t\t\t\t\t\t\t\t$0"
+    "action": "preg_replace",
+    "find": "#(<xf:if is=\"\\$profilePost\\.canWarn\\(\\)\">.*?)(<xf:if is=\"\\$hasActionBarMenu.*?\">)#si",
+    "replace": "$1\n\n<xf:macro template=\"tckChangeContentOwner_macros\" name=\"action_link\"\n\t\t  arg-content=\"{$profilePost}\"\n\t\t  arg-route=\"profile-posts\" />\n\n$2"
 }

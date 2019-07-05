@@ -33,6 +33,16 @@ class ProfilePost extends AbstractHandler
     /**
      * @param Entity|ExtendedProfilePostEntity $content
      *
+     * @return int
+     */
+    public function getOldDate(Entity $content): int
+    {
+        return $content->post_date;
+    }
+
+    /**
+     * @param Entity|ExtendedProfilePostEntity $content
+     *
      * @return string|\XF\Phrase
      */
     public function getContentTitle(Entity $content)
