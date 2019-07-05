@@ -415,13 +415,14 @@ abstract class AbstractOwnerChanger extends AbstractService
         $db = $this->db();
         foreach ($this->contentCounts AS $userId => $columnAndValue)
         {
-            [$column, $value] = $columnAndValue;
-
-            $db->query("
-                UPDATE xf_user
-                SET {$column} = GREATEST(0, {$column} + ?)
-                WHERE user_id = ?
-            ", [$value, $userId]);
+            foreach ($columnAndValue AS $column => $value)
+            {
+                $db->query("
+                    UPDATE xf_user
+                    SET {$column} = GREATEST(0, {$column} + ?)
+                    WHERE user_id = ?
+                ", [$value, $userId]);
+            }
         }
     }
 
@@ -445,7 +446,7 @@ abstract class AbstractOwnerChanger extends AbstractService
 
             if ($logModerator)
             {
-                [$action, $extraData] = $this->getLogData($content);
+                ['action' => $action, 'extraData' => $extraData] = $this->getLogData($content);
                 $logger->logModeratorAction($content->getEntityContentType(), $content, $action, $extraData);
             }
         }
