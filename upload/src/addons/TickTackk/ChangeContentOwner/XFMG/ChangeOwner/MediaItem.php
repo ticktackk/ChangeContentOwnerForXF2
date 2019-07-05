@@ -36,6 +36,16 @@ class MediaItem extends AbstractHandler
     /**
      * @param Entity|ExtendedMediaItemEntity $content
      *
+     * @return int
+     */
+    public function getOldDate(Entity $content): int
+    {
+        return $content->media_date;
+    }
+
+    /**
+     * @param Entity|ExtendedMediaItemEntity $content
+     *
      * @return string|\XF\Phrase
      */
     public function getContentTitle(Entity $content)

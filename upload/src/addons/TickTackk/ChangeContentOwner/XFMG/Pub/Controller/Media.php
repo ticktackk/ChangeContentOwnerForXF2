@@ -32,7 +32,7 @@ class Media extends XFCP_Media
         $contentPlugin = $this->plugin('TickTackk\ChangeContentOwner:Content');
         return $contentPlugin->actionChangeOwner(
             $mediaItem,
-            'TickTackk\ChangeContentOwner\XFMG:Media\OwnerChanger',
+            'TickTackk\ChangeContentOwner\XFMG:MediaItem\OwnerChanger',
             'XFMG:MediaItem',
             'TickTackk\ChangeContentOwner\XFMG:Media\ChangeOwner',
             'XFMG:Media'
