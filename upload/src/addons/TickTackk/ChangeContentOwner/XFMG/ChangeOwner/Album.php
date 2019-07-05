@@ -36,6 +36,16 @@ class Album extends AbstractHandler
     /**
      * @param Entity|ExtendedAlbumEntity $content
      *
+     * @return int
+     */
+    public function getOldDate(Entity $content): int
+    {
+        return $content->create_date;
+    }
+
+    /**
+     * @param Entity|ExtendedAlbumEntity $content
+     *
      * @return string|\XF\Phrase
      */
     public function getContentTitle(Entity $content)

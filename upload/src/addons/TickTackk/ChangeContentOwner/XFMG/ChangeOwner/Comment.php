@@ -47,7 +47,17 @@ class Comment extends AbstractHandler
      */
     public function getContentRoute(Entity $content): string
     {
-        return 'media/albums';
+        return 'media/comments';
+    }
+
+    /**
+     * @param Entity|ExtendedCommentEntity $content
+     *
+     * @return int
+     */
+    public function getOldDate(Entity $content): int
+    {
+        return $content->comment_date;
     }
 
     /**
