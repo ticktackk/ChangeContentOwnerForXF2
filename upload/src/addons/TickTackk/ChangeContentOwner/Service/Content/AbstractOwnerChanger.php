@@ -412,16 +412,20 @@ abstract class AbstractOwnerChanger extends AbstractService
      */
     protected function applyContentCount() : void
     {
-        $db = $this->db();
-        foreach ($this->contentCounts AS $userId => $columnAndValue)
+        $contentCounts = $this->contentCounts;
+        if ($contentCounts)
         {
-            foreach ($columnAndValue AS $column => $value)
+            $db = $this->db();
+            foreach ($contentCounts AS $userId => $columnAndValue)
             {
-                $db->query("
+                foreach ($columnAndValue AS $column => $value)
+                {
+                    $db->query("
                     UPDATE xf_user
                     SET {$column} = GREATEST(0, {$column} + ?)
                     WHERE user_id = ?
                 ", [$value, $userId]);
+                }
             }
         }
     }
