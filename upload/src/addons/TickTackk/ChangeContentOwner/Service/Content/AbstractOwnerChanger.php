@@ -387,7 +387,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             {
                 if (!$handler->canNewOwnerViewContent($content, $newOwner, $error))
                 {
-                    $errors[] = $error;
+                    $errors[] = $error ?: \XF::phrase('tckChangeContentOwner_new_owner_must_be_able_to_view_this_content');
                 }
             }
         }
