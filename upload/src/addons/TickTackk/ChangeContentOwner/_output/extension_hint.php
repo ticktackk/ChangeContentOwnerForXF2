@@ -3,6 +3,21 @@
 // ################## THIS IS A GENERATED FILE ##################
 // DO NOT EDIT DIRECTLY. EDIT THE CLASS EXTENSIONS IN THE CONTROL PANEL.
 
+namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Entity
+{
+	class XFCP_Graph extends \XFA\CSVGrapher\Entity\Graph {}
+}
+
+namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Pub\Controller
+{
+	class XFCP_Graph extends \XFA\CSVGrapher\Pub\Controller\Graph {}
+}
+
+namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Repository
+{
+	class XFCP_Graph extends \XFA\CSVGrapher\Repository\Graph {}
+}
+
 namespace TickTackk\ChangeContentOwner\XFMG\Entity
 {
 	class XFCP_Album extends \XFMG\Entity\Album {}

@@ -1,6 +1,6 @@
 {
     "template": "thread_view",
-    "description": "Add \"Change owner or date\" in action bar for thread tools menu",
+    "description": "Add \"Change owner or date\" for thread tools menu",
     "execution_order": 10,
     "enabled": true,
     "action": "str_replace",

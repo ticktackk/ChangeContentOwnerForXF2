@@ -1,0 +1,6 @@
+{
+    "from_class": "XFA\\CSVGrapher\\Repository\\Graph",
+    "to_class": "TickTackk\\ChangeContentOwner\\XFA\\CSVGrapher\\Repository\\Graph",
+    "execute_order": 10,
+    "active": true
+}
