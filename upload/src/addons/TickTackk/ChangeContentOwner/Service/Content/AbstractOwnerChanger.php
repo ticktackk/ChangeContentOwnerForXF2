@@ -387,8 +387,6 @@ abstract class AbstractOwnerChanger extends AbstractService
                 $this->contents[$id] = $this->changeContentDate($content, $newDate);
             }
 
-            \XF::dumpSimple($newDate);
-
             if ($newOwner || $newDate)
             {
                 $this->applyAdditionalChanges($content);
