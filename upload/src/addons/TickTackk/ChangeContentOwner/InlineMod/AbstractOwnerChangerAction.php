@@ -119,7 +119,9 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     {
         return [
             'username' => $request->filter('username', 'str'),
-            'date' => $request->filter('date', 'datetime')
+            'date' => $request->filter('date', 'datetime', [
+                'tz' => \XF::visitor()->timezone
+            ])
         ];
     }
 

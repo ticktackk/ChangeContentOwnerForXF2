@@ -56,7 +56,9 @@ class Content extends AbstractPlugin
                 }
             }
 
-            $newDate = $this->filter('date', 'datetime');
+            $newDate = $this->filter('date', 'datetime', [
+                'tz' => \XF::visitor()->timezone
+            ]);
             if ($newDate)
             {
                 if (!$handler->canChangeDate($content, $error))
