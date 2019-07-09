@@ -1,0 +1,43 @@
+@_input-textColor: xf-default(@xf-input--color, @xf-textColor);
+
+.pika-select
+{
+	.xf-input();
+	display: block;
+	width: 100%;
+	line-height: @xf-lineHeightDefault;
+	text-align: left; // this will be flipped in RTL
+	word-wrap: break-word;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	.m-transition();
+	.m-placeholder({color: fade(@_input-textColor, 40%); });
+	
+	padding-right: 1em !important;
+	.m-selectGadgetColor(@_input-textColor);
+	background-size: 1em !important;
+	background-repeat: no-repeat !important;
+	-ltr-background-position: 100% !important;
+	white-space: nowrap;
+	word-wrap: normal;
+	-webkit-appearance: none !important;
+	-moz-appearance: none !important;
+	appearance: none !important;
+
+	overflow-x: hidden; // iOS seems to require this to prevent overflow with long options...
+	overflow-y: auto; // ...and Firefox seems to require this to prevent the above from breaking vertical scroll...
+
+	&[disabled]
+	{
+		.m-selectGadgetColor(xf-default(@xf-inputDisabled--color, @xf-textColor));
+	}
+
+	&:focus,
+	&.is-focused
+	{
+		outline: 0;
+		.xf-inputFocus();
+		.m-placeholder({color: fade(@_input-textColor, 50%); });
+	}
+}

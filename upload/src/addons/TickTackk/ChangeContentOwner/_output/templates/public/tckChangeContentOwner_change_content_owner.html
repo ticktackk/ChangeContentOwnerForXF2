@@ -10,6 +10,9 @@
 
 <xf:breadcrumb source="{$breadcrumbs}" />
 
+<xf:css src="tckChangeContentOwner_change_content_owner.less" />
+<xf:js addon="TickTackk/ChangeContentOwner" src="ticktackk/changecontentowner/main.js" min="1" />
+
 <xf:form action="{$changeOwnerLink}" ajax="true" class="block">
 	<div class="block-container">
 		<div class="block-body">
@@ -23,12 +26,20 @@
 			
 			<xf:if is="$handler.canChangeDate($content)">
 				<xf:dateinputrow name="date"
-							label="{{ phrase('tckChangeContentOwner_new_date') }}"
-							explain="{{ phrase('tckChangeContentOwner_new_date_explain') }}"
-							time="{$apiKey.last_use_date}"/>
+								 label="{{ phrase('tckChangeContentOwner_new_date') }}"
+								 explain="{{ phrase('tckChangeContentOwner_new_date_explain') }}"
+								 time="{$apiKey.last_use_date}"
+								 data-allow-setting-time="true" />
 			</xf:if>
 		</div>
 
 		<xf:submitrow rowtype="simple" icon="save" />
 	</div>
 </xf:form>
+
+<script class="js-extraPhrases" type="application/json">
+	{
+		"midnight": "{{ phrase('midnight')|escape('json') }}",
+		"noon": "{{ phrase('noon')|escape('json') }}"
+	}
+</script>

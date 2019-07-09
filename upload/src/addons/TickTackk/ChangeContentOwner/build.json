@@ -1,0 +1,8 @@
+{
+  "additional_files": [
+    "js/ticktackk/changecontentowner/"
+  ],
+  "minify":           [
+    "js/ticktackk/changecontentowner/main.js"
+  ]
+}
