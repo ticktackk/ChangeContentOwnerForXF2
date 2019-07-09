@@ -36,3 +36,28 @@
 		   data-xf-click="overlay">{{ phrase('tckChangeContentOwner_change_date') }}</a>
 	</xf:if>
 </xf:macro>
+
+<xf:macro name="change_owner_row">
+	<xf:textboxrow name="username"
+				   label="{{ phrase('tckChangeContentOwner_new_owner') }}"
+				   explain="{{ phrase('tckChangeContentOwner_new_owner_name_explain') }}"
+				   ac="true"
+				   data-single="true" />
+</xf:macro>
+
+<xf:macro name="change_date_row">
+	<xf:css src="tckChangeContentOwner_macros_change_date_row.less" />
+	<xf:js addon="TickTackk/ChangeContentOwner" src="ticktackk/changecontentowner/main.js" min="1" />
+	
+	<xf:dateinputrow name="date"
+					 label="{{ phrase('tckChangeContentOwner_new_date') }}"
+					 explain="{{ phrase('tckChangeContentOwner_new_date_explain') }}"
+					 data-allow-setting-time="true" />
+	
+	<script class="js-extraPhrases" type="application/json">
+		{
+			"midnight": "{{ phrase('midnight')|escape('json') }}",
+			"noon": "{{ phrase('noon')|escape('json') }}"
+		}
+	</script>
+</xf:macro>

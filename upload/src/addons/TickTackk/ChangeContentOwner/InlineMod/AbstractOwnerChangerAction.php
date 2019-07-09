@@ -2,7 +2,7 @@
 
 namespace TickTackk\ChangeContentOwner\InlineMod;
 
-use TickTackk\ChangeContentOwner\Entity\ContentInterface;
+use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger as AbstractOwnerChangerSvc;
 use XF\Entity\User as UserEntity;
 use XF\Http\Request;
@@ -21,11 +21,32 @@ use XF\Mvc\Reply\View as ReplyView;
 abstract class AbstractOwnerChangerAction extends AbstractAction
 {
     /**
+     * @var UserEntity
+     */
+    protected $newUser;
+
+    /**
      * @return \XF\Phrase
      */
     public function getTitle() : \XF\Phrase
     {
-        return \XF::phrase('tckChangeContentOwner_change_content_date');
+        return \XF::phrase('tckChangeContentOwner_change_owner_or_date');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getContentType() : string
+    {
+        return $this->handler->getContentType();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getContentTypePlural() : string
+    {
+        return utf8_strtolower($this->app()->getContentTypePhrase($this->getContentType(), true));
     }
 
     /**
@@ -45,25 +66,47 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     abstract protected function getFormViewClass() : string;
 
     /**
-     * @param AbstractCollection $contents
+     * @param AbstractCollection|ContentEntityInterface[] $contents
      * @param Controller         $controller
      *
      * @return ReplyView
      */
     public function renderForm(AbstractCollection $contents, Controller $controller) : ReplyView
     {
+        $canChangeOwner = false;
+        $canChangeDate = false;
+
+        foreach ($contents AS $content)
+        {
+            if ($content->canChangeOwner())
+            {
+                $canChangeOwner = true;
+            }
+
+            if ($content->canChangeDate())
+            {
+                $canChangeDate = true;
+            }
+
+            if ($canChangeOwner && $canChangeDate)
+            {
+                continue;
+            }
+        }
+
         $viewParams = [
+            'contentType' => $this->getContentType(),
+            'contentTypePlural' => $this->getContentTypePlural(),
+
+            'canChangeOwner' => $canChangeOwner,
+            'canChangeDate' => $canChangeDate,
+
             'contents' => $contents,
             'total' => \count($contents)
         ];
 
         return $controller->view($this->getFormViewClass(), 'inline_mod_content_change_owner', $viewParams);
     }
-
-    /**
-     * @var UserEntity
-     */
-    protected $newUser;
 
     /**
      * @param AbstractCollection $contents
@@ -88,7 +131,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     }
 
     /**
-     * @param Entity|ContentInterface $content
+     * @param Entity|ContentEntityInterface $content
      * @param array  $options
      * @param null   $error
      *

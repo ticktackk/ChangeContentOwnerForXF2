@@ -1,0 +1,48 @@
+<xf:title><xf:trim>
+	<xf:if is="$canChangeOwner && $canChangeDate">
+		{{ phrase('tckChangeContentOwner_inline_moderation_change_owner_or_date') }}
+	<xf:elseif is="$canChangeOwner" />
+		{{ phrase('tckChangeContentOwner_inline_moderation_change_owner') }}
+	<xf:elseif is="$canChangeDate" />
+		{{ phrase('tckChangeContentOwner_inline_moderation_change_date') }}
+	</xf:if>
+</xf:trim></xf:title>
+
+<xf:form action="{{ link('inline-mod') }}" class="block" ajax="true">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				<xf:trim>
+					<xf:if is="$canChangeOwner && $canChangeDate">
+						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_owner_or_date_x_contents', {'count': $total, 'content_type_plural': $contentTypePlural}) }}
+					<xf:elseif is="$canChangeOwner" />
+						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_owner_x_contents', {'count': $total, 'content_type_plural': $contentTypePlural}) }}
+					<xf:elseif is="$canChangeDate" />
+						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_date_x_contents', {'count': $total, 'content_type_plural': $contentTypePlural}) }}
+					</xf:if>
+				</xf:trim>
+			</xf:inforow>
+
+			<xf:if is="$canChangeOwner">
+				<xf:macro template="tckChangeContentOwner_macros"
+						  name="change_owner_row" />
+			</xf:if>
+			
+			<xf:if is="$canChangeDate">
+				<xf:macro template="tckChangeContentOwner_macros"
+						  name="change_date_row" />
+			</xf:if>
+		</div>
+		<xf:submitrow icon="confirm" />
+	</div>
+
+	<xf:foreach loop="$contents" value="$content">
+		<xf:hiddenval name="ids[]">{$content.getEntityId()}</xf:hiddenval>
+	</xf:foreach>
+
+	<xf:hiddenval name="type">{$contentType}</xf:hiddenval>
+	<xf:hiddenval name="action">change_owner</xf:hiddenval>
+	<xf:hiddenval name="confirmed">1</xf:hiddenval>
+
+	<xf:redirect url="{$redirect}" />
+</xf:form>

@@ -16,7 +16,7 @@ class ChangeOwner extends AbstractOwnerChangerAction
      */
     protected function abstractServiceName(): string
     {
-        return 'TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeOwner';
+        return 'TickTackk\ChangeContentOwner\XF:ProfilePost\OwnerChanger';
     }
 
     /**

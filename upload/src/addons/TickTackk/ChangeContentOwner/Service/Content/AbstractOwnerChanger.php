@@ -93,6 +93,10 @@ abstract class AbstractOwnerChanger extends AbstractService
         {
             $this->setContents(new ArrayCollection($contents));
         }
+        else
+        {
+            $this->setContents($contents);
+        }
 
         if ($logModerator === null)
         {
@@ -270,7 +274,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             $actions[] = 'date';
 
             $extraData['old_date'] = $oldDate;
-            $extraData['new_date'] = $newDate;
+            $extraData['new_date_provided'] = $newDate;
         }
 
         return [
@@ -393,8 +397,6 @@ abstract class AbstractOwnerChanger extends AbstractService
                 $this->timeIntervalCounter++;
             }
         }
-
-        die();
     }
 
     /**
