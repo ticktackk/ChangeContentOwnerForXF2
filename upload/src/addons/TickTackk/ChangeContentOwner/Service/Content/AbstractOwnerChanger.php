@@ -68,6 +68,11 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected $logModerator;
 
     /**
+     * @var int
+     */
+    protected $timeIntervalCounter = 1;
+
+    /**
      * AbstractOwnerChanger constructor.
      *
      * @param \XF\App   $app
@@ -121,9 +126,8 @@ abstract class AbstractOwnerChanger extends AbstractService
             }
         }
 
-        $this->contents = $contents;
-
         $contentRepo = $this->getContentRepo();
+        $this->contents = $contents;
         $this->handler = $contentRepo->getChangeOwnerHandler($contents->first(), true);
     }
 
@@ -160,11 +164,31 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
+     * @return int
+     */
+    public function getTimeInterval() : int
+    {
+        if ($this->contents->count() > 1)
+        {
+            return (int) $this->app->options()->tckChangeContentOwner_timeInterval;
+        }
+
+        return 0;
+    }
+
+    /**
      * @return null|int
      */
     public function getNewDate() :? int
     {
-        return $this->newDate;
+        $newDate = $this->newDate;
+
+        if ($newDate)
+        {
+            $newDate += $this->timeIntervalCounter * $this->getTimeInterval();
+        }
+
+        return $newDate;
     }
 
     /**
@@ -348,10 +372,9 @@ abstract class AbstractOwnerChanger extends AbstractService
         $db->beginTransaction();
 
         $newOwner = $this->getNewOwner();
-        $newDate = $this->getNewDate();
-
         foreach ($this->contents AS $id => $content)
         {
+            $newDate = $this->getNewDate();
             $oldOwner = $this->getOldOwner($content);
             if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
             {
@@ -364,11 +387,16 @@ abstract class AbstractOwnerChanger extends AbstractService
                 $this->contents[$id] = $this->changeContentDate($content, $newDate);
             }
 
+            \XF::dumpSimple($newDate);
+
             if ($newOwner || $newDate)
             {
                 $this->applyAdditionalChanges($content);
+                $this->timeIntervalCounter++;
             }
         }
+
+        die();
     }
 
     /**
