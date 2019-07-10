@@ -2,7 +2,6 @@
 
 namespace TickTackk\ChangeContentOwner\Entity;
 
-use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
 use XF\Entity\User;
 
 /**

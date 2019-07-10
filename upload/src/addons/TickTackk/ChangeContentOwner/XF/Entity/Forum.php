@@ -17,7 +17,7 @@ class Forum extends XFCP_Forum
      *
      * @return bool
      */
-    public function canChangeThreadOwner(UserEntity $newOwner = null, &$error = null) : bool
+    public function canChangeThreadOwner(/** @noinspection PhpUnusedParameterInspection */UserEntity $newOwner = null, &$error = null) : bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
@@ -33,7 +33,7 @@ class Forum extends XFCP_Forum
      *
      * @return bool
      */
-    public function canChangeThreadDate(&$error = null) : bool
+    public function canChangeThreadDate(/** @noinspection PhpUnusedParameterInspection */&$error = null) : bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
@@ -50,7 +50,7 @@ class Forum extends XFCP_Forum
      *
      * @return bool
      */
-    public function canChangePostOwner(UserEntity $newOwner = null, &$error = null) : bool
+    public function canChangePostOwner(/** @noinspection PhpUnusedParameterInspection */UserEntity $newOwner = null, &$error = null) : bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
@@ -66,7 +66,7 @@ class Forum extends XFCP_Forum
      *
      * @return bool
      */
-    public function canChangePostDate(&$error = null) : bool
+    public function canChangePostDate(/** @noinspection PhpUnusedParameterInspection */&$error = null) : bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)

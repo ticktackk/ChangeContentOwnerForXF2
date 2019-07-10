@@ -18,8 +18,9 @@ class SetupListener
      * @param array       $json
      * @param array       $stateChanges
      */
-    public static function addOnPostInstall(AddOn $addOn, AddOnEntity $installedAddOn, array $json, array &$stateChanges) : void
+    public static function addOnPostInstall(/** @noinspection PhpUnusedParameterInspection */AddOn $addOn, AddOnEntity $installedAddOn, array $json, array &$stateChanges) : void
     {
+        /** @noinspection DegradedSwitchInspection */
         switch ($addOn->getAddOnId())
         {
             case 'XFMG':

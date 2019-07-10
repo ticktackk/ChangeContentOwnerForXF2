@@ -9,7 +9,6 @@ use XF\Http\Request;
 use XF\InlineMod\AbstractAction;
 use XF\Mvc\Controller;
 use XF\Mvc\Entity\AbstractCollection;
-use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Reply\View as ReplyView;
 
@@ -215,7 +214,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
      * @param Entity $entity
      * @param array  $options
      */
-    protected function applyToEntity(Entity $entity, array $options)
+    protected function applyToEntity(Entity $entity, array $options) : void
     {
         throw new \LogicException('An error occurred while applying selected action on the contents. Please try again later.'); // dont
     }

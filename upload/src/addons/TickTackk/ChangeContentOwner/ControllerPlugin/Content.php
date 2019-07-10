@@ -95,7 +95,7 @@ class Content extends AbstractPlugin
             {
                 /** @var Repository|ContentRepoInterface $contentRepo */
                 $contentRepo = $this->repository($repoName);
-                $reply->setParam('changeOwnerHandler', $contentRepo->getChangeOwnerHandler($content, false));
+                $reply->setParam('changeOwnerHandler', $contentRepo->getChangeOwnerHandler($content));
             }
         }
     }

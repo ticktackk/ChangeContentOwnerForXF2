@@ -3,14 +3,10 @@
 namespace TickTackk\ChangeContentOwner\ChangeOwner;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface;
-use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
-use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger as AbstractOwnerChangerSvc;
 use XF\Entity\User as UserEntity;
-use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Repository;
 use XF\Repository\User as UserRepo;
-use XF\Service\AbstractService;
 
 /**
  * Class AbstractHandler
@@ -85,6 +81,7 @@ abstract class AbstractHandler
         $oldContentOwner = null;
         try
         {
+            /** @noinspection PhpUndefinedFieldInspection */
             $oldContentOwner = $content->User;
         }
         catch (\InvalidArgumentException $e)
@@ -157,6 +154,7 @@ abstract class AbstractHandler
 
         return \XF::asVisitor($newOwner, function () use($content, $error)
         {
+            /** @noinspection PhpUndefinedMethodInspection */
             return $content->canView($error);
         });
     }
@@ -220,7 +218,7 @@ abstract class AbstractHandler
     /**
      * @return \XF\App
      */
-    protected function app()
+    protected function app() : \XF\App
     {
         return \XF::app();
     }

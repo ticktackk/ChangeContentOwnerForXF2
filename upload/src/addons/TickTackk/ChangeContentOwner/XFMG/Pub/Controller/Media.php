@@ -2,10 +2,8 @@
 
 namespace TickTackk\ChangeContentOwner\XFMG\Pub\Controller;
 
-use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;
 use TickTackk\ChangeContentOwner\Pub\Controller\ContentTrait;
 use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInterface;
-use XF\ControllerPlugin\AbstractPlugin;
 use XF\Mvc\ParameterBag;
 use XF\Mvc\Reply\Error as ErrorReply;
 use XF\Mvc\Reply\Exception as ExceptionReply;
@@ -13,7 +11,6 @@ use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\View as ViewReply;
 use XFMG\Service\Media\Editor as MediaEditorSvc;
 use XFMG\Entity\MediaItem as MediaItemEntity;
-use TickTackk\ChangeContentOwner\XFMG\Entity\MediaItem as ExtendedMediaItemEntity;
 
 /**
  * Class Media

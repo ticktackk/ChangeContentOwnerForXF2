@@ -23,7 +23,7 @@ class OwnerChanger extends AbstractOwnerChanger
      *
      * @throws \Exception
      */
-    public function __construct(\XF\App $app, $contents, bool $logModerator = null)
+    public function __construct(/** @noinspection PhpUnusedParameterInspection */ \XF\App $app, $contents, bool $logModerator = null)
     {
         parent::__construct($app, $contents, false);
     }

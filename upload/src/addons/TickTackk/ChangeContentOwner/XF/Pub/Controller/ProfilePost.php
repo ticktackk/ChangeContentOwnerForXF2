@@ -2,11 +2,8 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Pub\Controller;
 
-use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;
 use TickTackk\ChangeContentOwner\Pub\Controller\ContentTrait;
 use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInterface;
-use XF\ControllerPlugin\AbstractPlugin;
-use XF\Entity\Thread as ThreadEntity;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\ParameterBag;
 use XF\Mvc\Reply\Error as ErrorReply;
@@ -14,7 +11,6 @@ use XF\Mvc\Reply\Exception as ExceptionReply;
 use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\View as ViewReply;
 use XF\Service\ProfilePost\Editor as ProfilePostEditor;
-use XF\Entity\ProfilePost as ProfilePostEntity;
 use XF\Service\ProfilePostComment\Editor as ProfilePostCommentEditor;
 use XF\Entity\ProfilePostComment as ProfilePostCommentEntity;
 
@@ -92,6 +88,7 @@ class ProfilePost extends XFCP_ProfilePost
      */
     public function actionCommentsChangeOwner(ParameterBag $parameterBag)
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         $comment = $this->assertViewableComment($parameterBag->profile_post_comment_id);
 
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(

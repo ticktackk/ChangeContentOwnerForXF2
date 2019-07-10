@@ -2,7 +2,6 @@
 
 namespace TickTackk\ChangeContentOwner\XF\Pub\Controller;
 
-use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;
 use TickTackk\ChangeContentOwner\Pub\Controller\ContentTrait;
 use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInterface;
 use TickTackk\ChangeContentOwner\XF\Service\Post\Editor as PostEditorSvc;

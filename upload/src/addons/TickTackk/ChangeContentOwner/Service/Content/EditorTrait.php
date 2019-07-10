@@ -2,9 +2,7 @@
 
 namespace TickTackk\ChangeContentOwner\Service\Content;
 
-use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
 use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
-use TickTackk\ChangeContentOwner\Repository\ContentInterface as ContentRepoInterface;
 use XF\Db\AbstractAdapter;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
@@ -77,11 +75,13 @@ trait EditorTrait
         }
     }
 
+    /** @noinspection ReturnTypeCanBeDeclaredInspection */
     /**
      * @return array
      */
     protected function _validate()
     {
+        /** @noinspection PhpUndefinedClassInspection */
         $errors = parent::_validate();
 
         if ($this->ownerChanger)
@@ -92,6 +92,7 @@ trait EditorTrait
         return $errors;
     }
 
+    /** @noinspection ReturnTypeCanBeDeclaredInspection */
     /**
      * @return Entity
      * @throws \XF\PrintableException
@@ -107,6 +108,7 @@ trait EditorTrait
             $this->ownerChanger->save();
         }
 
+        /** @noinspection PhpUndefinedClassInspection */
         $content = parent::_save();
 
         $db->commit();
