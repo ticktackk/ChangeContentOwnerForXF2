@@ -1,0 +1,6 @@
+{
+    "from_class": "XFMG\\Service\\Media\\Editor",
+    "to_class": "TickTackk\\ChangeContentOwner\\XFMG\\Service\\Media\\Editor",
+    "execute_order": 10,
+    "active": true
+}

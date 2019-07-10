@@ -3,10 +3,15 @@
 namespace TickTackk\ChangeContentOwner\XF\Pub\Controller;
 
 use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;
+use TickTackk\ChangeContentOwner\Pub\Controller\ContentTrait;
+use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInterface;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\Error as ErrorReply;
 use XF\Mvc\Reply\Exception as ExceptionReply;
 use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\View as ViewReply;
+use XF\Service\Thread\Editor as ThreadEditor;
+use XF\Entity\Thread as ThreadEntity;
 
 /**
  * Class Thread
@@ -15,6 +20,8 @@ use XF\Mvc\Reply\View as ViewReply;
  */
 class Thread extends XFCP_Thread
 {
+    use ContentTrait;
+
     /**
      * @param ParameterBag $parameterBag
      *
@@ -28,13 +35,45 @@ class Thread extends XFCP_Thread
         /** @noinspection PhpUndefinedFieldInspection */
         $thread = $this->assertViewableThread($parameterBag->thread_id);
 
-        /** @var ContentPlugin $contentPlugin */
-        $contentPlugin = $this->plugin('TickTackk\ChangeContentOwner:Content');
-        return $contentPlugin->actionChangeOwner(
+        return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $thread,
             'TickTackk\ChangeContentOwner\XF:Thread\OwnerChanger',
             'XF:Thread',
             'TickTackk\ChangeContentOwner\XF:Thread\ChangeOwner'
         );
+    }
+
+    /**
+     * @param ParameterBag $params
+     *
+     * @return ErrorReply|RedirectReply|ViewReply
+     */
+    public function actionEdit(ParameterBag $params)
+    {
+        $reply = parent::actionEdit($params);
+
+        $this->getChangeContentOwnerPlugin()->extendContentEditAction(
+            $reply,
+            'thread',
+            'XF:Thread'
+        );
+
+        return $reply;
+    }
+
+    /**
+     * @param ThreadEntity $thread
+     *
+     * @return EditorSvcInterface|ThreadEditor
+     * @throws ExceptionReply
+     */
+    protected function setupThreadEdit(ThreadEntity $thread)
+    {
+        /** @var ThreadEditor|EditorSvcInterface $editor */
+        $editor = parent::setupThreadEdit($thread);
+
+        $this->getChangeContentOwnerPlugin()->extendEditorService($thread, $editor, 'XF:Thread');
+
+        return $editor;
     }
 }

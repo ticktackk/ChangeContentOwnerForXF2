@@ -1,0 +1,9 @@
+{
+    "template": "xfmg_comment_edit",
+    "description": "Allow changing cotent owner and date when editing comment (XFMG)",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "#<xf:if is=\"\\$comment\\.canSendModeratorActionAlert\\(\\).*?\">.*?<\\/xf:if>#si",
+    "replace": "$0\n\n<xf:macro template=\"tckChangeContentOwner_macros\"\n\t\t  name=\"change_rows\"\n\t\t  arg-handler=\"{$changeOwnerHandler}\"\n\t\t  arg-content=\"{$comment}\"\n\t\t  arg-forceHR=\"{{ true }}\" />"
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace TickTackk\ChangeContentOwner\XFMG\Service\MediaItem;
+namespace TickTackk\ChangeContentOwner\XFMG\Service\Media;
 
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
 use TickTackk\ChangeContentOwner\XFMG\Entity\MediaItem as ExtendedMediaItemEntity;
@@ -10,7 +10,7 @@ use XF\Mvc\Entity\Entity;
 /**
  * Class OwnerChanger
  *
- * @package TickTackk\ChangeContentOwner\XFMG\Service\MediaItem
+ * @package TickTackk\ChangeContentOwner\XFMG\Service\Media
  */
 class OwnerChanger extends AbstractOwnerChanger
 {

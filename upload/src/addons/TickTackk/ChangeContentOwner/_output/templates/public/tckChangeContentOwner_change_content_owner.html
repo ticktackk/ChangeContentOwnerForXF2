@@ -13,15 +13,9 @@
 <xf:form action="{$changeOwnerLink}" ajax="true" class="block">
 	<div class="block-container">
 		<div class="block-body">
-			<xf:if is="$handler.canChangeOwner($content)">
-				<xf:macro template="tckChangeContentOwner_macros"
-						  name="change_owner_row" />
-			</xf:if>
-			
-			<xf:if is="$handler.canChangeDate($content)">
-				<xf:macro template="tckChangeContentOwner_macros"
-						  name="change_date_row" />
-			</xf:if>
+			<xf:macro template="tckChangeContentOwner_macros" name="change_rows"
+					  arg-handler="{$handler}"
+					  arg-content="{$content}" />
 		</div>
 
 		<xf:submitrow rowtype="simple" icon="save" />

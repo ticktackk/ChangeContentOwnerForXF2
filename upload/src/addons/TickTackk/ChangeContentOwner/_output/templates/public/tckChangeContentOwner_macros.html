@@ -61,3 +61,17 @@
 		}
 	</script>
 </xf:macro>
+
+<xf:macro name="change_rows" arg-handler="!" arg-content="!">
+	<xf:if is="$handler AND $content">
+		<xf:if is="$handler.canChangeOwner($content)">
+			<xf:macro template="tckChangeContentOwner_macros"
+					  name="change_owner_row" />
+		</xf:if>
+
+		<xf:if is="$handler.canChangeDate($content)">
+			<xf:macro template="tckChangeContentOwner_macros"
+					  name="change_date_row" />
+		</xf:if>
+	</xf:if>
+</xf:macro>

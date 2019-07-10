@@ -2,15 +2,19 @@
 
 namespace TickTackk\ChangeContentOwner\ControllerPlugin;
 
+use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
 use TickTackk\ChangeContentOwner\Repository\ContentInterface as ContentRepoInterface;
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger as AbstractOwnerChangerSvc;
+use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInterface;
 use XF\Entity\User as UserEntity;
 use XF\ControllerPlugin\AbstractPlugin;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Repository;
+use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\View as ViewReply;
 use XF\Mvc\Reply\Exception as ExceptionReply;
+use XF\Service\AbstractService;
 
 /**
  * Class Content
@@ -44,63 +48,12 @@ class Content extends AbstractPlugin
 
         if ($this->isPost())
         {
-            $newOwner = null;
-            $newOwnerUsername = $this->filter('username', 'str');
-
-            if ($newOwnerUsername)
-            {
-                $newOwner = $this->assertViewableUser($newOwnerUsername);
-                if (!$handler->canChangeOwner($content, $newOwner, $error))
-                {
-                    throw $this->exception($this->noPermission($error));
-                }
-            }
-
-            $newDate = $this->filter('date', 'datetime', [
-                'tz' => \XF::visitor()->timezone
-            ]);
-            if ($newDate)
-            {
-                if (!$handler->canChangeDate($content, $error))
-                {
-                    throw $this->exception($this->noPermission($error));
-                }
-            }
-
-            if (!$newOwner && !$newDate)
-            {
-                if ($handler->canChangeOwner($content) && $handler->canChangeDate($content))
-                {
-                    throw $this->exception($this->error(\XF::phrase('tckChangeContentOwner_you_must_either_change_owner_or_date_of_this_x', [
-                        'content_type_phrase' => $handler->getContentTypePhrase()
-                    ])));
-                }
-
-                if ($handler->canChangeOwner($content))
-                {
-                    throw $this->exception($this->error(\XF::phrase('please_enter_valid_name')));
-                }
-
-                if ($handler->canChangeDate($content))
-                {
-                    throw $this->exception($this->error(\XF::phrase('tckChangeContentOwner_please_enter_valid_date')));
-                }
-            }
-
             /** @var AbstractOwnerChangerSvc $ownerChangerSvc */
             $ownerChangerSvc = $this->service($serviceName, $content);
-            if ($newOwner)
-            {
-                $ownerChangerSvc->setNewOwner($newOwner);
-            }
 
-            if ($newDate)
-            {
-                $ownerChangerSvc->setNewDate($newDate);
-            }
+            $this->setNewOwnerAndDate($ownerChangerSvc, $content, $repoIdentifier);
 
             $ownerChangerSvc->apply();
-
             if (!$ownerChangerSvc->validate($errors))
             {
                 throw $this->exception($this->error($errors));
@@ -125,6 +78,107 @@ class Content extends AbstractPlugin
             'tckChangeContentOwner_change_content_owner',
             $viewParams
         );
+    }
+
+    /**
+     * @param AbstractReply $reply
+     * @param string        $contentParamName
+     * @param string        $repoName
+     */
+    public function extendContentEditAction(AbstractReply $reply, string $contentParamName, string $repoName) : void
+    {
+        if ($reply instanceof ViewReply)
+        {
+            /** @var Entity|ContentEntityInterface $content */
+            $content = $reply->getParam($contentParamName);
+            if ($content)
+            {
+                /** @var Repository|ContentRepoInterface $contentRepo */
+                $contentRepo = $this->repository($repoName);
+                $reply->setParam('changeOwnerHandler', $contentRepo->getChangeOwnerHandler($content, false));
+            }
+        }
+    }
+
+    /**
+     * @param Entity|ContentEntityInterface             $content
+     * @param EditorSvcInterface $editor
+     * @param string             $repoIdentifier
+     *
+     * @throws ExceptionReply
+     */
+    public function extendEditorService(Entity $content, EditorSvcInterface $editor, string $repoIdentifier) : void
+    {
+        if ($this->isPost())
+        {
+            $editor->setupOwnerChanger();
+            $this->setNewOwnerAndDate($editor, $content, $repoIdentifier);
+            $editor->applyOwnerChanger();
+        }
+    }
+
+    /**
+     * @param AbstractService|EditorSvcInterface|AbstractOwnerChangerSvc        $abstractService
+     * @param ContentEntityInterface|Entity $content
+     * @param string                 $repoIdentifier
+     *
+     * @throws ExceptionReply
+     */
+    protected function setNewOwnerAndDate(AbstractService $abstractService, ContentEntityInterface $content, string $repoIdentifier) : void
+    {
+        $contentRepo = $this->getContentRepo($repoIdentifier);
+        $handler = $contentRepo->getChangeOwnerHandler($content, true);
+
+        $newOwnerUsername = $this->filter('username', 'str');
+        $newDate = $this->filter('date', 'datetime', [
+            'tz' => \XF::visitor()->timezone
+        ]);
+
+        if ($newOwnerUsername)
+        {
+            $newOwner = $this->assertViewableUser($newOwnerUsername);
+            if (!$newOwner)
+            {
+                throw $this->exception($this->error(\XF::phrase('please_enter_valid_name')));
+            }
+
+            if (!$handler->canChangeOwner($content, $newOwner, $error))
+            {
+                throw $this->exception($this->noPermission($error));
+            }
+
+            $abstractService->setNewOwner($newOwner);
+        }
+
+        if ($newDate)
+        {
+            if (!$handler->canChangeDate($content, $error))
+            {
+                throw $this->exception($this->noPermission($error));
+            }
+
+            $abstractService->setNewDate($newDate);
+        }
+
+        if (!$newOwnerUsername && !$newDate)
+        {
+            if ($handler->canChangeOwner($content) && $handler->canChangeDate($content))
+            {
+                throw $this->exception($this->error(\XF::phrase('tckChangeContentOwner_you_must_either_change_owner_or_date_of_this_x', [
+                    'content_type_phrase' => $handler->getContentTypePhrase()
+                ])));
+            }
+
+            if ($handler->canChangeOwner($content))
+            {
+                throw $this->exception($this->error(\XF::phrase('please_enter_valid_name')));
+            }
+
+            if ($handler->canChangeDate($content))
+            {
+                throw $this->exception($this->error(\XF::phrase('tckChangeContentOwner_please_enter_valid_date')));
+            }
+        }
     }
 
     /**

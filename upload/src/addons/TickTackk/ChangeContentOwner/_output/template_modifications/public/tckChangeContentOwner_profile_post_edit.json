@@ -1,0 +1,9 @@
+{
+    "template": "profile_post_edit",
+    "description": "Allow changing cotent owner and date when editing profile post",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "#<xf:if is=\"\\$profilePost\\.canSendModeratorActionAlert\\(\\).*?\">.*?<\\/xf:if>#si",
+    "replace": "$0\n\n<xf:macro template=\"tckChangeContentOwner_macros\"\n\t\t  name=\"change_rows\"\n\t\t  arg-handler=\"{$changeOwnerHandler}\"\n\t\t  arg-content=\"{$profilePost}\"\n\t\t  arg-forceHR=\"{{ true }}\" />"
+}

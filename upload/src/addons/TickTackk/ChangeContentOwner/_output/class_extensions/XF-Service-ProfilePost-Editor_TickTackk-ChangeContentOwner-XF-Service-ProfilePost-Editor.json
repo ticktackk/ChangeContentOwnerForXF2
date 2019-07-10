@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Service\\ProfilePost\\Editor",
+    "to_class": "TickTackk\\ChangeContentOwner\\XF\\Service\\ProfilePost\\Editor",
+    "execute_order": 10,
+    "active": true
+}

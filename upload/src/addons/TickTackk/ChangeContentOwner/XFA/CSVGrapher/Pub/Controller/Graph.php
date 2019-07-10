@@ -3,10 +3,16 @@
 namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Pub\Controller;
 
 use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;
+use TickTackk\ChangeContentOwner\Pub\Controller\ContentTrait;
+use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInterface;
+use XF\ControllerPlugin\AbstractPlugin;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\Error as ErrorReply;
 use XF\Mvc\Reply\Exception as ExceptionReply;
 use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\View as ViewReply;
+use XFA\CSVGrapher\Entity\Graph as GraphEntity;
+use XFA\CSVGrapher\Service\Graph\Editor as GraphEditor;
 
 /**
  * Class Graph
@@ -15,6 +21,8 @@ use XF\Mvc\Reply\View as ViewReply;
  */
 class Graph extends XFCP_Graph
 {
+    use ContentTrait;
+
     /**
      * @param ParameterBag $parameterBag
      *
@@ -28,13 +36,46 @@ class Graph extends XFCP_Graph
         /** @noinspection PhpUndefinedFieldInspection */
         $graph = $this->assertViewableGraph($parameterBag->graph_id);
 
-        /** @var ContentPlugin $contentPlugin */
-        $contentPlugin = $this->plugin('TickTackk\ChangeContentOwner:Content');
-        return $contentPlugin->actionChangeOwner(
+        return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $graph,
             'TickTackk\ChangeContentOwner\XFA\CSVGrapher:Graph\OwnerChanger',
             'XFA\CSVGrapher:Graph',
             'TickTackk\ChangeContentOwner\XFA\CSVGrapher:Graph\ChangeOwner'
         );
+    }
+
+    /**
+     * @param ParameterBag $params
+     *
+     * @return ErrorReply|RedirectReply|ViewReply
+     * @throws ExceptionReply
+     */
+    public function actionEdit(ParameterBag $params)
+    {
+        $reply = parent::actionEdit($params);
+
+        $this->getChangeContentOwnerPlugin()->extendContentEditAction(
+            $reply,
+            'graph' ,
+            'XFA\CSVGrapher:Graph'
+        );
+
+        return $reply;
+    }
+
+    /**
+     * @param GraphEntity $graph
+     *
+     * @return EditorSvcInterface|GraphEditor
+     * @throws ExceptionReply
+     */
+    protected function setupGraphEditor(GraphEntity $graph) : GraphEditor
+    {
+        /** @var GraphEditor|EditorSvcInterface $editor */
+        $editor = parent::setupGraphEditor($graph);
+
+        $this->getChangeContentOwnerPlugin()->extendEditorService($graph, $editor, 'XFA\CSVGrapher:Graph');
+
+        return $editor;
     }
 }

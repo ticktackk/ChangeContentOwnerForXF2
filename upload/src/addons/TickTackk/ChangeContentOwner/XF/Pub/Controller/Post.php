@@ -3,10 +3,15 @@
 namespace TickTackk\ChangeContentOwner\XF\Pub\Controller;
 
 use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;
+use TickTackk\ChangeContentOwner\Pub\Controller\ContentTrait;
+use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInterface;
+use TickTackk\ChangeContentOwner\XF\Service\Post\Editor as PostEditorSvc;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\Error as ErrorReply;
 use XF\Mvc\Reply\View as ViewReply;
 use XF\Mvc\Reply\Exception as ExceptionReply;
 use XF\Mvc\Reply\Redirect as RedirectReply;
+use XF\Entity\Post as PostEntity;
 
 /**
  * Class Post
@@ -15,6 +20,8 @@ use XF\Mvc\Reply\Redirect as RedirectReply;
  */
 class Post extends XFCP_Post
 {
+    use ContentTrait;
+
     /**
      * @param ParameterBag $parameterBag
      *
@@ -28,13 +35,45 @@ class Post extends XFCP_Post
         /** @noinspection PhpUndefinedFieldInspection */
         $post = $this->assertViewablePost($parameterBag->post_id);
 
-        /** @var ContentPlugin $contentPlugin */
-        $contentPlugin = $this->plugin('TickTackk\ChangeContentOwner:Content');
-        return $contentPlugin->actionChangeOwner(
+        return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $post,
             'TickTackk\ChangeContentOwner\XF:Post\OwnerChanger',
             'XF:Post',
             'TickTackk\ChangeContentOwner\XF:Post\ChangeOwner'
         );
+    }
+
+    /**
+     * @param PostEntity $post
+     *
+     * @return EditorSvcInterface|PostEditorSvc
+     * @throws ExceptionReply
+     */
+    protected function setupPostEdit(PostEntity $post)
+    {
+        /** @var PostEditorSvc|EditorSvcInterface $editor */
+        $editor = parent::setupPostEdit($post);
+
+        $this->getChangeContentOwnerPlugin()->extendEditorService($post, $editor, 'XF:Post');
+
+        return $editor;
+    }
+
+    /**
+     * @param ParameterBag $params
+     *
+     * @return ErrorReply|RedirectReply|ViewReply
+     */
+    public function actionEdit(ParameterBag $params)
+    {
+        $reply = parent::actionEdit($params);
+
+        $this->getChangeContentOwnerPlugin()->extendContentEditAction(
+            $reply,
+            'post',
+            'XF:Post'
+        );
+
+        return $reply;
     }
 }
