@@ -1,7 +1,0 @@
-<xf:if is="$post.canChangeAuthor()">
-	<a href="{{ link('posts/change-author', $post) }}"
-	   class="actionBar-action actionBar-action--changePostAuthor actionBar-action--menuItem"
-	   data-xf-click="overlay">{{ phrase('changeContentOwner_change_post_author') }}</a>
-	
-	<xf:set var="$hasActionBarMenu" value="{{ true }}" />
-</xf:if>
