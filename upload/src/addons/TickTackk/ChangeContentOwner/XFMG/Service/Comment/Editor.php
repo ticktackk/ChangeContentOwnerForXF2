@@ -3,6 +3,7 @@
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Comment;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
+use TickTackk\ChangeContentOwner\Service\Content\EditorInterface;
 use TickTackk\ChangeContentOwner\Service\Content\EditorTrait;
 use XF\Mvc\Entity\Entity;
 
@@ -11,7 +12,7 @@ use XF\Mvc\Entity\Entity;
  *
  * @package TickTackk\ChangeContentOwner\XFMG\Service\Comment
  */
-class Editor extends XFCP_Editor
+class Editor extends XFCP_Editor implements EditorInterface
 {
     use EditorTrait;
 
