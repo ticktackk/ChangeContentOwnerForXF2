@@ -1,6 +1,6 @@
 <?php
 
-namespace TickTackk\ChangeContentOwner\XF\Service\ProfilePost;
+namespace TickTackk\ChangeContentOwner\XF\Service\ProfilePostComment;
 
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
 use TickTackk\ChangeContentOwner\XF\Entity\ProfilePostComment as ExtendedProfilePostCommentEntity;
@@ -8,11 +8,11 @@ use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 
 /**
- * Class CommentOwnerChanger
+ * Class OwnerChanger
  *
- * @package TickTackk\ChangeContentOwner\XF\Service\ProfilePost
+ * @package TickTackk\ChangeContentOwner\XF\Service\ProfilePostComment
  */
-class CommentOwnerChanger extends AbstractOwnerChanger
+class OwnerChanger extends AbstractOwnerChanger
 {
     /**
      * @return string

@@ -55,7 +55,7 @@ class ProfilePost extends XFCP_ProfilePost
         $contentPlugin = $this->plugin('TickTackk\ChangeContentOwner:Content');
         return $contentPlugin->actionChangeOwner(
             $comment,
-            'TickTackk\ChangeContentOwner\XF:ProfilePost\CommentOwnerChanger',
+            'TickTackk\ChangeContentOwner\XF:ProfilePostComment\OwnerChanger',
             'XF:ProfilePostComment',
             'TickTackk\ChangeContentOwner\XF:ProfilePost\Comments\ChangeOwner',
             'XF:ProfilePost'
