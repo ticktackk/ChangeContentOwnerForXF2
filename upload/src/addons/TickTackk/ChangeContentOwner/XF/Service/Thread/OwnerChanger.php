@@ -96,6 +96,12 @@ class OwnerChanger extends AbstractOwnerChanger
      */
     protected function additionalEntitySave(Entity $content): void
     {
+        $firstPost = $content->FirstPost;
+        if ($firstPost)
+        {
+            $firstPost->save(true, false);
+        }
+
         $forum = $content->Forum;
         if ($forum)
         {

@@ -24,13 +24,23 @@ class Thread extends AbstractHandler
     }
 
     /**
-     * @param Entity $content
+     * @param Entity|ExtendedThreadEntity $content
      *
      * @return string
      */
     public function getContentRoute(Entity $content): string
     {
         return 'threads';
+    }
+
+    /**
+     * @param Entity|ExtendedThreadEntity $content
+     *
+     * @return int
+     */
+    public function getOldDate(Entity $content): int
+    {
+        return $content->post_date;
     }
 
     /**
