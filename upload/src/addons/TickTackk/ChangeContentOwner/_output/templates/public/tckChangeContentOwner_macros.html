@@ -45,14 +45,15 @@
 				   data-single="true" />
 </xf:macro>
 
-<xf:macro name="change_date_row">
+<xf:macro name="change_date_row" arg-contentDate="{{ null }}">
 	<xf:css src="tckChangeContentOwner_macros_change_date_row.less" />
 	<xf:js addon="TickTackk/ChangeContentOwner" src="ticktackk/changecontentowner/main.js" min="1" />
 	
 	<xf:dateinputrow name="date"
 					 label="{{ phrase('tckChangeContentOwner_new_date') }}"
 					 explain="{{ phrase('tckChangeContentOwner_new_date_explain') }}"
-					 data-allow-setting-time="true" />
+					 data-allow-setting-time="true"
+					 value="{$contentDate}"/>
 	
 	<script class="js-extraPhrases" type="application/json">
 		{
@@ -68,10 +69,11 @@
 			<xf:macro template="tckChangeContentOwner_macros"
 					  name="change_owner_row" />
 		</xf:if>
-
+		
 		<xf:if is="$handler.canChangeDate($content)">
 			<xf:macro template="tckChangeContentOwner_macros"
-					  name="change_date_row" />
+					  name="change_date_row"
+					  arg-contentDate="{{ date($handler.getOldDate($content), 'Y-m-d H:i') }}" />
 		</xf:if>
 	</xf:if>
 </xf:macro>
