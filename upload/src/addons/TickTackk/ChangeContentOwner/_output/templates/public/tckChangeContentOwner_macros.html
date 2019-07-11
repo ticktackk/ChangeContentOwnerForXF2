@@ -73,7 +73,7 @@
 		<xf:if is="$handler.canChangeDate($content)">
 			<xf:macro template="tckChangeContentOwner_macros"
 					  name="change_date_row"
-					  arg-contentDate="{{ date($handler.getOldDate($content), 'Y-m-d H:i') }}" />
+					  arg-contentDate="{{ date($handler.getOldDate($content), 'Y-m-d H:i:s') }}" />
 		</xf:if>
 	</xf:if>
 </xf:macro>
