@@ -1,6 +1,10 @@
 # ChangeContentOwnerForXF2
 This add-on allows changing content owner and date for supported content types.
 
+## Options
+##### Time interval:
+> When changing date of multiple contents, this time interval be added to the final date in incremental way to create more unique timestamps.
+
 ## Permissions
 ###### XenForo:
 *Forum moderator permissions*:
