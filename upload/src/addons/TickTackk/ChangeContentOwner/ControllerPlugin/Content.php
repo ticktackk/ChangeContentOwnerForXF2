@@ -161,7 +161,7 @@ class Content extends AbstractPlugin
             $service->setNewDate($newDate);
         }
 
-        if (!$newOwnerUsername && !$newDate)
+        if (!$newOwnerUsername && !$newDate && !$service instanceof EditorSvcInterface)
         {
             if ($handler->canChangeOwner($content) && $handler->canChangeDate($content))
             {
