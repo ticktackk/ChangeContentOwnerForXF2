@@ -91,11 +91,12 @@ class Content extends AbstractPlugin
         {
             /** @var Entity|ContentEntityInterface $content */
             $content = $reply->getParam($contentParamName);
-            if ($content)
+            if ($content && !$this->isPost())
             {
                 /** @var Repository|ContentRepoInterface $contentRepo */
                 $contentRepo = $this->repository($repoName);
-                $reply->setParam('changeOwnerHandler', $contentRepo->getChangeOwnerHandler($content));
+                $handler = $contentRepo->getChangeOwnerHandler($content);
+                $reply->setParam('changeOwnerHandler', $handler);
             }
         }
     }
@@ -118,13 +119,13 @@ class Content extends AbstractPlugin
     }
 
     /**
-     * @param AbstractService|EditorSvcInterface|AbstractOwnerChangerSvc        $abstractService
+     * @param AbstractService|EditorSvcInterface|AbstractOwnerChangerSvc        $service
      * @param ContentEntityInterface|Entity $content
      * @param string                 $repoIdentifier
      *
      * @throws ExceptionReply
      */
-    protected function setNewOwnerAndDate(AbstractService $abstractService, ContentEntityInterface $content, string $repoIdentifier) : void
+    protected function setNewOwnerAndDate(AbstractService $service, ContentEntityInterface $content, string $repoIdentifier) : void
     {
         $contentRepo = $this->getContentRepo($repoIdentifier);
         $handler = $contentRepo->getChangeOwnerHandler($content, true);
@@ -147,7 +148,7 @@ class Content extends AbstractPlugin
                 throw $this->exception($this->noPermission($error));
             }
 
-            $abstractService->setNewOwner($newOwner);
+            $service->setNewOwner($newOwner);
         }
 
         if ($newDate)
@@ -157,7 +158,7 @@ class Content extends AbstractPlugin
                 throw $this->exception($this->noPermission($error));
             }
 
-            $abstractService->setNewDate($newDate);
+            $service->setNewDate($newDate);
         }
 
         if (!$newOwnerUsername && !$newDate)
