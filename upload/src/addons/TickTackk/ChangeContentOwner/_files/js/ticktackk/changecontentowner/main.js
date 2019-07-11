@@ -55,9 +55,10 @@ TickTackk.ChangeContentOwner = TickTackk.ChangeContentOwner || {};
                             month = String(date.getMonth() + 1),
                             year = String(date.getFullYear()),
                             hour = String(date.getHours()),
-                            minute = String(date.getMinutes());
+                            minute = String(date.getMinutes()),
+                            second = String(date.getSeconds());
 
-                        self.$target.val(year + '-' + pad(month) + '-' + pad(day) + ' ' + pad(hour) + ':' + pad(minute));
+                        self.$target.val(year + '-' + pad(month) + '-' + pad(day) + ' ' + pad(hour) + ':' + pad(minute) + ':' + pad(second));
                         self.$target.trigger('input');
                     },
                     onOpen: function ()
@@ -95,7 +96,8 @@ TickTackk.ChangeContentOwner = TickTackk.ChangeContentOwner || {};
                     },
                     isRTL: XF.isRtl(),
                     defaultDate: new Date(Date.parse(initialValue)),
-                    setDefaultDate: true
+                    setDefaultDate: true,
+                    showSeconds: true
                 };
 
             this.$target.pikaday(config);
