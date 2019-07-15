@@ -2,8 +2,8 @@
 This add-on allows changing content owner and date for supported content types.
 
 ## Options
-##### Time interval:
-> When changing date of multiple contents, this time interval be added to the final date in incremental way to create more unique timestamps.
+##### Default new date time interval:
+> Default value for time interval used when changing date of multiple contents.
 
 ## Permissions
 ###### XenForo:
