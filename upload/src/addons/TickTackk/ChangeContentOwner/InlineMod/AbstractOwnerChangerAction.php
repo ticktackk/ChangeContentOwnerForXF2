@@ -159,12 +159,22 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
      */
     public function getFormOptions(AbstractCollection $contents, Request $request) : array
     {
-        return [
+        $options = [
             'username' => $request->filter('username', 'str'),
             'date' => $request->filter('date', 'datetime', [
                 'tz' => \XF::visitor()->timezone
             ])
         ];
+
+        $options['date_time_interval'] = $request->filter([
+            'date_time_interval' => [
+                'hours' => 'int',
+                'minutes' => 'int',
+                'seconds' => 'int'
+            ]
+        ])['date_time_interval'];
+
+        return $options;
     }
 
     /**
@@ -200,6 +210,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
         if ($options['date'])
         {
             $ownerChangerSvc->setNewDate($options['date']);
+            $ownerChangerSvc->setNewDateTimeIntervals($options['date_time_interval']);
         }
 
         $ownerChangerSvc->apply();

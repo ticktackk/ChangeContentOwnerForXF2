@@ -6,6 +6,7 @@ use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
 use XF\AddOn\StepRunnerUpgradeTrait;
+use XF\Entity\Option as OptionEntity;
 
 /**
  * Class Setup
@@ -99,7 +100,7 @@ class Setup extends AbstractSetup
         }
     }
 
-    public function upgradeStep2000011Step1() : void
+    public function upgrade2000011Step1() : void
     {
         // thread
         $this->applyGlobalPermission(
@@ -198,6 +199,28 @@ class Setup extends AbstractSetup
                 'xfmg', 'changeCommentDate',
                 'xfmg', 'changeCommentOwner'
             );
+        }
+    }
+
+    public function upgrade2000013Step1() : void
+    {
+        $this->upgrade2000011Step1();;
+    }
+
+    /**
+     * @throws \XF\PrintableException
+     */
+    public function upgrade2000013Step2() : void
+    {
+        /** @var OptionEntity $option */
+        $option = $this->app->find('XF:Option', 'tckChangeContentOwner_defaultNewDateTimeInterval');
+        if ($option)
+        {
+            $optionValue = $option->option_value;
+            $seconds = $this->db()->fetchOne('SELECT option_value FROM xf_option WHERE option_id = ?', 'tckChangeContentOwner_timeInterval');
+            $optionValue['seconds'] = (int) $seconds;
+            $option->option_value = $optionValue;
+            $option->save();
         }
     }
 }

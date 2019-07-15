@@ -60,6 +60,11 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @var array
      */
+    protected $newDateTimeIntervals;
+
+    /**
+     * @var array
+     */
     protected $contentCounts;
 
     /**
@@ -68,9 +73,9 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected $logModerator;
 
     /**
-     * @var int
+     * @var null|array
      */
-    protected $timeIntervalCounter = 1;
+    protected $contentNewDateMapping;
 
     /**
      * AbstractOwnerChanger constructor.
@@ -160,6 +165,59 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
+     * @param array $newDateTimeIntervals
+     */
+    public function setNewDateTimeIntervals(array $newDateTimeIntervals) : void
+    {
+        if ($this->contents->count() > 1)
+        {
+            $this->newDateTimeIntervals = [
+                'hours' => (int) ($newDateTimeIntervals['hours'] ?? 0),
+                'minutes' => (int) ($newDateTimeIntervals['minutes'] ?? 0),
+                'seconds' => (int) ($newDateTimeIntervals['seconds'] ?? 0)
+            ];
+        }
+    }
+
+    /**
+     * @return null|array
+     */
+    public function getNewDateTimeIntervals() : ? array
+    {
+        return $this->newDateTimeIntervals;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNewDateTimeIntervalInSeconds() : int
+    {
+        $newDateIntervals = $this->getNewDateTimeIntervals();
+        if (!$this->newDateTimeIntervals)
+        {
+            return 0;
+        }
+
+        $interval = 0;
+        if ($newDateIntervals['hours'])
+        {
+            $interval += $newDateIntervals['hours'] * 3600;
+        }
+
+        if ($newDateIntervals['minutes'])
+        {
+            $interval += $newDateIntervals['minutes'] * 60;
+        }
+
+        if ($newDateIntervals['seconds'])
+        {
+            $interval += $newDateIntervals['seconds'];
+        }
+
+        return $interval;
+    }
+
+    /**
      * @param int $newDate
      */
     public function setNewDate(int $newDate) : void
@@ -168,31 +226,28 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
-     * @return int
-     */
-    public function getTimeInterval() : int
-    {
-        if ($this->contents->count() > 1)
-        {
-            return (int) $this->app->options()->tckChangeContentOwner_timeInterval;
-        }
-
-        return 0;
-    }
-
-    /**
+     * @param Entity $content
+     *
      * @return null|int
      */
-    public function getNewDate() :? int
+    public function getNewDate(Entity $content) :? int
     {
-        $newDate = $this->newDate;
+        $this->contentNewDateMapping = $this->contentNewDateMapping ?? [];
 
-        if ($newDate)
+        $uniqueKey = $this->getContentUniqueKey($content);
+        if (isset($this->contentNewDateMapping[$uniqueKey]))
         {
-            $newDate += $this->timeIntervalCounter * $this->getTimeInterval();
+            return $this->contentNewDateMapping[$uniqueKey];
         }
 
-        return $newDate;
+        $newDate = $this->newDate;
+        if ($newDate && count($this->contentNewDateMapping) !== 0)
+        {
+            $newDate += $this->getNewDateTimeIntervalInSeconds() * \count($this->contentNewDateMapping);
+        }
+
+        $this->contentNewDateMapping[$uniqueKey] = $newDate;
+        return $this->contentNewDateMapping[$uniqueKey];
     }
 
     /**
@@ -268,7 +323,7 @@ abstract class AbstractOwnerChanger extends AbstractService
         }
 
         $oldDate = $this->getOldDate($content);
-        $newDate = $this->getNewDate();
+        $newDate = $this->getNewDate($content);
         if ($newDate && $oldDate !== $newDate)
         {
             $actions[] = 'date';
@@ -378,13 +433,13 @@ abstract class AbstractOwnerChanger extends AbstractService
         $newOwner = $this->getNewOwner();
         foreach ($this->contents AS $id => $content)
         {
-            $newDate = $this->getNewDate();
             $oldOwner = $this->getOldOwner($content);
             if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
             {
                 $this->contents[$id] = $this->changeContentOwner($content, $newOwner);
             }
 
+            $newDate = $this->getNewDate($content);
             $oldDate = $this->getOldDate($content);
             if ($newDate && $newDate !== $oldDate)
             {
@@ -394,7 +449,6 @@ abstract class AbstractOwnerChanger extends AbstractService
             if ($newOwner || $newDate)
             {
                 $this->applyAdditionalChanges($content);
-                $this->timeIntervalCounter++;
             }
         }
     }
@@ -501,7 +555,7 @@ abstract class AbstractOwnerChanger extends AbstractService
 
         $oldOwner = $this->getOldOwner($content);
         $newOwner = $this->getNewOwner();
-        $newDate = $this->getNewDate();
+        $newDate = $this->getNewDate($content);
 
         if (isset($structure->behaviors['XF:NewsFeedPublishable']))
         {

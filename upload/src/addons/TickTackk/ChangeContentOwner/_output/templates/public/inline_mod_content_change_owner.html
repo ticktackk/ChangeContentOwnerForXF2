@@ -30,7 +30,8 @@
 			
 			<xf:if is="$canChangeDate">
 				<xf:macro template="tckChangeContentOwner_macros"
-						  name="change_date_row" />
+						  name="change_date_row"
+						  arg-showTimeIntervals="{{ count($contents) > 1 }}" />
 			</xf:if>
 		</div>
 		<xf:submitrow icon="confirm" />

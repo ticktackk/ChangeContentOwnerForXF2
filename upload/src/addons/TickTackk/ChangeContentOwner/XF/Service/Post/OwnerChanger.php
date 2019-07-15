@@ -116,7 +116,7 @@ class OwnerChanger extends AbstractOwnerChanger
      */
     protected function postContentSave(Entity $content): void
     {
-        $newDate = $this->getNewDate();
+        $newDate = $this->getNewDate($content);
         if ($newDate)
         {
             $threadRepo = $this->getThreadRepo();

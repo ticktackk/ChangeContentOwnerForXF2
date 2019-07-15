@@ -1,0 +1,22 @@
+<xf:formrow rowtype="input"
+	label="{$option.title}"
+	hint="{$hintHtml}"
+	explain="{$explainHtml}"
+	html="{$listedHtml}">
+
+	<div class="inputGroup inputGroup--numbers">
+		<xf:numberbox name="{$inputName}[hours]" value="{{ $option.option_value.hours ?: 0 }}"
+					  min="0"
+					  units="{{ phrase('units_hours') }}" />
+		<span class="inputGroup-splitter"></span>
+		
+		<xf:numberbox name="{$inputName}[minutes]" value="{{ $option.option_value.minutes ?: 0 }}"
+					  min="0"
+					  units="{{ phrase('units_minutes') }}" />
+		<span class="inputGroup-splitter"></span>
+		
+		<xf:numberbox name="{$inputName}[seconds]" value="{{ $option.option_value.seconds ?: 0 }}"
+					  min="0"
+					  units="{{ phrase('units_seconds') }}" />
+	</div>
+</xf:formrow>
