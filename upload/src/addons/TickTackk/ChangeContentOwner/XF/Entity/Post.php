@@ -43,11 +43,12 @@ class Post extends XFCP_Post implements ContentInterface
     }
 
     /**
-     * @param null $error
+     * @param int|null $newDate
+     * @param null     $error
      *
      * @return bool
      */
-    public function canChangeDate(&$error = null): bool
+    public function canChangeDate(int $newDate = null, &$error = null): bool
     {
         $thread = $this->Thread;
         if (!$thread)
@@ -57,6 +58,12 @@ class Post extends XFCP_Post implements ContentInterface
 
         if ($thread->first_post_id === $this->post_id)
         {
+            return false;
+        }
+
+        if ($newDate && $thread->post_date >= $newDate)
+        {
+            $error = \XF::phraseDeferred('tckChangeContentOwner_new_date_must_be_older_than_thread_date');
             return false;
         }
 

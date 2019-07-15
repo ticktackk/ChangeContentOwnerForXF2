@@ -41,7 +41,7 @@ class Content extends AbstractPlugin
         $contentRepo = $this->getContentRepo($repoIdentifier);
         $handler = $contentRepo->getChangeOwnerHandler($content, true);
 
-        if (!$handler->canChangeOwner($content, null, $error) && !$handler->canChangeDate($content, $error))
+        if (!$handler->canChangeOwner($content, null, $error) && !$handler->canChangeDate($content, null, $error))
         {
             throw $this->exception($this->noPermission($error));
         }
@@ -153,7 +153,7 @@ class Content extends AbstractPlugin
 
         if ($newDate)
         {
-            if (!$handler->canChangeDate($content, $error))
+            if (!$handler->canChangeDate($content, $newDate, $error))
             {
                 throw $this->exception($this->noPermission($error));
             }

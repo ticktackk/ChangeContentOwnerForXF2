@@ -20,9 +20,10 @@ interface ContentInterface
     public function canChangeOwner(User $newUser = null, &$error = null) : bool;
 
     /**
-     * @param null $error
+     * @param int|null $newDate
+     * @param null     $error
      *
      * @return bool
      */
-    public function canChangeDate(&$error = null) : bool;
+    public function canChangeDate(int $newDate = null, &$error = null) : bool;
 }

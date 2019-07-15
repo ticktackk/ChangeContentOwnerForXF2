@@ -174,16 +174,17 @@ abstract class AbstractHandler
     }
 
     /**
-     * @param Entity|ContentInterface $content
-     * @param null                    $error
+     * @param Entity|ContentInterface   $content
+     * @param int|null $newDate
+     * @param null     $error
      *
-     * @return null|
+     * @return mixed
      */
-    public function canChangeDate(Entity $content, &$error = null)
+    public function canChangeDate(Entity $content, int $newDate = null, &$error = null)
     {
         $this->assertContentExtended($content);
 
-        return $content->canChangeDate($error);
+        return $content->canChangeDate($newDate, $error);
     }
 
     /**

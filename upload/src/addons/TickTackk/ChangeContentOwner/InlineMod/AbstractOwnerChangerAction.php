@@ -143,7 +143,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             return false;
         }
 
-        if ($options['date'] && !$content->canChangeDate($error))
+        if ($options['date'] && !$content->canChangeDate($options['date'], $error))
         {
             return false;
         }
