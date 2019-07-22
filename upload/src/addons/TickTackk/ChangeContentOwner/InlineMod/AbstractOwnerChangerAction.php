@@ -11,6 +11,7 @@ use XF\Mvc\Controller;
 use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Reply\View as ReplyView;
+use XF\PrintableException;
 
 /**
  * Class AbstractOwnerChangerAction
@@ -22,7 +23,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     /**
      * @var UserEntity
      */
-    protected $newUser;
+    protected $newOwner;
 
     /**
      * @return \XF\Phrase
@@ -124,6 +125,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             {
                 return false;
             }
+            $this->newOwner = $user;
         }
 
         return parent::canApplyInternal($contents, $options, $error);
@@ -138,7 +140,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
      */
     protected function canApplyToEntity(Entity $content, array $options, &$error = null) : bool
     {
-        if ($this->newUser && !$content->canChangeOwner($this->newUser, $error))
+        if ($this->newOwner && !$content->canChangeOwner($this->newOwner, $error))
         {
             return false;
         }
@@ -202,9 +204,9 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     protected function applyInternal(AbstractCollection $contents, array $options) : void
     {
         $ownerChangerSvc = $this->getOwnerChangerSvc($contents);
-        if ($this->newUser)
+        if ($this->newOwner)
         {
-            $ownerChangerSvc->setNewOwner($this->newUser);
+            $ownerChangerSvc->setNewOwner($this->newOwner);
         }
 
         if ($options['date'])
