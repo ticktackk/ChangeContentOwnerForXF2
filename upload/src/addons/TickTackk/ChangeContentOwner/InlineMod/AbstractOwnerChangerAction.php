@@ -148,7 +148,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             return false;
         }
 
-        return $content->canChangeOwner(null ,$error) || $content->canChangeDate($error);
+        return $content->canChangeOwner(null,$error) || $content->canChangeDate(null, $error);
     }
 
     /**
