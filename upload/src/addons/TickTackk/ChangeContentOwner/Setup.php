@@ -204,7 +204,7 @@ class Setup extends AbstractSetup
 
     public function upgrade2000013Step1() : void
     {
-        $this->upgrade2000011Step1();;
+        $this->upgrade2000011Step1();
     }
 
     /**
