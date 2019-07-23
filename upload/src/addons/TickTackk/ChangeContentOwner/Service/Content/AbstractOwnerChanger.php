@@ -241,9 +241,9 @@ abstract class AbstractOwnerChanger extends AbstractService
         }
 
         $newDate = $this->newDate;
-        if ($newDate && count($this->contentNewDateMapping) !== 0)
+        if ($newDate && count($this->contentNewDateMapping))
         {
-            $newDate += $this->getNewDateTimeIntervalInSeconds() * \count($this->contentNewDateMapping);
+            $newDate += $this->getNewDateTimeIntervalInSeconds() * count($this->contentNewDateMapping);
         }
 
         $this->contentNewDateMapping[$uniqueKey] = $newDate;
@@ -610,17 +610,6 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
-     * @param Entity $content
-     */
-    protected function assertContentExtended(Entity $content) : void
-    {
-        if (!$content instanceof ContentEntityInterface)
-        {
-            throw new \LogicException('Content entity must implement ContentInterface.');
-        }
-    }
-
-    /**
      * @return string
      */
     abstract protected function getEntityIdentifier() : string;
@@ -631,14 +620,6 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected function getRepoIdentifier() : string
     {
         return $this->getEntityIdentifier();
-    }
-
-    /**
-     * @return Repository|UserRepo
-     */
-    protected function getUserRepo() : UserRepo
-    {
-        return \XF::app()->repository('XF:User');
     }
 
     /**
