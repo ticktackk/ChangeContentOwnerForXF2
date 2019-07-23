@@ -71,6 +71,7 @@ class OwnerChanger extends AbstractOwnerChanger
      */
     protected function changeContentDate(Entity $content, int $newDate): Entity
     {
+        $content->post_date = $newDate;
         $firstPost = $content->FirstPost;
 
         $firstPost->post_date = $newDate;
