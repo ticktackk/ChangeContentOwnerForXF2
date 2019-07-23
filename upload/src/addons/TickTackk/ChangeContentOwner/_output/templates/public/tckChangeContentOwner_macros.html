@@ -53,6 +53,7 @@
 					 label="{{ phrase('tckChangeContentOwner_new_date') }}"
 					 explain="{{ phrase('tckChangeContentOwner_new_date_explain') }}"
 					 data-allow-setting-time="true"
+					 data-use-twenty-four-hour="{{ $xf.language.time_format === 'H:i' ? 'true' : 'false' }}"
 					 value="{$contentDate}"/>
 	
 	<xf:if is="$showTimeIntervals">

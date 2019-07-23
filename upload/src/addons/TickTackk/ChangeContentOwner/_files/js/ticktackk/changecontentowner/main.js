@@ -11,7 +11,8 @@ TickTackk.ChangeContentOwner = TickTackk.ChangeContentOwner || {};
         },
 
         options: $.extend({}, XF.DateInput.prototype.options, {
-            allowSettingTime: null
+            allowSettingTime: null,
+            useTwentyFourHour: false
         }),
 
         init: function ()
@@ -97,7 +98,8 @@ TickTackk.ChangeContentOwner = TickTackk.ChangeContentOwner || {};
                     isRTL: XF.isRtl(),
                     defaultDate: new Date(Date.parse(initialValue)),
                     setDefaultDate: true,
-                    showSeconds: true
+                    showSeconds: true,
+                    use24hour: self.options.useTwentyFourHour
                 };
 
             this.$target.pikaday(config);
