@@ -249,7 +249,7 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @return array|int[]
      */
-    public function getBumpTimeBy() : array
+    public function getBumpTimeBy() :? array
     {
         return $this->bumpTimeBy;
     }
