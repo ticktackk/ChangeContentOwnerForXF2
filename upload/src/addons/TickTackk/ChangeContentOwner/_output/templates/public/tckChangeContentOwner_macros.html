@@ -48,18 +48,38 @@
 <xf:macro name="change_date_row" arg-contentDate="{{ null }}" arg-showTimeIntervals="{{ false }}" >
 	<xf:css src="tckChangeContentOwner_macros_change_date_row.less" />
 	<xf:js addon="TickTackk/ChangeContentOwner" src="ticktackk/changecontentowner/main.js" min="1" />
-	
-	<xf:dateinputrow name="date"
-					 label="{{ phrase('tckChangeContentOwner_new_date') }}"
-					 explain="{{ phrase('tckChangeContentOwner_new_date_explain') }}"
+
+	<xf:radiorow name="change_time_type">
+		<xf:option value="update_datetime" label="{{ phrase('tckChangeContentOwner_new_date') }}" data-hide="true" selected="{{ true }}">
+			<xf:dependent>
+				<xf:dateinput name="date"
 					 data-allow-setting-time="true"
 					 data-use-twenty-four-hour="{{ $xf.language.time_format === 'H:i' ? 'true' : 'false' }}"
 					 value="{$contentDate}"/>
-	
-	<xf:if is="$showTimeIntervals">
-		<hr class="formRowSep" />
-		<xf:macro name="time_interval_row" />
-	</xf:if>
+				
+				<p class="formRow-explain">{{ phrase('tckChangeContentOwner_new_date_explain') }}</p>
+				
+				<xf:if is="$showTimeIntervals">
+					<label class="formRow-label">{{ phrase('tckChangeContentOwner_time_interval') }}</label>
+
+					<xf:macro name="time_units"
+							  arg-option="{{ $xf.options.tckChangeContentOwner_defaultNewDateTimeInterval }}"
+							  arg-name="date_time_interval" />	
+
+					<p class="formRow-explain">{{ phrase('tckChangeContentOwner_bump_time_explain') }}</p>
+				</xf:if>
+			</xf:dependent>
+		</xf:option>
+		<xf:option value="bump_time" data-hide="true" label="{{ phrase('tckChangeContentOwner_bump_time') }}" data-hide="true">
+			<xf:dependent>
+				<xf:macro name="time_units"
+							  arg-option="{{ $xf.options.tckChangeContentOwner_defaultBumpBy }}"
+							  arg-name="bump_time" />	
+				
+				<p class="formRow-explain">{{ phrase('tckChangeContentOwner_bump_time_explain') }}</p>
+			</xf:dependent>
+		</xf:option>
+	</xf:radiorow>
 	
 	<script class="js-extraPhrases" type="application/json">
 		{
@@ -69,28 +89,22 @@
 	</script>
 </xf:macro>
 
-<xf:macro name="time_interval_row">
-	<xf:set var="$option" value="{{ $xf.options.tckChangeContentOwner_defaultNewDateTimeInterval }}" />
+<xf:macro name="time_units" arg-option="!" arg-name="!">
+	<div class="inputGroup inputGroup--numbers">
+		<xf:numberbox name="{$name}[hours]" value="{{ $option.hours ?: 0 }}"
+					  min="0"
+					  units="{{ phrase('units_hours') }}" />
+		<span class="inputGroup-splitter"></span>
 
-	<xf:formrow rowtype="input"
-				label="{{ phrase('tckChangeContentOwner_time_interval') }}"
-				explain="{{ phrase('tckChangeContentOwner_time_interval_explain') }}">
-		<div class="inputGroup inputGroup--numbers">
-			<xf:numberbox name="date_time_interval[hours]" value="{{ $option.hours ?: 0 }}"
-						  min="0"
-						  units="{{ phrase('units_hours') }}" />
-			<span class="inputGroup-splitter"></span>
+		<xf:numberbox name="{$name}[minutes]" value="{{ $option.minutes ?: 0 }}"
+					  min="0"
+					  units="{{ phrase('units_minutes') }}" />
+		<span class="inputGroup-splitter"></span>
 
-			<xf:numberbox name="date_time_interval[minutes]" value="{{ $option.minutes ?: 0 }}"
-						  min="0"
-						  units="{{ phrase('units_minutes') }}" />
-			<span class="inputGroup-splitter"></span>
-
-			<xf:numberbox name="date_time_interval[seconds]" value="{{ $option.seconds ?: 0 }}"
-						  min="0"
-						  units="{{ phrase('units_seconds') }}" />
-		</div>
-	</xf:formrow>
+		<xf:numberbox name="{$name}[seconds]" value="{{ $option.seconds ?: 0 }}"
+					  min="0"
+					  units="{{ phrase('units_seconds') }}" />
+	</div>
 </xf:macro>
 
 <xf:macro name="change_rows" arg-handler="!" arg-content="!" arg-showTimeIntervals="{{ false }}">

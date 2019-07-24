@@ -58,6 +58,11 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected $newDate;
 
     /**
+     * @var array|int[]
+     */
+    protected $bumpTimeBy;
+
+    /**
      * @var array
      */
     protected $newDateTimeIntervals;
@@ -180,6 +185,36 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
+     * @param array|null $units
+     *
+     * @return int
+     */
+    protected function convertUnitsToMilliseconds(array $units = null) : int
+    {
+        $interval = 0;
+
+        if ($units)
+        {
+            if ($units['hours'])
+            {
+                $interval += $units['hours'] * 3600;
+            }
+
+            if ($units['minutes'])
+            {
+                $interval += $units['minutes'] * 60;
+            }
+
+            if ($units['seconds'])
+            {
+                $interval += $units['seconds'];
+            }
+        }
+
+        return $interval;
+    }
+
+    /**
      * @return null|array
      */
     public function getNewDateTimeIntervals() : ? array
@@ -192,29 +227,7 @@ abstract class AbstractOwnerChanger extends AbstractService
      */
     public function getNewDateTimeIntervalInSeconds() : int
     {
-        $newDateIntervals = $this->getNewDateTimeIntervals();
-        if (!$this->newDateTimeIntervals)
-        {
-            return 0;
-        }
-
-        $interval = 0;
-        if ($newDateIntervals['hours'])
-        {
-            $interval += $newDateIntervals['hours'] * 3600;
-        }
-
-        if ($newDateIntervals['minutes'])
-        {
-            $interval += $newDateIntervals['minutes'] * 60;
-        }
-
-        if ($newDateIntervals['seconds'])
-        {
-            $interval += $newDateIntervals['seconds'];
-        }
-
-        return $interval;
+        return $this->convertUnitsToMilliseconds($this->getNewDateTimeIntervals());
     }
 
     /**
@@ -223,6 +236,30 @@ abstract class AbstractOwnerChanger extends AbstractService
     public function setNewDate(int $newDate) : void
     {
         $this->newDate = $newDate;
+    }
+
+    /**
+     * @param array|int[] $bumpTimeBy
+     */
+    public function setBumpTimeBy(array $bumpTimeBy) : void
+    {
+        $this->bumpTimeBy = $bumpTimeBy;
+    }
+
+    /**
+     * @return array|int[]
+     */
+    public function getBumpTimeBy() : array
+    {
+        return $this->bumpTimeBy;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBumpTimeByIntervalInSeconds() : int
+    {
+        return $this->convertUnitsToMilliseconds($this->getBumpTimeBy());
     }
 
     /**
@@ -241,9 +278,17 @@ abstract class AbstractOwnerChanger extends AbstractService
         }
 
         $newDate = $this->newDate;
-        if ($newDate && count($this->contentNewDateMapping))
+        if ($newDate)
         {
-            $newDate += $this->getNewDateTimeIntervalInSeconds() * count($this->contentNewDateMapping);
+            if (count($this->contentNewDateMapping))
+            {
+                $newDate += $this->getNewDateTimeIntervalInSeconds() * count($this->contentNewDateMapping);
+            }
+        }
+        else if ($this->getBumpTimeBy())
+        {
+            $newDate = $this->getHandler()->getOldDate($content);
+            $newDate += $this->getBumpTimeByIntervalInSeconds();
         }
 
         $this->contentNewDateMapping[$uniqueKey] = $newDate;

@@ -1,0 +1,16 @@
+{
+    "edit_format": "template",
+    "edit_format_params": "option_template_tckChangeContentOwner_defaultBumpBy",
+    "data_type": "array",
+    "sub_options": [
+        "hours",
+        "minutes",
+        "seconds"
+    ],
+    "validation_class": "",
+    "validation_method": "",
+    "default_value": "{\"hours\":1,\"minutes\":10,\"seconds\":10}",
+    "relations": {
+        "tckChangeContentOwner": 110
+    }
+}

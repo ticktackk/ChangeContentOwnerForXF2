@@ -113,7 +113,9 @@ class Content extends AbstractPlugin
         if ($this->isPost())
         {
             $editor->setupOwnerChanger();
+
             $this->setNewOwnerAndDate($editor, $content, $repoIdentifier);
+
             $editor->applyOwnerChanger();
         }
     }
@@ -131,9 +133,6 @@ class Content extends AbstractPlugin
         $handler = $contentRepo->getChangeOwnerHandler($content, true);
 
         $newOwnerUsername = $this->filter('username', 'str');
-        $newDate = $this->filter('date', 'datetime', [
-            'tz' => \XF::visitor()->timezone
-        ]);
 
         if ($newOwnerUsername)
         {
@@ -151,17 +150,46 @@ class Content extends AbstractPlugin
             $service->setNewOwner($newOwner);
         }
 
-        if ($newDate)
-        {
-            if (!$handler->canChangeDate($content, $newDate, $error))
-            {
-                throw $this->exception($this->noPermission($error));
-            }
+        $newDate = null;
+        $bumpTimeBy = null;
+        $changeTimeType = $this->filter('change_time_type', 'str');
 
-            $service->setNewDate($newDate);
+        if ($changeTimeType === 'update_datetime')
+        {
+            $newDate = $this->filter('date', 'datetime', [
+                'tz' => \XF::visitor()->timezone
+            ]);
+            if ($newDate)
+            {
+                if (!$handler->canChangeDate($content, $newDate, $error))
+                {
+                    throw $this->exception($this->noPermission($error));
+                }
+
+                $service->setNewDate($newDate);
+            }
+        }
+        else if ($changeTimeType === 'bump_time')
+        {
+            $bumpTimeBy = $this->filter([
+                'bump_time' => [
+                    'hours' => 'int',
+                    'minutes' => 'int',
+                    'seconds' => 'int'
+                ]
+            ])['bump_time'];
+            $service->setBumpTimeBy($bumpTimeBy);
+        }
+        else
+        {
+            throw $this->exception(
+                $this->noPermission(
+                    \XF::phraseDeferred('tckChangeContentOwner_please_select_valid_change_date_type')
+                )
+            );
         }
 
-        if (!$newOwnerUsername && !$newDate && !$service instanceof EditorSvcInterface)
+        if (!$newOwnerUsername && (!$newDate && !$bumpTimeBy) && !$service instanceof EditorSvcInterface)
         {
             if ($handler->canChangeOwner($content) && $handler->canChangeDate($content))
             {
