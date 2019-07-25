@@ -39,8 +39,7 @@ class ProfilePost extends XFCP_ProfilePost
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $profilePost,
             'TickTackk\ChangeContentOwner\XF:ProfilePost\OwnerChanger',
-            'XF:ProfilePost',
-            'TickTackk\ChangeContentOwner\XF:ProfilePost\ChangeOwner'
+            'XF:ProfilePost'
         );
     }
 
@@ -48,6 +47,7 @@ class ProfilePost extends XFCP_ProfilePost
      * @param ParameterBag $params
      *
      * @return ErrorReply|RedirectReply|ViewReply
+     * @throws \Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -55,8 +55,7 @@ class ProfilePost extends XFCP_ProfilePost
 
         $this->getChangeContentOwnerPlugin()->extendContentEditAction(
             $reply,
-            'profilePost',
-            'XF:ProfilePost'
+            'profilePost'
         );
 
         return $reply;
@@ -73,7 +72,7 @@ class ProfilePost extends XFCP_ProfilePost
         /** @var ProfilePostEditor|EditorSvcInterface $editor */
         $editor = parent::setupEdit($profilePost);
 
-        $this->getChangeContentOwnerPlugin()->extendEditorService($profilePost, $editor, 'XF:ProfilePost');
+        $this->getChangeContentOwnerPlugin()->extendEditorService($profilePost, $editor);
 
         return $editor;
     }
@@ -94,9 +93,7 @@ class ProfilePost extends XFCP_ProfilePost
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $comment,
             'TickTackk\ChangeContentOwner\XF:ProfilePostComment\OwnerChanger',
-            'XF:ProfilePostComment',
-            'TickTackk\ChangeContentOwner\XF:ProfilePost\Comments\ChangeOwner',
-            'XF:ProfilePost'
+            'XF:ProfilePostComment'
         );
     }
 
@@ -104,12 +101,13 @@ class ProfilePost extends XFCP_ProfilePost
      * @param ParameterBag $params
      *
      * @return ErrorReply|RedirectReply|ViewReply
+     * @throws \Exception
      */
     public function actionCommentsEdit(ParameterBag $params)
     {
         $reply = parent::actionCommentsEdit($params);
 
-        $this->getChangeContentOwnerPlugin()->extendContentEditAction($reply, 'comment', 'XF:ProfilePostComment');
+        $this->getChangeContentOwnerPlugin()->extendContentEditAction($reply, 'comment');
 
         return $reply;
     }
@@ -125,7 +123,7 @@ class ProfilePost extends XFCP_ProfilePost
         /** @var ProfilePostCommentEditor|EditorSvcInterface $editor */
         $editor = parent::setupCommentEdit($comment);
 
-        $this->getChangeContentOwnerPlugin()->extendEditorService($comment, $editor, 'XF:ProfilePost');
+        $this->getChangeContentOwnerPlugin()->extendEditorService($comment, $editor);
 
         return $editor;
     }

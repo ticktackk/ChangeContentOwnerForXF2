@@ -38,7 +38,7 @@ class Thread extends AbstractHandler
      *
      * @return int
      */
-    public function getOldDate(Entity $content): int
+    public function getOldTimestamp(Entity $content): int
     {
         return $content->post_date;
     }

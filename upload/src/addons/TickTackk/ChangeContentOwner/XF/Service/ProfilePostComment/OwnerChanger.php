@@ -49,6 +49,7 @@ class OwnerChanger extends AbstractOwnerChanger
      * @param int    $newDate
      *
      * @return Entity
+     * @throws \Exception
      */
     protected function changeContentDate(Entity $content, int $newDate): Entity
     {

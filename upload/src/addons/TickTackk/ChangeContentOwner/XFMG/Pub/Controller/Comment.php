@@ -37,8 +37,7 @@ class Comment extends XFCP_Comment
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $comment,
             'TickTackk\ChangeContentOwner\XFMG:Comment\OwnerChanger',
-            'XFMG:Comment',
-            'TickTackk\ChangeContentOwner\XFMG:Comment\ChangeOwner'
+            'XFMG:Comment'
         );
     }
 
@@ -46,6 +45,7 @@ class Comment extends XFCP_Comment
      * @param ParameterBag $params
      *
      * @return ErrorReply|RedirectReply|ViewReply
+     * @throws \Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -53,8 +53,7 @@ class Comment extends XFCP_Comment
 
         $this->getChangeContentOwnerPlugin()->extendContentEditAction(
             $reply,
-            'comment',
-            'XFMG:Comment'
+            'comment'
         );
 
         return $reply;
@@ -71,7 +70,7 @@ class Comment extends XFCP_Comment
         /** @var CommentEditorSvc|EditorSvcInterface $editor */
         $editor = parent::setupCommentEdit($comment);
 
-        $this->getChangeContentOwnerPlugin()->extendEditorService($comment, $editor, 'XFMG:Comment');
+        $this->getChangeContentOwnerPlugin()->extendEditorService($comment, $editor);
 
         return $editor;
     }

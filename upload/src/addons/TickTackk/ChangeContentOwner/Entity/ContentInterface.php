@@ -2,6 +2,7 @@
 
 namespace TickTackk\ChangeContentOwner\Entity;
 
+use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
 use XF\Entity\User;
 
 /**
@@ -26,4 +27,11 @@ interface ContentInterface
      * @return bool
      */
     public function canChangeDate(int $newDate = null, &$error = null) : bool;
+
+    /**
+     * @param bool $throw
+     *
+     * @return AbstractHandler
+     */
+    public function getChangeOwnerHandler(bool $throw = false) : AbstractHandler;
 }

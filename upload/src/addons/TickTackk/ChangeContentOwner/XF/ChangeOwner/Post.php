@@ -50,4 +50,14 @@ class Post extends AbstractHandler
             'title' => $content->Thread->title
         ]);
     }
+
+    /**
+     * @param Entity|ExtendedPostEntity $content
+     *
+     * @return int
+     */
+    public function getOldTimestamp(Entity $content): int
+    {
+        return $content->post_date;
+    }
 }

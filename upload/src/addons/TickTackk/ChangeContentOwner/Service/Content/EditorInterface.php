@@ -17,9 +17,19 @@ interface EditorInterface
     public function setNewOwner(UserEntity $newOwner) : void;
 
     /**
-     * @param int $newDate
+     * @param array|int[] $newDate
      */
-    public function setNewDate(int $newDate) : void;
+    public function setNewDate(array $newDate) : void;
+
+    /**
+     * @param array|int[] $newTime
+     */
+    public function setNewTime(array $newTime) : void;
+
+    /**
+     * @param array|int[] $timeInterval
+     */
+    public function setTimeInterval(array $timeInterval) : void;
 
     public function setupOwnerChanger() : void;
 

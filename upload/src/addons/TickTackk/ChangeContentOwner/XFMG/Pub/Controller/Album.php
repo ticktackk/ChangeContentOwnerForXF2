@@ -37,8 +37,7 @@ class Album extends XFCP_Album
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $album,
             'TickTackk\ChangeContentOwner\XFMG:Album\OwnerChanger',
-            'XFMG:Album',
-            'TickTackk\ChangeContentOwner\XFMG:Album\ChangeOwner'
+            'XFMG:Album'
         );
     }
 
@@ -46,6 +45,7 @@ class Album extends XFCP_Album
      * @param ParameterBag $params
      *
      * @return ErrorReply|RedirectReply|ViewReply
+     * @throws \Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -53,8 +53,7 @@ class Album extends XFCP_Album
 
         $this->getChangeContentOwnerPlugin()->extendContentEditAction(
             $reply,
-            'album',
-            'XFMG:Album'
+            'album'
         );
 
         return $reply;
@@ -71,7 +70,7 @@ class Album extends XFCP_Album
         /** @var AlbumEditorSvc|EditorSvcInterface $editor */
         $editor = parent::setupAlbumEdit($album);
 
-        $this->getChangeContentOwnerPlugin()->extendEditorService($album, $editor, 'XFMG:Album');
+        $this->getChangeContentOwnerPlugin()->extendEditorService($album, $editor);
 
         return $editor;
     }

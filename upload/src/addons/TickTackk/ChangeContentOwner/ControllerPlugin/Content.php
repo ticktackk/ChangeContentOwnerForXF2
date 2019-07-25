@@ -3,7 +3,7 @@
 namespace TickTackk\ChangeContentOwner\ControllerPlugin;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
-use TickTackk\ChangeContentOwner\Repository\ContentInterface as ContentRepoInterface;
+use TickTackk\ChangeContentOwner\Entity\ContentTrait as ContentEntityTrait;
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger as AbstractOwnerChangerSvc;
 use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInterface;
 use XF\Entity\User as UserEntity;
@@ -24,22 +24,19 @@ use XF\Service\AbstractService;
 class Content extends AbstractPlugin
 {
     /**
-     * @param Entity      $content
-     * @param string      $serviceName
-     * @param string      $entityIdentifier
-     * @param string      $view
-     * @param string|null $repoIdentifier
+     * @param Entity|ContentEntityInterface|ContentEntityTrait $content
+     * @param string $serviceName
+     * @param string $view
      *
      * @return RedirectReply|ViewReply
      * @throws ExceptionReply
      * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
+     * @throws \Exception
      */
-    public function actionChangeOwner(Entity $content, string $serviceName, string $entityIdentifier, string $view, string $repoIdentifier = null)
+    public function actionChangeOwner(Entity $content, string $serviceName, string $view)
     {
-        $repoIdentifier = $repoIdentifier ?: $entityIdentifier;
-        $contentRepo = $this->getContentRepo($repoIdentifier);
-        $handler = $contentRepo->getChangeOwnerHandler($content, true);
+        $handler = $content->getChangeOwnerHandler(true);
 
         if (!$handler->canChangeOwner($content, null, $error) && !$handler->canChangeDate($content, null, $error))
         {
@@ -51,7 +48,7 @@ class Content extends AbstractPlugin
             /** @var AbstractOwnerChangerSvc $ownerChangerSvc */
             $ownerChangerSvc = $this->service($serviceName, $content);
 
-            $this->setNewOwnerAndDate($ownerChangerSvc, $content, $repoIdentifier);
+            $this->setNewOwnerDateTimeAndInterval($ownerChangerSvc, $content);
 
             $ownerChangerSvc->apply();
             if (!$ownerChangerSvc->validate($errors))
@@ -83,19 +80,18 @@ class Content extends AbstractPlugin
     /**
      * @param AbstractReply $reply
      * @param string        $contentParamName
-     * @param string        $repoName
+     *
+     * @throws \Exception
      */
-    public function extendContentEditAction(AbstractReply $reply, string $contentParamName, string $repoName) : void
+    public function extendContentEditAction(AbstractReply $reply, string $contentParamName) : void
     {
         if ($reply instanceof ViewReply)
         {
-            /** @var Entity|ContentEntityInterface $content */
+            /** @var Entity|ContentEntityInterface|ContentEntityTrait $content */
             $content = $reply->getParam($contentParamName);
             if ($content && !$this->isPost())
             {
-                /** @var Repository|ContentRepoInterface $contentRepo */
-                $contentRepo = $this->repository($repoName);
-                $handler = $contentRepo->getChangeOwnerHandler($content);
+                $handler = $content->getChangeOwnerHandler(true);
                 $reply->setParam('changeOwnerHandler', $handler);
             }
         }
@@ -104,17 +100,16 @@ class Content extends AbstractPlugin
     /**
      * @param Entity|ContentEntityInterface             $content
      * @param EditorSvcInterface $editor
-     * @param string             $repoIdentifier
      *
      * @throws ExceptionReply
      */
-    public function extendEditorService(Entity $content, EditorSvcInterface $editor, string $repoIdentifier) : void
+    public function extendEditorService(Entity $content, EditorSvcInterface $editor) : void
     {
         if ($this->isPost())
         {
             $editor->setupOwnerChanger();
 
-            $this->setNewOwnerAndDate($editor, $content, $repoIdentifier);
+            $this->setNewOwnerDateTimeAndInterval($editor, $content);
 
             $editor->applyOwnerChanger();
         }
@@ -122,16 +117,14 @@ class Content extends AbstractPlugin
 
     /**
      * @param AbstractService|EditorSvcInterface|AbstractOwnerChangerSvc        $service
-     * @param ContentEntityInterface|Entity $content
-     * @param string                 $repoIdentifier
+     * @param ContentEntityInterface|ContentEntityTrait|Entity $content
      *
      * @throws ExceptionReply
+     * @throws \Exception
      */
-    protected function setNewOwnerAndDate(AbstractService $service, ContentEntityInterface $content, string $repoIdentifier) : void
+    protected function setNewOwnerDateTimeAndInterval(AbstractService $service, ContentEntityInterface $content) : void
     {
-        $contentRepo = $this->getContentRepo($repoIdentifier);
-        $handler = $contentRepo->getChangeOwnerHandler($content, true);
-
+        $handler = $content->getChangeOwnerHandler(true);
         $newOwnerUsername = $this->filter('username', 'str');
 
         if ($newOwnerUsername)
@@ -150,74 +143,53 @@ class Content extends AbstractPlugin
             $service->setNewOwner($newOwner);
         }
 
-        $newDate = null;
-        $bumpTimeBy = null;
-        $changeTimeType = $this->filter('change_time_type', 'str');
-
-        if ($changeTimeType === 'update_datetime')
+        /**
+         * @param string $input
+         * @param array  $keys
+         *
+         * @return array
+         */
+        $filterArray = function (string $input, array $keys)
         {
-            $newDate = $this->filter('date', 'datetime', [
-                'tz' => \XF::visitor()->timezone
-            ]);
-            if ($newDate)
-            {
-                if (!$handler->canChangeDate($content, $newDate, $error))
-                {
-                    throw $this->exception($this->noPermission($error));
-                }
+            return $this->filter([
+                $input => $keys
+            ])[$input];
+        };
 
-                $service->setNewDate($newDate);
+        $changeDate = $this->filter('change_date', 'bool');
+        if ($changeDate)
+        {
+            $newDate = explode('-', $this->filter('new_date', 'str'));
+            if (count($newDate) === 3)
+            {
+                [$year, $month, $day] = $newDate;
+                $service->setNewDate([
+                    'year' => (int) $year,
+                    'month' => (int) $month,
+                    'day' => (int) $day
+                ]);
             }
         }
-        else if ($changeTimeType === 'bump_time')
+
+        $changeTime = $this->filter('change_time', 'bool');
+        if ($changeTime)
         {
-            $bumpTimeBy = $this->filter([
-                'bump_time' => [
-                    'hours' => 'int',
-                    'minutes' => 'int',
-                    'seconds' => 'int'
-                ]
-            ])['bump_time'];
-            $service->setBumpTimeBy($bumpTimeBy);
-        }
-        else
-        {
-            throw $this->exception(
-                $this->noPermission(
-                    \XF::phraseDeferred('tckChangeContentOwner_please_select_valid_change_date_type')
-                )
-            );
+            $service->setNewTime($filterArray('new_time', [
+                'hour' => 'int',
+                'minute' => 'int',
+                'second' => 'int'
+            ]));
         }
 
-        if (!$newOwnerUsername && (!$newDate && !$bumpTimeBy) && !$service instanceof EditorSvcInterface)
+        $applyTimeInterval = $this->filter('apply_time_interval', 'bool');
+        if ($applyTimeInterval)
         {
-            if ($handler->canChangeOwner($content) && $handler->canChangeDate($content))
-            {
-                throw $this->exception($this->error(\XF::phrase('tckChangeContentOwner_you_must_either_change_owner_or_date_of_this_x', [
-                    'content_type_phrase' => $handler->getContentTypePhrase()
-                ])));
-            }
-
-            if ($handler->canChangeOwner($content))
-            {
-                throw $this->exception($this->error(\XF::phrase('please_enter_valid_name')));
-            }
-
-            if ($handler->canChangeDate($content))
-            {
-                throw $this->exception($this->error(\XF::phrase('tckChangeContentOwner_please_enter_valid_date')));
-            }
+            $service->setTimeInterval($filterArray('time_interval', [
+                'hour' => 'int',
+                'minute' => 'int',
+                'second' => 'int'
+            ]));
         }
-    }
-
-    /**
-     * @param string $repoIdentifier
-     *
-     * @return Repository|ContentRepoInterface
-     */
-    protected function getContentRepo(string $repoIdentifier) : Repository
-    {
-        return $this->repository($repoIdentifier);
     }
 
     /**

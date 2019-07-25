@@ -13,11 +13,6 @@ namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Pub\Controller
 	class XFCP_Graph extends \XFA\CSVGrapher\Pub\Controller\Graph {}
 }
 
-namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Repository
-{
-	class XFCP_Graph extends \XFA\CSVGrapher\Repository\Graph {}
-}
-
 namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Service\Graph
 {
 	class XFCP_Editor extends \XFA\CSVGrapher\Service\Graph\Editor {}
@@ -35,13 +30,6 @@ namespace TickTackk\ChangeContentOwner\XFMG\Pub\Controller
 	class XFCP_Album extends \XFMG\Pub\Controller\Album {}
 	class XFCP_Comment extends \XFMG\Pub\Controller\Comment {}
 	class XFCP_Media extends \XFMG\Pub\Controller\Media {}
-}
-
-namespace TickTackk\ChangeContentOwner\XFMG\Repository
-{
-	class XFCP_Album extends \XFMG\Repository\Album {}
-	class XFCP_Comment extends \XFMG\Repository\Comment {}
-	class XFCP_Media extends \XFMG\Repository\Media {}
 }
 
 namespace TickTackk\ChangeContentOwner\XFMG\Service\Album
@@ -73,13 +61,6 @@ namespace TickTackk\ChangeContentOwner\XF\Pub\Controller
 	class XFCP_Post extends \XF\Pub\Controller\Post {}
 	class XFCP_ProfilePost extends \XF\Pub\Controller\ProfilePost {}
 	class XFCP_Thread extends \XF\Pub\Controller\Thread {}
-}
-
-namespace TickTackk\ChangeContentOwner\XF\Repository
-{
-	class XFCP_Post extends \XF\Repository\Post {}
-	class XFCP_ProfilePost extends \XF\Repository\ProfilePost {}
-	class XFCP_Thread extends \XF\Repository\Thread {}
 }
 
 namespace TickTackk\ChangeContentOwner\XF\Service\Post

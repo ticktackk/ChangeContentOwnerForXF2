@@ -55,7 +55,7 @@ class Comment extends AbstractHandler
      *
      * @return int
      */
-    public function getOldDate(Entity $content): int
+    public function getOldTimestamp(Entity $content): int
     {
         return $content->comment_date;
     }

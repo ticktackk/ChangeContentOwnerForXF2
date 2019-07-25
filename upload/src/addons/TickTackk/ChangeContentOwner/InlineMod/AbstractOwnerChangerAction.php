@@ -130,22 +130,6 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
      */
     protected function canApplyToEntity(Entity $content, array $options, &$error = null) : bool
     {
-        if ($this->newOwner && !$content->canChangeOwner($this->newOwner, $error))
-        {
-            return false;
-        }
-
-        if ($options['date'] && !$content->canChangeDate($options['date'], $error))
-        {
-            return false;
-        }
-        //TODO: maybe use change owner handler to get old date, add bump time to it and then pass it to change date checker
-        // via 3rd argument saying yes its for bumping date time??
-        else if ($options['bump_time'] && !$content->canChangeDate(null, $error))
-        {
-            return false;
-        }
-
         return $content->canChangeOwner(null,$error) || $content->canChangeDate(null, $error);
     }
 
@@ -172,36 +156,44 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     {
         $options = [
             'username' => $request->filter('username', 'str'),
-            'change_time_type' => $request->filter('change_time_type', 'str'),
-            'date' => null,
-            'date_time_interval' => null,
-            'bump_time' => null
+            'change_date' => $request->filter('change_date', 'bool'),
+            'change_time' => $request->filter('change_time', 'bool'),
+            'apply_time_interval' => $request->filter('apply_time_interval', 'bool')
         ];
 
-        $filterUnits = function (string $input) use($request)
+        /**
+         * @param string $input
+         * @param array  $keys
+         *
+         * @return array
+         */
+        $filterArray = function (string $input, array $keys) use($request)
         {
             return $request->filter([
-                $input => [
-                    'hours' => 'int',
-                    'minutes' => 'int',
-                    'seconds' => 'int'
-                ]
+                $input => $keys
             ])[$input];
         };
 
-        switch ($options['change_time_type'])
+        $newDate = explode('-', $request->filter('new_date', 'str'));
+        if (count($newDate) === 3)
         {
-            case 'update_datetime':
-                $options['date'] = $request->filter('date', 'datetime', [
-                    'tz' => \XF::visitor()->timezone
-                ]);
-                $options['date_time_interval'] = $filterUnits('date_time_interval');
-                break;
-
-            case 'bump_time':
-                $options['bump_time'] = $filterUnits('bump_time');
-                break;
+            [$year, $month, $day] = $newDate;
+            $options['new_date'] = $filterArray('new_date', [
+                'year' => (int) $year,
+                'month' => (int) $month,
+                'day' => (int) $day
+            ]);
         }
+        $options['new_time'] = $filterArray('new_time', [
+            'hour' => 'int',
+            'minute' => 'int',
+            'second' => 'int'
+        ]);
+        $options['time_interval'] = $filterArray('time_interval', [
+            'hour' => 'int',
+            'minute' => 'int',
+            'second' => 'int'
+        ]);
 
         return $options;
     }
@@ -236,17 +228,19 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             $ownerChangerSvc->setNewOwner($this->newOwner);
         }
 
-        if ($options['change_time_type'] === 'update_datetime')
+        if ($options['change_date'])
         {
-            if ($options['date'])
-            {
-                $ownerChangerSvc->setNewDate($options['date']);
-                $ownerChangerSvc->setNewDateTimeIntervals($options['date_time_interval']);
-            }
+            $ownerChangerSvc->setNewDate($options['new_date']);
         }
-        else if ($options['change_time_type'] === 'bump_time')
+
+        if ($options['change_time'])
         {
-            $ownerChangerSvc->setBumpTimeBy($options['bump_time']);
+            $ownerChangerSvc->setNewTime($options['new_time']);
+        }
+
+        if ($options['apply_time_interval'])
+        {
+            $ownerChangerSvc->setTimeInterval($options['time_interval']);
         }
 
         $ownerChangerSvc->apply();

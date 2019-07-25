@@ -3,6 +3,7 @@
 namespace TickTackk\ChangeContentOwner\XF\Entity;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface;
+use TickTackk\ChangeContentOwner\Entity\ContentTrait;
 use XF\Entity\User as UserEntity;
 
 /**
@@ -15,6 +16,8 @@ use XF\Entity\User as UserEntity;
  */
 class Thread extends XFCP_Thread implements ContentInterface
 {
+    use ContentTrait;
+
     /**
      * @param UserEntity|null $newUser
      * @param null            $error

@@ -37,9 +37,7 @@ class Media extends XFCP_Media
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $mediaItem,
             'TickTackk\ChangeContentOwner\XFMG:Media\OwnerChanger',
-            'XFMG:MediaItem',
-            'TickTackk\ChangeContentOwner\XFMG:Media\ChangeOwner',
-            'XFMG:Media'
+            'XFMG:MediaItem'
         );
     }
 
@@ -47,6 +45,7 @@ class Media extends XFCP_Media
      * @param ParameterBag $params
      *
      * @return ErrorReply|RedirectReply|ViewReply
+     * @throws \Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -54,8 +53,7 @@ class Media extends XFCP_Media
 
         $this->getChangeContentOwnerPlugin()->extendContentEditAction(
             $reply,
-            'mediaItem',
-            'XFMG:Media'
+            'mediaItem'
         );
 
         return $reply;
@@ -72,7 +70,7 @@ class Media extends XFCP_Media
         /** @var MediaEditorSvc|EditorSvcInterface $editor */
         $editor = parent::setupMediaItemEdit($mediaItem);
 
-        $this->getChangeContentOwnerPlugin()->extendEditorService($mediaItem, $editor, 'XFMG:Media');
+        $this->getChangeContentOwnerPlugin()->extendEditorService($mediaItem, $editor);
 
         return $editor;
     }

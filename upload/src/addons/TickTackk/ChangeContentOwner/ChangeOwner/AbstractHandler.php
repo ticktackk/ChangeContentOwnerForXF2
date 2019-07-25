@@ -92,21 +92,58 @@ abstract class AbstractHandler
         return $oldContentOwner ?: $this->getFallbackOldOwner($content);
     }
 
+    abstract public function getOldTimestamp(Entity $content) : int;
+
     /**
      * @param Entity $content
+     * @param bool   $visitorTimezone
      *
-     * @return int
+     * @return \DateTime
+     * @throws \Exception
      */
-    public function getOldDate(Entity $content) : int
+    public function getOldDateTime(Entity $content, bool $visitorTimezone = false) : \DateTime
     {
-        try
-        {
-            return $content->get($content->getEntityContentType() . '_date');
-        }
-        catch (\InvalidArgumentException $e)
-        {
-            throw new \LogicException('Could not determine content date; please override');
-        }
+        $timezone = $visitorTimezone ? \XF::visitor()->timezone : 'UTC';
+        $dateTimeObj = new \DateTime('now', new \DateTimeZone($timezone));
+        $dateTimeObj->setTimestamp($this->getOldTimestamp($content));
+
+        return $dateTimeObj;
+    }
+
+    /**
+     * @param Entity $content
+     * @param bool   $visitorTimezone
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getOldDate(Entity $content, bool $visitorTimezone = false) : array
+    {
+        $oldDateTime = $this->getOldDateTime($content, $visitorTimezone);
+
+        return [
+            'year' => $oldDateTime->format('Y'),
+            'month' => $oldDateTime->format('m'),
+            'day' => $oldDateTime->format('d')
+        ];
+    }
+
+    /**
+     * @param Entity $content
+     * @param bool   $visitorTimezone
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getOldTime(Entity $content, bool $visitorTimezone = false) : array
+    {
+        $oldDateTime = $this->getOldDateTime($content, $visitorTimezone);
+
+        return [
+            'hour' => $oldDateTime->format('H'),
+            'minute' => $oldDateTime->format('i'),
+            'second' => $oldDateTime->format('s')
+        ];
     }
 
     /**

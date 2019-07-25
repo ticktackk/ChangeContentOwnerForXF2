@@ -37,8 +37,7 @@ class Post extends XFCP_Post
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $post,
             'TickTackk\ChangeContentOwner\XF:Post\OwnerChanger',
-            'XF:Post',
-            'TickTackk\ChangeContentOwner\XF:Post\ChangeOwner'
+            'XF:Post'
         );
     }
 
@@ -53,7 +52,7 @@ class Post extends XFCP_Post
         /** @var PostEditorSvc|EditorSvcInterface $editor */
         $editor = parent::setupPostEdit($post);
 
-        $this->getChangeContentOwnerPlugin()->extendEditorService($post, $editor, 'XF:Post');
+        $this->getChangeContentOwnerPlugin()->extendEditorService($post, $editor);
 
         return $editor;
     }
@@ -62,6 +61,7 @@ class Post extends XFCP_Post
      * @param ParameterBag $params
      *
      * @return ErrorReply|RedirectReply|ViewReply
+     * @throws \Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -69,8 +69,7 @@ class Post extends XFCP_Post
 
         $this->getChangeContentOwnerPlugin()->extendContentEditAction(
             $reply,
-            'post',
-            'XF:Post'
+            'post'
         );
 
         return $reply;

@@ -1,6 +1,0 @@
-{
-    "from_class": "XF\\Repository\\Thread",
-    "to_class": "TickTackk\\ChangeContentOwner\\XF\\Repository\\Thread",
-    "execute_order": 10,
-    "active": true
-}

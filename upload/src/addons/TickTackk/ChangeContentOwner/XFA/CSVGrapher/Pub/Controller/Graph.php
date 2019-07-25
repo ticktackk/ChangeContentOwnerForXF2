@@ -37,8 +37,7 @@ class Graph extends XFCP_Graph
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $graph,
             'TickTackk\ChangeContentOwner\XFA\CSVGrapher:Graph\OwnerChanger',
-            'XFA\CSVGrapher:Graph',
-            'TickTackk\ChangeContentOwner\XFA\CSVGrapher:Graph\ChangeOwner'
+            'XFA\CSVGrapher:Graph'
         );
     }
 
@@ -47,6 +46,7 @@ class Graph extends XFCP_Graph
      *
      * @return ErrorReply|RedirectReply|ViewReply
      * @throws ExceptionReply
+     * @throws \Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -54,8 +54,7 @@ class Graph extends XFCP_Graph
 
         $this->getChangeContentOwnerPlugin()->extendContentEditAction(
             $reply,
-            'graph' ,
-            'XFA\CSVGrapher:Graph'
+            'graph'
         );
 
         return $reply;
@@ -72,7 +71,7 @@ class Graph extends XFCP_Graph
         /** @var GraphEditor|EditorSvcInterface $editor */
         $editor = parent::setupGraphEditor($graph);
 
-        $this->getChangeContentOwnerPlugin()->extendEditorService($graph, $editor, 'XFA\CSVGrapher:Graph');
+        $this->getChangeContentOwnerPlugin()->extendEditorService($graph, $editor);
 
         return $editor;
     }

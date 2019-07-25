@@ -3,6 +3,7 @@
 namespace TickTackk\ChangeContentOwner\XF\Entity;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface;
+use TickTackk\ChangeContentOwner\Entity\ContentTrait;
 use XF\Entity\User;
 
 /**
@@ -12,6 +13,8 @@ use XF\Entity\User;
  */
 class ProfilePost extends XFCP_ProfilePost implements ContentInterface
 {
+    use ContentTrait;
+
     /**
      * @param User|null $newUser
      * @param null      $error

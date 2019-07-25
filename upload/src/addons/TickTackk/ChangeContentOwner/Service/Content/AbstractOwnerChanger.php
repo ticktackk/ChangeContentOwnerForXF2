@@ -4,8 +4,7 @@ namespace TickTackk\ChangeContentOwner\Service\Content;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
 use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
-use TickTackk\ChangeContentOwner\Repository\ContentTrait as ContentRepoTrait;
-use TickTackk\ChangeContentOwner\Repository\ContentInterface as ContentRepoInterface;
+use TickTackk\ChangeContentOwner\Entity\ContentTrait as ContentEntityTrait;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
@@ -50,22 +49,32 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @var array|int[]
      */
+    protected $oldTimestamps;
+
+    /**
+     * @var array|int[]
+     */
     protected $oldDates;
 
     /**
-     * @var int
+     * @var array|int[]
+     */
+    protected $oldTimes;
+
+    /**
+     * @var array|int[]
      */
     protected $newDate;
 
     /**
      * @var array|int[]
      */
-    protected $bumpTimeBy;
+    protected $newTime;
 
     /**
-     * @var array
+     * @var array|int[]
      */
-    protected $newDateTimeIntervals;
+    protected $timeIntervals;
 
     /**
      * @var array
@@ -140,9 +149,11 @@ abstract class AbstractOwnerChanger extends AbstractService
             }
         }
 
-        $contentRepo = $this->getContentRepo();
         $this->contents = $contents;
-        $this->handler = $contentRepo->getChangeOwnerHandler($contents->first(), true);
+
+        /** @var ContentEntityInterface|ContentEntityTrait $firstContent */
+        $firstContent = $contents->first();
+        $this->handler = $firstContent->getChangeOwnerHandler(true);
     }
 
     /**
@@ -170,18 +181,99 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
-     * @param array $newDateTimeIntervals
+     * @param array|int[] $newDate
      */
-    public function setNewDateTimeIntervals(array $newDateTimeIntervals) : void
+    public function setNewDate(array $newDate) : void
     {
-        if ($this->contents->count() > 1)
+        if (\count($newDate) !== 3 ||
+            !isset($newDate['year'], $newDate['month'], $newDate['day']) ||
+            !is_int($newDate['year']) || !is_int($newDate['month']) || !is_int($newDate['day'])
+        )
         {
-            $this->newDateTimeIntervals = [
-                'hours' => (int) ($newDateTimeIntervals['hours'] ?? 0),
-                'minutes' => (int) ($newDateTimeIntervals['minutes'] ?? 0),
-                'seconds' => (int) ($newDateTimeIntervals['seconds'] ?? 0)
-            ];
+            throw new \InvalidArgumentException('Invalid new date set.');
         }
+
+        if ($newDate['year'] < 1970)
+        {
+            throw new \InvalidArgumentException('Invalid year provided.');
+        }
+
+        if ($newDate['month'] > 12 || $newDate['month'] < 1)
+        {
+            throw new \InvalidArgumentException('Invalid month provided.');
+        }
+
+        $maxDay = cal_days_in_month(CAL_GREGORIAN, $newDate['month'], $newDate['year']);
+        if ($newDate['day'] > $maxDay || $newDate['day'] < 1)
+        {
+            throw new \InvalidArgumentException('Invalid day provided.');
+        }
+
+        $this->newDate = $newDate;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getNewDate() :? array
+    {
+        return $this->newDate;
+    }
+
+    public function setNewTime(array $newTime)
+    {
+        if (\count($newTime) !== 3 ||
+            !isset($newTime['hour'], $newTime['minute'], $newTime['second']) ||
+            !is_int($newTime['hour']) || !is_int($newTime['minute']) || !is_int($newTime['second'])
+        )
+        {
+            throw new \InvalidArgumentException('Invalid new time set.');
+        }
+
+        if ($newTime['hour'] < 0 || $newTime['hour'] > 23)
+        {
+            throw new \InvalidArgumentException('Invalid hour provided.');
+        }
+
+        if ($newTime['minute'] < 0 || $newTime['hour'] > 59)
+        {
+            throw new \InvalidArgumentException('Invalid minute provided.');
+        }
+
+        if ($newTime['second'] < 0 || $newTime['second'] > 59)
+        {
+            throw new \InvalidArgumentException('Invalid second provided.');
+        }
+
+        $this->newTime = $newTime;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getNewTime() :? array
+    {
+        return $this->newTime;
+    }
+
+    /**
+     * @param array|int[] $timeInterval
+     */
+    public function setTimeInterval(array $timeInterval) : void
+    {
+        $this->timeIntervals = [
+            'hour' => (int) ($timeInterval['hour'] ?? 0),
+            'minute' => (int) ($timeInterval['minute'] ?? 0),
+            'second' => (int) ($timeInterval['second'] ?? 0)
+        ];
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getTimeIntervals() : ? array
+    {
+        return $this->timeIntervals;
     }
 
     /**
@@ -215,59 +307,20 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
-     * @return null|array
-     */
-    public function getNewDateTimeIntervals() : ? array
-    {
-        return $this->newDateTimeIntervals;
-    }
-
-    /**
      * @return int
      */
-    public function getNewDateTimeIntervalInSeconds() : int
+    public function getTimeIntervalInMilliseconds() : int
     {
-        return $this->convertUnitsToMilliseconds($this->getNewDateTimeIntervals());
-    }
-
-    /**
-     * @param int $newDate
-     */
-    public function setNewDate(int $newDate) : void
-    {
-        $this->newDate = $newDate;
-    }
-
-    /**
-     * @param array|int[] $bumpTimeBy
-     */
-    public function setBumpTimeBy(array $bumpTimeBy) : void
-    {
-        $this->bumpTimeBy = $bumpTimeBy;
-    }
-
-    /**
-     * @return array|int[]
-     */
-    public function getBumpTimeBy() :? array
-    {
-        return $this->bumpTimeBy;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBumpTimeByIntervalInSeconds() : int
-    {
-        return $this->convertUnitsToMilliseconds($this->getBumpTimeBy());
+        return $this->convertUnitsToMilliseconds($this->getTimeIntervals());
     }
 
     /**
      * @param Entity $content
      *
-     * @return null|int
+     * @return int|null
+     * @throws \Exception
      */
-    public function getNewDate(Entity $content) :? int
+    public function getNewTimestamp(Entity $content) :? int
     {
         $this->contentNewDateMapping = $this->contentNewDateMapping ?? [];
 
@@ -277,21 +330,33 @@ abstract class AbstractOwnerChanger extends AbstractService
             return $this->contentNewDateMapping[$uniqueKey];
         }
 
+        $dateTime = $this->getHandler()->getOldDateTime($content, true);
         $newDate = $this->newDate;
         if ($newDate)
         {
-            if (count($this->contentNewDateMapping))
-            {
-                $newDate += $this->getNewDateTimeIntervalInSeconds() * count($this->contentNewDateMapping);
-            }
-        }
-        else if ($this->getBumpTimeBy())
-        {
-            $newDate = $this->getHandler()->getOldDate($content);
-            $newDate += $this->getBumpTimeByIntervalInSeconds();
+            $dateTime->setDate($newDate['year'], $newDate['month'], $newDate['day']);
         }
 
-        $this->contentNewDateMapping[$uniqueKey] = $newDate;
+        $newTime = $this->newTime;
+        if ($newTime)
+        {
+            $dateTime->setTime($newTime['hour'], $newTime['minute'], $newTime['second']);
+        }
+
+        $timeIntervals = $this->timeIntervals;
+        if ($timeIntervals)
+        {
+            foreach ($timeIntervals AS $unit => $value)
+            {
+                $multiplyIntervalBy = count($this->contentNewDateMapping) + 1;
+                if ($value)
+                {
+                    $dateTime->modify($value * $multiplyIntervalBy. ' ' . $unit);
+                }
+            }
+        }
+
+        $this->contentNewDateMapping[$uniqueKey] = $dateTime->getTimestamp();
         return $this->contentNewDateMapping[$uniqueKey];
     }
 
@@ -329,9 +394,10 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @param Entity $content
      *
-     * @return int
+     * @return array
+     * @throws \Exception
      */
-    public function getOldDate(Entity $content) : int
+    public function getOldDate(Entity $content) : array
     {
         $uniqueKey = $this->getContentUniqueKey($content);
 
@@ -340,7 +406,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             return $this->oldDates[$uniqueKey];
         }
 
-        $this->oldDates[$uniqueKey] = $this->handler->getOldDate($content);
+        $this->oldDates[$uniqueKey] = $this->getHandler()->getOldDate($content);
 
         return $this->oldDates[$uniqueKey];
     }
@@ -349,6 +415,46 @@ abstract class AbstractOwnerChanger extends AbstractService
      * @param Entity $content
      *
      * @return array
+     * @throws \Exception
+     */
+    public function getOldTime(Entity $content) : array
+    {
+        $uniqueKey = $this->getContentUniqueKey($content);
+
+        if (isset($this->oldTimes[$uniqueKey]))
+        {
+            return $this->oldTimes[$uniqueKey];
+        }
+
+        $this->oldTimes[$uniqueKey] = $this->getHandler()->getOldTime($content);
+
+        return $this->oldTimes[$uniqueKey];
+    }
+
+    /**
+     * @param Entity $content
+     *
+     * @return int
+     */
+    public function getOldTimestamp(Entity $content) : int
+    {
+        $uniqueKey = $this->getContentUniqueKey($content);
+
+        if (isset($this->oldTimestamps[$uniqueKey]))
+        {
+            return $this->oldTimestamps[$uniqueKey];
+        }
+
+        $this->oldTimestamps[$uniqueKey] = $this->getHandler()->getOldTimestamp($content);
+
+        return $this->oldTimestamps[$uniqueKey];
+    }
+
+    /**
+     * @param Entity $content
+     *
+     * @return array
+     * @throws \Exception
      */
     public function getLogData(Entity $content) : array
     {
@@ -367,14 +473,43 @@ abstract class AbstractOwnerChanger extends AbstractService
             $extraData['new_username'] = $newOwner->username;
         }
 
-        $oldDate = $this->getOldDate($content);
-        $newDate = $this->getNewDate($content);
-        if ($newDate && $oldDate !== $newDate)
+        $newDate = $this->getNewDate();
+        if ($newDate)
         {
             $actions[] = 'date';
 
-            $extraData['old_date'] = $oldDate;
+            $extraData['old_date'] = $this->getOldDate($content);
             $extraData['new_date_provided'] = $newDate;
+        }
+
+        $newTime = $this->getNewTime();
+        if ($newTime)
+        {
+            $actions[] = 'time';
+
+            $extraData['old_time'] = $this->getOldTime($content);
+            $extraData['new_time_provided'] = $newTime;
+        }
+
+        $timeIntervals = $this->getTimeIntervals();
+        if ($timeIntervals)
+        {
+            $isBump = false;
+            foreach ([] AS $possibleAction)
+            {
+                if (in_array($possibleAction, $actions, true))
+                {
+                    $isBump = false;
+                    break;
+                }
+            }
+
+            if ($isBump)
+            {
+                $actions[] = 'bump';
+            }
+
+            $extraData['time_intervals'] = $extraData;
         }
 
         return [
@@ -469,6 +604,7 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
+     * @throws \Exception
      */
     public function apply() : void
     {
@@ -484,14 +620,14 @@ abstract class AbstractOwnerChanger extends AbstractService
                 $this->contents[$id] = $this->changeContentOwner($content, $newOwner);
             }
 
-            $newDate = $this->getNewDate($content);
-            $oldDate = $this->getOldDate($content);
-            if ($newDate && $newDate !== $oldDate)
+            $oldTimestamp = $this->getOldTimestamp($content);
+            $newTimestamp = $this->getNewTimestamp($content);
+            if ($newTimestamp !== $oldTimestamp)
             {
-                $this->contents[$id] = $this->changeContentDate($content, $newDate);
+                $this->contents[$id] = $this->changeContentDate($content, $newTimestamp);
             }
 
-            if ($newOwner || $newDate)
+            if ($newOwner || $newTimestamp)
             {
                 $this->applyAdditionalChanges($content);
             }
@@ -508,10 +644,33 @@ abstract class AbstractOwnerChanger extends AbstractService
         $handler = $this->getHandler();
         $errors = [];
 
-        if ($newOwner)
+        foreach ($this->contents AS $id => $content)
         {
-            foreach ($this->contents AS $id => $content)
+            $oldTimestamp = $this->getOldTimestamp($content);
+            $newTimestamp = $this->getNewTimestamp($content);
+
+            if ($oldTimestamp !== $newTimestamp && !$content->canChangeDate($newTimestamp, $error))
             {
+                $fallbackError = count($this->contents) > 1
+                    ? 'tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_date'
+                    : 'tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_date';
+
+                $errors[] = $error ?: \XF::phrase($fallbackError);
+            }
+            unset($error);
+
+            $oldOwner = $this->getOldOwner($content);
+            if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
+            {
+                if (!$content->canChangeOwner($newOwner, $error))
+                {
+                    $fallbackError = count($this->contents) > 1
+                        ? 'tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_owner'
+                        : 'tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_owner';
+
+                    $errors[] = $error ?: \XF::phrase($fallbackError);
+                }
+
                 if (!$handler->canNewOwnerViewContent($content, $newOwner, $error))
                 {
                     $errors[] = $error ?: \XF::phrase('tckChangeContentOwner_new_owner_must_be_able_to_view_this_content');
@@ -519,7 +678,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             }
         }
 
-        return $errors;
+        return array_unique($errors);
     }
 
     /**
@@ -600,7 +759,7 @@ abstract class AbstractOwnerChanger extends AbstractService
 
         $oldOwner = $this->getOldOwner($content);
         $newOwner = $this->getNewOwner();
-        $newDate = $this->getNewDate($content);
+        $newTimestamp = $this->getNewTimestamp($content);
 
         if (isset($structure->behaviors['XF:NewsFeedPublishable']))
         {
@@ -612,7 +771,7 @@ abstract class AbstractOwnerChanger extends AbstractService
                         username = ?,
                         event_date = IF(action <> ?, ?, event_date)
                     WHERE content_type = ? AND content_id = ? AND user_id = ? AND username = ?
-            ', [$newOwner->user_id, $newOwner->username, 'insert', $newDate, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
+            ', [$newOwner->user_id, $newOwner->username, 'insert', $newTimestamp, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
             }
             else
             {
@@ -620,7 +779,7 @@ abstract class AbstractOwnerChanger extends AbstractService
                     UPDATE xf_news_feed
                     SET event_date = IF(action <> ?, ?, event_date)
                     WHERE content_type = ? AND content_id = ? AND user_id = ? AND username = ?
-            ', ['insert', $newDate, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
+            ', ['insert', $newTimestamp, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
             }
         }
 
@@ -665,13 +824,5 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected function getRepoIdentifier() : string
     {
         return $this->getEntityIdentifier();
-    }
-
-    /**
-     * @return Repository|ContentRepoTrait|ContentRepoInterface
-     */
-    protected function getContentRepo() : Repository
-    {
-        return $this->repository($this->getRepoIdentifier());
     }
 }

@@ -29,12 +29,30 @@ trait EditorTrait
     }
 
     /**
-     * @param int $newDate
+     * @param array $newDate
      */
-    public function setNewDate(int $newDate) : void
+    public function setNewDate(array $newDate) : void
     {
         $this->assertOwnerChangerHasBeenSetup();
         $this->ownerChanger->setNewDate($newDate);
+    }
+
+    /**
+     * @param array $newTime
+     */
+    public function setNewTime(array $newTime) : void
+    {
+        $this->assertOwnerChangerHasBeenSetup();;
+        $this->ownerChanger->setNewTime($newTime);
+    }
+
+    /**
+     * @param array $timeInterval
+     */
+    public function setTimeInterval(array $timeInterval) : void
+    {
+        $this->assertOwnerChangerHasBeenSetup();;
+        $this->ownerChanger->setTimeInterval($timeInterval);
     }
 
     /**

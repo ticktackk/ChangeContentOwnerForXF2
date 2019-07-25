@@ -37,8 +37,7 @@ class Thread extends XFCP_Thread
         return $this->getChangeContentOwnerPlugin()->actionChangeOwner(
             $thread,
             'TickTackk\ChangeContentOwner\XF:Thread\OwnerChanger',
-            'XF:Thread',
-            'TickTackk\ChangeContentOwner\XF:Thread\ChangeOwner'
+            'XF:Thread'
         );
     }
 
@@ -46,6 +45,7 @@ class Thread extends XFCP_Thread
      * @param ParameterBag $params
      *
      * @return ErrorReply|RedirectReply|ViewReply
+     * @throws \Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -53,8 +53,7 @@ class Thread extends XFCP_Thread
 
         $this->getChangeContentOwnerPlugin()->extendContentEditAction(
             $reply,
-            'thread',
-            'XF:Thread'
+            'thread'
         );
 
         return $reply;
@@ -71,7 +70,7 @@ class Thread extends XFCP_Thread
         /** @var ThreadEditor|EditorSvcInterface $editor */
         $editor = parent::setupThreadEdit($thread);
 
-        $this->getChangeContentOwnerPlugin()->extendEditorService($thread, $editor, 'XF:Thread');
+        $this->getChangeContentOwnerPlugin()->extendEditorService($thread, $editor);
 
         return $editor;
     }
