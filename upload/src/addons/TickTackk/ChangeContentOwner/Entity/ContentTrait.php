@@ -4,6 +4,11 @@ namespace TickTackk\ChangeContentOwner\Entity;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
 
+/**
+ * Trait ContentTrait
+ *
+ * @package TickTackk\ChangeContentOwner\Entity
+ */
 trait ContentTrait
 {
     /**

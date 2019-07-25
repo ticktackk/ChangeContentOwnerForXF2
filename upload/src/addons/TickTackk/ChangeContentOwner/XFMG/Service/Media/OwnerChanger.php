@@ -23,14 +23,6 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
-     * @return string
-     */
-    protected function getRepoIdentifier(): string
-    {
-        return 'XFMG:Media';
-    }
-
-    /**
      * @param Entity|ExtendedMediaItemEntity     $content
      * @param UserEntity $newOwner
      *

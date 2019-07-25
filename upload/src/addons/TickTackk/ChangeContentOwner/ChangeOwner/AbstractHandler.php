@@ -92,6 +92,11 @@ abstract class AbstractHandler
         return $oldContentOwner ?: $this->getFallbackOldOwner($content);
     }
 
+    /**
+     * @param Entity $content
+     *
+     * @return int
+     */
     abstract public function getOldTimestamp(Entity $content) : int;
 
     /**

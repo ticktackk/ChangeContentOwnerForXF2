@@ -23,14 +23,6 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
-     * @return string
-     */
-    protected function getRepoIdentifier(): string
-    {
-        return 'XF:ProfilePost';
-    }
-
-    /**
      * @param Entity|ExtendedProfilePostCommentEntity     $content
      * @param UserEntity $newOwner
      *

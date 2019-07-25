@@ -7,12 +7,10 @@ use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger as Abstrac
 use XF\Entity\User as UserEntity;
 use XF\Http\Request;
 use XF\InlineMod\AbstractAction;
-use XF\InlineMod\AbstractHandler;
 use XF\Mvc\Controller;
 use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Reply\View as ReplyView;
-use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler as ContentAbstractHandler;
 
 /**
  * Class AbstractOwnerChangerAction

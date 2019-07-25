@@ -9,7 +9,6 @@ use TickTackk\ChangeContentOwner\Service\Content\EditorInterface as EditorSvcInt
 use XF\Entity\User as UserEntity;
 use XF\ControllerPlugin\AbstractPlugin;
 use XF\Mvc\Entity\Entity;
-use XF\Mvc\Entity\Repository;
 use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\View as ViewReply;

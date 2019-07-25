@@ -8,8 +8,6 @@ use TickTackk\ChangeContentOwner\Entity\ContentTrait as ContentEntityTrait;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
-use XF\Mvc\Entity\Repository;
-use XF\Repository\User as UserRepo;
 use XF\Service\AbstractService;
 use XF\Service\ValidateAndSavableTrait;
 
@@ -220,7 +218,10 @@ abstract class AbstractOwnerChanger extends AbstractService
         return $this->newDate;
     }
 
-    public function setNewTime(array $newTime)
+    /**
+     * @param array $newTime
+     */
+    public function setNewTime(array $newTime) : void
     {
         if (\count($newTime) !== 3 ||
             !isset($newTime['hour'], $newTime['minute'], $newTime['second']) ||
@@ -473,43 +474,48 @@ abstract class AbstractOwnerChanger extends AbstractService
             $extraData['new_username'] = $newOwner->username;
         }
 
-        $newDate = $this->getNewDate();
-        if ($newDate)
+        $oldTimestamp = $this->getOldTimestamp($content);
+        $newTimestamp = $this->getNewTimestamp($content);
+        if ($newTimestamp !== $oldTimestamp)
         {
-            $actions[] = 'date';
+            $extraData['old_timestamp'] = $oldTimestamp;
 
-            $extraData['old_date'] = $this->getOldDate($content);
-            $extraData['new_date_provided'] = $newDate;
-        }
-
-        $newTime = $this->getNewTime();
-        if ($newTime)
-        {
-            $actions[] = 'time';
-
-            $extraData['old_time'] = $this->getOldTime($content);
-            $extraData['new_time_provided'] = $newTime;
-        }
-
-        $timeIntervals = $this->getTimeIntervals();
-        if ($timeIntervals)
-        {
-            $isBump = false;
-            foreach ([] AS $possibleAction)
+            $newDate = $this->getNewDate();
+            if ($newDate)
             {
-                if (in_array($possibleAction, $actions, true))
+                $actions[] = 'date';
+
+                $extraData['new_date_provided'] = $newDate;
+            }
+
+            $newTime = $this->getNewTime();
+            if ($newTime)
+            {
+                $actions[] = 'time';
+
+                $extraData['new_time_provided'] = $newTime;
+            }
+
+            $timeIntervals = $this->getTimeIntervals();
+            if ($timeIntervals)
+            {
+                $isBump = false;
+                foreach ([] AS $possibleAction)
                 {
-                    $isBump = false;
-                    break;
+                    if (in_array($possibleAction, $actions, true))
+                    {
+                        $isBump = false;
+                        break;
+                    }
                 }
-            }
 
-            if ($isBump)
-            {
-                $actions[] = 'bump';
-            }
+                if ($isBump)
+                {
+                    $actions[] = 'bump';
+                }
 
-            $extraData['time_intervals'] = $extraData;
+                $extraData['time_intervals'] = $extraData;
+            }
         }
 
         return [
@@ -719,6 +725,7 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
+     * @throws \Exception
      */
     protected function _save() : void
     {
@@ -751,6 +758,7 @@ abstract class AbstractOwnerChanger extends AbstractService
      *
      * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
+     * @throws \Exception
      */
     protected function applyAdditionalChanges(Entity $content) : void
     {
@@ -817,12 +825,4 @@ abstract class AbstractOwnerChanger extends AbstractService
      * @return string
      */
     abstract protected function getEntityIdentifier() : string;
-
-    /**
-     * @return string
-     */
-    protected function getRepoIdentifier() : string
-    {
-        return $this->getEntityIdentifier();
-    }
 }

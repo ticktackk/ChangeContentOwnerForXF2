@@ -8,7 +8,6 @@ use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Repository;
 use XF\Repository\Thread as ThreadRepo;
-use TickTackk\ChangeContentOwner\XF\Repository\Thread as ExtendedThreadRepo;
 
 /**
  * Class OwnerChanger
@@ -112,12 +111,16 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
-     * @param Entity|ExtendedPostEntity $content
+     * @param Entity $content
+     *
+     * @throws \Exception
      */
     protected function postContentSave(Entity $content): void
     {
-        $newDate = $this->getNewDate($content);
-        if ($newDate)
+        $oldTimestamp = $this->getOldTimestamp($content);
+        $newTimestamp = $this->getNewTimestamp($content);
+
+        if ($oldTimestamp !== $newTimestamp)
         {
             $threadRepo = $this->getThreadRepo();
             $threadRepo->rebuildThreadPostPositions($content->thread_id);
@@ -126,7 +129,7 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
-     * @return Repository|ExtendedThreadRepo
+     * @return Repository|ThreadRepo
      */
     protected function getThreadRepo() : ThreadRepo
     {
