@@ -176,11 +176,11 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
         if (count($newDate) === 3)
         {
             [$year, $month, $day] = $newDate;
-            $options['new_date'] = $filterArray('new_date', [
+            $options['new_date'] = [
                 'year' => (int) $year,
                 'month' => (int) $month,
                 'day' => (int) $day
-            ]);
+            ];
         }
         $options['new_time'] = $filterArray('new_time', [
             'hour' => 'int',
