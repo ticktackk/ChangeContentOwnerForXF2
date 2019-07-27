@@ -29,7 +29,9 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
      */
     public function getTitle() : \XF\Phrase
     {
-        return \XF::phrase('tckChangeContentOwner_change_owner_or_date');
+        return \XF::phrase('tckChangeContentOwner_change_x_owner_or_date...', [
+            'content_type_plural' => $this->getContentTypePlural()
+        ]);
     }
 
     /**
