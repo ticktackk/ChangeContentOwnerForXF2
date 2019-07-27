@@ -29,6 +29,11 @@ class MediaItem extends XFCP_MediaItem implements ContentInterface
             return false;
         }
 
+        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        {
+            return false;
+        }
+
         return $this->hasPermission('changeMediaOwner');
     }
 

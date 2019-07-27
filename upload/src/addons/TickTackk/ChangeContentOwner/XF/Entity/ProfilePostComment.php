@@ -30,6 +30,11 @@ class ProfilePostComment extends XFCP_ProfilePostComment implements ContentInter
             return false;
         }
 
+        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        {
+            return false;
+        }
+
         return $visitor->hasPermission('profilePost', 'changeCommentOwner');
     }
 

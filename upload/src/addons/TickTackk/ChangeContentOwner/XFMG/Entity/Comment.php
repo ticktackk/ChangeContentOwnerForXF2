@@ -35,6 +35,11 @@ class Comment extends XFCP_Comment implements ContentInterface
             return false;
         }
 
+        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        {
+            return false;
+        }
+
         return $content->hasPermission('changeCommentOwner');
     }
 

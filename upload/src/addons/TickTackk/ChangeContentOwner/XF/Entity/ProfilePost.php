@@ -30,6 +30,11 @@ class ProfilePost extends XFCP_ProfilePost implements ContentInterface
             return false;
         }
 
+        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        {
+            return false;
+        }
+
         return $visitor->hasPermission('profilePost', 'changeProfilePostOwner');
     }
 

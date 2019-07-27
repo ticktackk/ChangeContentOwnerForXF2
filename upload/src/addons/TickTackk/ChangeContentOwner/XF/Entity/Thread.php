@@ -32,6 +32,11 @@ class Thread extends XFCP_Thread implements ContentInterface
             return false;
         }
 
+        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        {
+            return false;
+        }
+
         return $forum->canChangePostOwner($newUser, $error);
     }
 
