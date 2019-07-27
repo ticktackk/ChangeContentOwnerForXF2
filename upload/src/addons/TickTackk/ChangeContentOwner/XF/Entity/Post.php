@@ -32,7 +32,7 @@ class Post extends XFCP_Post implements ContentInterface
             return false;
         }
 
-        if ($thread->first_post_id === $this->post_id)
+        if ($this->isFirstPost())
         {
             return false;
         }
@@ -59,7 +59,7 @@ class Post extends XFCP_Post implements ContentInterface
             return false;
         }
 
-        if ($thread->first_post_id === $this->post_id)
+        if ($this->isFirstPost())
         {
             return false;
         }
