@@ -134,11 +134,6 @@ class Content extends AbstractPlugin
                 throw $this->exception($this->error(\XF::phrase('please_enter_valid_name')));
             }
 
-            if (!$handler->canChangeOwner($content, $newOwner, $error))
-            {
-                throw $this->exception($this->noPermission($error));
-            }
-
             $service->setNewOwner($newOwner);
         }
 
