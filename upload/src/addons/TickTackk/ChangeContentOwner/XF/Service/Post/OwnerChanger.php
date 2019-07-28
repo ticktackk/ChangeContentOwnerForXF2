@@ -117,14 +117,19 @@ class OwnerChanger extends AbstractOwnerChanger
      */
     protected function postContentSave(Entity $content): void
     {
+        $oldUser = $this->getOldOwner($content);
+        $newOwner = $this->getNewOwner();
+        if ($newOwner && $newOwner->user_id !== $oldUser->user_id)
+        {
+            $this->rebuildThreadUserPostCounters($content->thread_id);
+        }
+
         $oldTimestamp = $this->getOldTimestamp($content);
         $newTimestamp = $this->getNewTimestamp($content);
-
         if ($oldTimestamp !== $newTimestamp)
         {
             $threadRepo = $this->getThreadRepo();
             $threadRepo->rebuildThreadPostPositions($content->thread_id);
-            $threadRepo->rebuildThreadUserPostCounters($content->thread_id);
         }
     }
 
@@ -134,5 +139,25 @@ class OwnerChanger extends AbstractOwnerChanger
     protected function getThreadRepo() : ThreadRepo
     {
         return $this->repository('XF:Thread');
+    }
+
+    /**
+     * @param $threadId
+     * @throws \XF\Db\Exception
+     */
+    public function rebuildThreadUserPostCounters($threadId)
+    {
+        $db = $this->db();
+
+        $db->delete('xf_thread_user_post', 'thread_id = ?', $threadId);
+        $db->query("
+			INSERT INTO xf_thread_user_post (thread_id, user_id, post_count)
+			SELECT thread_id, user_id, COUNT(*)
+			FROM xf_post
+			WHERE thread_id = ?
+				AND message_state = 'visible'
+				AND user_id > 0
+			GROUP BY user_id
+		", $threadId);
     }
 }
