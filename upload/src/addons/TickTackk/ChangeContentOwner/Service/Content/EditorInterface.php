@@ -32,6 +32,4 @@ interface EditorInterface
     public function setTimeInterval(array $timeInterval) : void;
 
     public function setupOwnerChanger() : void;
-
-    public function applyOwnerChanger() : void;
 }

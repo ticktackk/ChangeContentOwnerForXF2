@@ -3,7 +3,7 @@
 namespace TickTackk\ChangeContentOwner\Entity;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
-use XF\Entity\User;
+use XF\Entity\User as UserEntity;
 
 /**
  * Interface ContentInterface
@@ -13,12 +13,12 @@ use XF\Entity\User;
 interface ContentInterface
 {
     /**
-     * @param User|null $newUser
-     * @param null      $error
+     * @param UserEntity|null $newOwner
+     * @param null            $error
      *
      * @return bool
      */
-    public function canChangeOwner(User $newUser = null, &$error = null) : bool;
+    public function canChangeOwner(UserEntity $newOwner = null, &$error = null) : bool;
 
     /**
      * @param int|null $newDate

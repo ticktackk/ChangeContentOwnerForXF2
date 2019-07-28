@@ -4,7 +4,7 @@ namespace TickTackk\ChangeContentOwner\XFMG\Entity;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface;
 use TickTackk\ChangeContentOwner\Entity\ContentTrait;
-use XF\Entity\User;
+use XF\Entity\User as UserEntity;
 
 /**
  * Class Comment
@@ -16,12 +16,12 @@ class Comment extends XFCP_Comment implements ContentInterface
     use ContentTrait;
 
     /**
-     * @param User|null $newUser
+     * @param UserEntity|null $newUser
      * @param null      $error
      *
      * @return bool
      */
-    public function canChangeOwner(User $newUser = null, &$error = null): bool
+    public function canChangeOwner(UserEntity $newUser = null, &$error = null): bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)

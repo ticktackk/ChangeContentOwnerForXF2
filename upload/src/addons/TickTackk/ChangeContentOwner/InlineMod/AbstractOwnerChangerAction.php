@@ -243,8 +243,6 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             $ownerChangerSvc->setTimeInterval($options['time_interval']);
         }
 
-        $ownerChangerSvc->apply();
-
         if ($ownerChangerSvc->validate())
         {
             $ownerChangerSvc->save();

@@ -415,26 +415,6 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @param Entity $content
      *
-     * @return array
-     * @throws \Exception
-     */
-    public function getOldTime(Entity $content) : array
-    {
-        $uniqueKey = $this->getContentUniqueKey($content);
-
-        if (isset($this->oldTimes[$uniqueKey]))
-        {
-            return $this->oldTimes[$uniqueKey];
-        }
-
-        $this->oldTimes[$uniqueKey] = $this->getHandler()->getOldTime($content);
-
-        return $this->oldTimes[$uniqueKey];
-    }
-
-    /**
-     * @param Entity $content
-     *
      * @return int
      */
     public function getOldTimestamp(Entity $content) : int
@@ -608,39 +588,6 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
-     * @throws \Exception
-     */
-    public function apply() : void
-    {
-        $db = $this->db();
-        $db->beginTransaction();
-
-        $newOwner = $this->getNewOwner();
-        foreach ($this->contents AS $id => $content)
-        {
-            $oldOwner = $this->getOldOwner($content);
-            if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
-            {
-                $this->contents[$id] = $this->changeContentOwner($content, $newOwner);
-            }
-
-            $oldTimestamp = $this->getOldTimestamp($content);
-            $newTimestamp = $this->getNewTimestamp($content);
-            if ($newTimestamp !== $oldTimestamp)
-            {
-                $this->contents[$id] = $this->changeContentDate($content, $newTimestamp);
-            }
-
-            if ($newOwner || $newTimestamp)
-            {
-                $this->applyAdditionalChanges($content);
-            }
-        }
-    }
-
-    /**
      * @return array
      * @throws \Exception
      */
@@ -730,6 +677,30 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected function _save() : void
     {
         $db = $this->db();
+        $db->beginTransaction();
+
+        $newOwner = $this->getNewOwner();
+        foreach ($this->contents AS $id => $content)
+        {
+            $oldOwner = $this->getOldOwner($content);
+            if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
+            {
+                $this->contents[$id] = $this->changeContentOwner($content, $newOwner);
+            }
+
+            $oldTimestamp = $this->getOldTimestamp($content);
+            $newTimestamp = $this->getNewTimestamp($content);
+            if ($newTimestamp !== $oldTimestamp)
+            {
+                $this->contents[$id] = $this->changeContentDate($content, $newTimestamp);
+            }
+
+            if ($newOwner || $newTimestamp)
+            {
+                $this->applyAdditionalChanges($content);
+            }
+        }
+
         $logger = $this->app->logger();
         $logModerator = $this->getLogModerator();
 

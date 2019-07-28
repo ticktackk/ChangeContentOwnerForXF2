@@ -71,18 +71,6 @@ trait EditorTrait
     }
 
     /**
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
-     */
-    public function applyOwnerChanger() : void
-    {
-        if ($this->ownerChanger)
-        {
-            $this->ownerChanger->apply();
-        }
-    }
-
-    /**
      * @throws \LogicException
      */
     protected function assertOwnerChangerHasBeenSetup() : void
@@ -110,7 +98,7 @@ trait EditorTrait
         return $errors;
     }
 
-    /** @noinspection ReturnTypeCanBeDeclaredInspection */
+
     /**
      * @return Entity
      * @throws \XF\PrintableException

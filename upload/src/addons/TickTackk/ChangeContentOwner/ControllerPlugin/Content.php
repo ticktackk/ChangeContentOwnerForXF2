@@ -49,7 +49,6 @@ class Content extends AbstractPlugin
 
             $this->setNewOwnerDateTimeAndInterval($ownerChangerSvc, $content);
 
-            $ownerChangerSvc->apply();
             if (!$ownerChangerSvc->validate($errors))
             {
                 throw $this->exception($this->error($errors));
@@ -109,8 +108,6 @@ class Content extends AbstractPlugin
             $editor->setupOwnerChanger();
 
             $this->setNewOwnerDateTimeAndInterval($editor, $content);
-
-            $editor->applyOwnerChanger();
         }
     }
 
