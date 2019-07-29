@@ -545,7 +545,6 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected function increaseContentCount(UserEntity $user, string $column, int $value = 1, int $default = 0) : void
     {
         $this->changeContentCount(static::CONTENT_COUNT_CHANGE_TYPE_INCREMENT, $user, $column, $value, $default);
-
     }
 
     /**
@@ -568,7 +567,7 @@ abstract class AbstractOwnerChanger extends AbstractService
      */
     protected function changeContentCount(int $changeType, UserEntity $user, string $column, int $value, int $default = 0) : void
     {
-        if (!isset($this->userCounts[$user->user_id]))
+        if (!isset($this->contentCounts[$user->user_id][$column]))
         {
             $this->contentCounts[$user->user_id][$column] = $default;
         }
