@@ -216,9 +216,6 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     /**
      * @param AbstractCollection $contents
      * @param array              $options
-     *
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
      */
     protected function applyInternal(AbstractCollection $contents, array $options) : void
     {

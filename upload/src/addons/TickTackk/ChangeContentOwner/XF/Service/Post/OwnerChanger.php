@@ -111,7 +111,7 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
-     * @param Entity $content
+     * @param Entity|ExtendedPostEntity $content
      *
      * @throws \Exception
      */

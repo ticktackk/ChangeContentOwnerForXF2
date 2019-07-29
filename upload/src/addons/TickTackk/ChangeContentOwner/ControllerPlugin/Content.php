@@ -29,8 +29,6 @@ class Content extends AbstractPlugin
      *
      * @return RedirectReply|ViewReply
      * @throws ExceptionReply
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
      * @throws \Exception
      */
     public function actionChangeOwner(Entity $content, string $serviceName, string $view)
@@ -120,7 +118,6 @@ class Content extends AbstractPlugin
      */
     protected function setNewOwnerDateTimeAndInterval(AbstractService $service, ContentEntityInterface $content) : void
     {
-        $handler = $content->getChangeOwnerHandler(true);
         $newOwnerUsername = $this->filter('username', 'str');
 
         if ($newOwnerUsername)
