@@ -52,12 +52,17 @@ class OwnerChanger extends AbstractOwnerChanger
         }
 
         $addOns = $this->app->container('addon.cache');
-        $threadCountSupport = $addOns['TickTackk/ThreadCount'] ?? 0 >= 1000092;
-        if ($threadCountSupport &&  $content->isVisible())
+        if ($content->isVisible())
         {
             $oldUser = $this->getOldOwner($content);
-            $this->increaseContentCount($newOwner, 'thread_count');
-            $this->decreaseContentCount($oldUser, 'thread_count');
+            $this->increaseContentCount($newOwner, 'message_count');
+            $this->decreaseContentCount($oldUser, 'message_count');
+
+            if ($addOns['TickTackk/ThreadCount'] ?? 0 >= 1000092)
+            {
+                $this->increaseContentCount($newOwner, 'thread_count');
+                $this->decreaseContentCount($oldUser, 'thread_count');
+            }
         }
 
         return $content;
