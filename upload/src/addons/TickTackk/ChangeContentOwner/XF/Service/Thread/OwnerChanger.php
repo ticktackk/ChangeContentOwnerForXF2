@@ -23,10 +23,11 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
-     * @param Entity|ExtendedThreadEntity     $content
+     * @param Entity|ExtendedThreadEntity      $content
      * @param UserEntity $newOwner
      *
      * @return Entity
+     * @throws \XF\PrintableException
      */
     protected function changeContentOwner(Entity $content, UserEntity $newOwner): Entity
     {
@@ -63,6 +64,12 @@ class OwnerChanger extends AbstractOwnerChanger
                 $this->increaseContentCount($newOwner, 'thread_count');
                 $this->decreaseContentCount($oldUser, 'thread_count');
             }
+        }
+
+        $likedOrReactedContent = $this->getLikedOrReactedContent($firstPost);
+        if ($likedOrReactedContent)
+        {
+            $likedOrReactedContent->delete(true, false);
         }
 
         return $content;
