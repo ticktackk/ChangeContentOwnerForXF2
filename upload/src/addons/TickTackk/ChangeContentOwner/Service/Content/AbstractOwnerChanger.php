@@ -338,13 +338,13 @@ abstract class AbstractOwnerChanger extends AbstractService
             $dateTime->setDate($newDate['year'], $newDate['month'], $newDate['day']);
         }
 
-        $newTime = $this->newTime;
+        $newTime = $this->getNewTime();
         if ($newTime)
         {
             $dateTime->setTime($newTime['hour'], $newTime['minute'], $newTime['second']);
         }
 
-        $timeIntervals = $this->timeIntervals;
+        $timeIntervals = $this->getTimeIntervals();
         if ($timeIntervals)
         {
             foreach ($timeIntervals AS $unit => $value)
