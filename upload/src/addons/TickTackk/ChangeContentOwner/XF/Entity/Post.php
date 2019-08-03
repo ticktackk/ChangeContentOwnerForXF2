@@ -64,7 +64,7 @@ class Post extends XFCP_Post implements ContentInterface
             return false;
         }
 
-        if ($newDate && $thread->getExistingValue('post_date') >= $newDate)
+        if ($newDate && $thread->getExistingValue('post_date') > $newDate)
         {
             $error = \XF::phraseDeferred('tckChangeContentOwner_new_date_must_be_older_than_thread_date');
             return false;
