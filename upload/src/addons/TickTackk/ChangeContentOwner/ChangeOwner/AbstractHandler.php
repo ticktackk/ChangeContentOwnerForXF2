@@ -127,9 +127,9 @@ abstract class AbstractHandler
         $oldDateTime = $this->getOldDateTime($content, $visitorTimezone);
 
         return [
-            'year' => $oldDateTime->format('Y'),
-            'month' => $oldDateTime->format('m'),
-            'day' => $oldDateTime->format('d')
+            'year' => (int) $oldDateTime->format('Y'),
+            'month' => (int) $oldDateTime->format('m'),
+            'day' => (int) $oldDateTime->format('d')
         ];
     }
 
@@ -145,9 +145,9 @@ abstract class AbstractHandler
         $oldDateTime = $this->getOldDateTime($content, $visitorTimezone);
 
         return [
-            'hour' => $oldDateTime->format('H'),
-            'minute' => $oldDateTime->format('i'),
-            'second' => $oldDateTime->format('s')
+            'hour' => (int) $oldDateTime->format('H'),
+            'minute' => (int) $oldDateTime->format('i'),
+            'second' => (int) $oldDateTime->format('s')
         ];
     }
 
