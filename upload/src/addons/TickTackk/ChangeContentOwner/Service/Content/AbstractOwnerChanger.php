@@ -349,8 +349,8 @@ abstract class AbstractOwnerChanger extends AbstractService
         {
             foreach ($timeIntervals AS $unit => $value)
             {
-                $multiplyIntervalBy = count($this->contentNewDateMapping) + 1;
-                if ($value)
+                $multiplyIntervalBy = count($this->contentNewDateMapping);
+                if ($multiplyIntervalBy && $value)
                 {
                     $dateTime->modify($value * $multiplyIntervalBy. ' ' . $unit);
                 }
