@@ -45,18 +45,18 @@ class OwnerChanger extends AbstractOwnerChanger
      */
     protected function changeContentDate(Entity $content, int $newDate): Entity
     {
-        $oldDate = $this->getOldDate($content);
+        $oldTimestamp = $this->getOldTimestamp($content);
         $content->comment_date = $newDate;
 
         $profilePost = $content->ProfilePost;
         if ($profilePost)
         {
-            if ($profilePost->first_comment_date === $oldDate)
+            if ($profilePost->first_comment_date === $oldTimestamp)
             {
                 $profilePost->first_comment_date = $newDate;
             }
 
-            if ($profilePost->last_comment_date === $oldDate)
+            if ($profilePost->last_comment_date === $oldTimestamp)
             {
                 $profilePost->last_comment_date = $newDate;
             }
