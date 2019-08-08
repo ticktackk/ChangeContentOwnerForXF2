@@ -215,7 +215,7 @@
 		</xf:option>
 		<xf:option name="apply_time_interval" label="{{ phrase('tckChangeContentOwner_time_interval') }}" data-hide="true">
 			<xf:dependent>
-				<xf:set var="$option" value="{{ $xf.options.tckChangeContentOwner_defaultNewDateTimeInterval }}" />
+				<xf:set var="$option" value="{{ $xf.options.tckChangeContentOwner_defaultTimeInterval }}" />
 
 				<div class="inputGroup inputGroup--numbers">
 					<xf:numberbox name="time_interval[hour]" value="{{ $option.hours ?: 0 }}"
