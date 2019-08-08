@@ -115,40 +115,66 @@ abstract class AbstractHandler
         return $dateTimeObj;
     }
 
-    /**
-     * @param Entity $content
-     * @param bool   $visitorTimezone
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function getOldDate(Entity $content, bool $visitorTimezone = false) : array
+    protected function getStrictUnitValues(array $data)
     {
-        $oldDateTime = $this->getOldDateTime($content, $visitorTimezone);
+        foreach ($data AS $unit => $value)
+        {
+            $data[$unit] = (int) $value;
+        }
 
-        return [
-            'year' => (int) $oldDateTime->format('Y'),
-            'month' => (int) $oldDateTime->format('m'),
-            'day' => (int) $oldDateTime->format('d')
-        ];
+        return $data;
     }
 
     /**
      * @param Entity $content
      * @param bool   $visitorTimezone
+     * @param bool   $strict
      *
      * @return array
      * @throws \Exception
      */
-    public function getOldTime(Entity $content, bool $visitorTimezone = false) : array
+    public function getOldDate(Entity $content, bool $visitorTimezone = false, bool $strict = false) : array
     {
         $oldDateTime = $this->getOldDateTime($content, $visitorTimezone);
 
-        return [
-            'hour' => (int) $oldDateTime->format('H'),
-            'minute' => (int) $oldDateTime->format('i'),
-            'second' => (int) $oldDateTime->format('s')
+        $oldDate = [
+            'year' => $oldDateTime->format('Y'),
+            'month' => $oldDateTime->format('m'),
+            'day' => $oldDateTime->format('d')
         ];
+
+        if ($strict)
+        {
+            $oldDate = $this->getStrictUnitValues($oldDate);
+        }
+
+        return $oldDate;
+    }
+
+    /**
+     * @param Entity $content
+     * @param bool   $visitorTimezone
+     * @param bool   $strict
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getOldTime(Entity $content, bool $visitorTimezone = false, bool $strict = false) : array
+    {
+        $oldDateTime = $this->getOldDateTime($content, $visitorTimezone);
+
+        $oldTime = [
+            'hour' => $oldDateTime->format('H'),
+            'minute' => $oldDateTime->format('i'),
+            'second' => $oldDateTime->format('s')
+        ];
+
+        if ($strict)
+        {
+            $oldTime = $this->getStrictUnitValues($oldTime);
+        }
+
+        return $oldTime;
     }
 
     /**

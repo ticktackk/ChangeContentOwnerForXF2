@@ -407,9 +407,29 @@ abstract class AbstractOwnerChanger extends AbstractService
             return $this->oldDates[$uniqueKey];
         }
 
-        $this->oldDates[$uniqueKey] = $this->getHandler()->getOldDate($content);
+        $this->oldDates[$uniqueKey] = $this->getHandler()->getOldDate($content, true, true);
 
         return $this->oldDates[$uniqueKey];
+    }
+
+    /**
+     * @param Entity $content
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getOldTime(Entity $content) : array
+    {
+        $uniqueKey = $this->getContentUniqueKey($content);
+
+        if (isset($this->oldTimes[$uniqueKey]))
+        {
+            return $this->oldTimes[$uniqueKey];
+        }
+
+        $this->oldTimes[$uniqueKey] = $this->getHandler()->getOldTime($content, true, true);
+
+        return $this->oldTimes[$uniqueKey];
     }
 
     /**
