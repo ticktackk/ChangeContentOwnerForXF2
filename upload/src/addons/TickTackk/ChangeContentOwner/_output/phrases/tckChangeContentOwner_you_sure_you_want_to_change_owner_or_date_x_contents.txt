@@ -1,1 +1,1 @@
-Are you sure you want to change the owner or date specified below to the {count} selected {content_type_plural}?
+Are you sure you want to change the owner or date specified below to the {count} selected {content_type_singular}(s)?

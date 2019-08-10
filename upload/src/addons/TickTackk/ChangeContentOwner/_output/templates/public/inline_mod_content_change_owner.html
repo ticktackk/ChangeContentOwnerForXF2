@@ -14,11 +14,11 @@
 			<xf:inforow rowtype="confirm">
 				<xf:trim>
 					<xf:if is="$canChangeOwner && $canChangeDate">
-						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_owner_or_date_x_contents', {'count': $total, 'content_type_plural': $contentTypePlural}) }}
+						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_owner_or_date_x_contents', {'count': $total, 'content_type_singular': $contentTypeSingular}) }}
 					<xf:elseif is="$canChangeOwner" />
-						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_owner_x_contents', {'count': $total, 'content_type_plural': $contentTypePlural}) }}
+						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_owner_x_contents', {'count': $total, 'content_type_singular': $contentTypeSingular}) }}
 					<xf:elseif is="$canChangeDate" />
-						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_date_x_contents', {'count': $total, 'content_type_plural': $contentTypePlural}) }}
+						{{ phrase('tckChangeContentOwner_you_sure_you_want_to_change_date_x_contents', {'count': $total, 'content_type_singular': $contentTypeSingular}) }}
 					</xf:if>
 				</xf:trim>
 			</xf:inforow>

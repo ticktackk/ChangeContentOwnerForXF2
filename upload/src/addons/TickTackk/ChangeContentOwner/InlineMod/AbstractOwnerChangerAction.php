@@ -30,6 +30,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     public function getTitle() : \XF\Phrase
     {
         return \XF::phrase('tckChangeContentOwner_change_x_owner_or_date...', [
+            'content_type' => $this->getContentTypeSingular(),
             'content_type_plural' => $this->getContentTypePlural()
         ]);
     }
@@ -43,11 +44,29 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     }
 
     /**
+     * @param bool $plural
+     *
+     * @return string
+     */
+    protected function getContentTypePhrase(bool $plural) : string
+    {
+        return utf8_strtolower($this->app()->getContentTypePhrase($this->getContentType(), $plural));
+    }
+
+    /**
+     * @return string
+     */
+    protected function getContentTypeSingular() : string
+    {
+        return $this->getContentTypePhrase(false);
+    }
+
+    /**
      * @return string
      */
     protected function getContentTypePlural() : string
     {
-        return utf8_strtolower($this->app()->getContentTypePhrase($this->getContentType(), true));
+        return $this->getContentTypePhrase(true);
     }
 
     /**
@@ -86,6 +105,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
 
         $viewParams = [
             'contentType' => $this->getContentType(),
+            'contentTypeSingular' => $this->getContentTypeSingular(),
             'contentTypePlural' => $this->getContentTypePlural(),
 
             'canChangeOwner' => $canChangeOwner,
