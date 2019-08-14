@@ -199,7 +199,9 @@ abstract class AbstractHandler
         $userRepo = $this->getUserRepo();
         $fallbackOwner = $userRepo->getGuestUser($username);
         $fallbackOwner->setReadOnly(false);
-        $fallbackOwner->set('user_id', $userId);
+        $fallbackOwner->set('user_id', $userId, [
+            'forceSet' => true
+        ]);
         $fallbackOwner->setReadOnly(true);
 
         return $fallbackOwner;
