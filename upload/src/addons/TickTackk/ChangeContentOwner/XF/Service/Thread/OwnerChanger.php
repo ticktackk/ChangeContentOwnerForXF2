@@ -4,6 +4,7 @@ namespace TickTackk\ChangeContentOwner\XF\Service\Thread;
 
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
 use TickTackk\ChangeContentOwner\XF\Entity\Thread as ExtendedThreadEntity;
+use TickTackk\ChangeContentOwner\XF\Service\RebuildThreadUserPostCounterTrait;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 
@@ -14,6 +15,8 @@ use XF\Mvc\Entity\Entity;
  */
 class OwnerChanger extends AbstractOwnerChanger
 {
+    use RebuildThreadUserPostCounterTrait;
+
     /**
      * @return string
      */
@@ -119,6 +122,21 @@ class OwnerChanger extends AbstractOwnerChanger
         if ($forum)
         {
             $forum->save(true, false);
+        }
+    }
+
+    /**
+     * @param Entity $content
+     *
+     * @throws \XF\Db\Exception
+     */
+    protected function postContentSave(Entity $content): void
+    {
+        $oldUser = $this->getOldOwner($content);
+        $newOwner = $this->getNewOwner();
+        if ($newOwner && $newOwner->user_id !== $oldUser->user_id)
+        {
+            $this->rebuildThreadUserPostCounters($content->thread_id);
         }
     }
 }

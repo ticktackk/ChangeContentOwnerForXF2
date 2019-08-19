@@ -4,6 +4,7 @@ namespace TickTackk\ChangeContentOwner\XF\Service\Post;
 
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
 use TickTackk\ChangeContentOwner\XF\Entity\Post as ExtendedPostEntity;
+use TickTackk\ChangeContentOwner\XF\Service\RebuildThreadUserPostCounterTrait;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Repository;
@@ -16,6 +17,8 @@ use XF\Repository\Thread as ThreadRepo;
  */
 class OwnerChanger extends AbstractOwnerChanger
 {
+    use RebuildThreadUserPostCounterTrait;
+
     /**
      * @return string
      */
@@ -139,25 +142,5 @@ class OwnerChanger extends AbstractOwnerChanger
     protected function getThreadRepo() : ThreadRepo
     {
         return $this->repository('XF:Thread');
-    }
-
-    /**
-     * @param $threadId
-     * @throws \XF\Db\Exception
-     */
-    public function rebuildThreadUserPostCounters($threadId)
-    {
-        $db = $this->db();
-
-        $db->delete('xf_thread_user_post', 'thread_id = ?', $threadId);
-        $db->query("
-			INSERT INTO xf_thread_user_post (thread_id, user_id, post_count)
-			SELECT thread_id, user_id, COUNT(*)
-			FROM xf_post
-			WHERE thread_id = ?
-				AND message_state = 'visible'
-				AND user_id > 0
-			GROUP BY user_id
-		", $threadId);
     }
 }
