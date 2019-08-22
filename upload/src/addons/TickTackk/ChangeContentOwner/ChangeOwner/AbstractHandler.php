@@ -115,6 +115,11 @@ abstract class AbstractHandler
         return $dateTimeObj;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     protected function getStrictUnitValues(array $data)
     {
         foreach ($data AS $unit => $value)

@@ -28,8 +28,6 @@ class ProfilePost extends XFCP_ProfilePost
      *
      * @return RedirectReply|ViewReply
      * @throws ExceptionReply
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
      */
     public function actionChangeOwner(ParameterBag $parameterBag)
     {
@@ -82,8 +80,6 @@ class ProfilePost extends XFCP_ProfilePost
      *
      * @return RedirectReply|ViewReply
      * @throws ExceptionReply
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
      */
     public function actionCommentsChangeOwner(ParameterBag $parameterBag)
     {

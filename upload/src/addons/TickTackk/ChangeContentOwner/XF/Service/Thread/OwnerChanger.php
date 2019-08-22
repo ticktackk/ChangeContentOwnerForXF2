@@ -126,7 +126,7 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
-     * @param Entity $content
+     * @param Entity|ExtendedThreadEntity $content
      *
      * @throws \XF\Db\Exception
      */

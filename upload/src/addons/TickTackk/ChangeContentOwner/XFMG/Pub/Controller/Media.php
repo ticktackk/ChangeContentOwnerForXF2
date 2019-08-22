@@ -26,8 +26,6 @@ class Media extends XFCP_Media
      *
      * @return RedirectReply|ViewReply
      * @throws ExceptionReply
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
      */
     public function actionChangeOwner(ParameterBag $parameterBag)
     {

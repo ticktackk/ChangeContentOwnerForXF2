@@ -26,8 +26,6 @@ class Post extends XFCP_Post
      *
      * @return RedirectReply|ViewReply
      * @throws ExceptionReply
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
      */
     public function actionChangeOwner(ParameterBag $parameterBag)
     {
