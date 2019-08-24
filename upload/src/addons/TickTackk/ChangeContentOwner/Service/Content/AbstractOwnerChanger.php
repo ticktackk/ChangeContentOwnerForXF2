@@ -90,6 +90,11 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected $contentNewDateMapping;
 
     /**
+     * @var bool
+     */
+    protected $performValidations = true;
+
+    /**
      * AbstractOwnerChanger constructor.
      *
      * @param \XF\App   $app
@@ -121,6 +126,22 @@ abstract class AbstractOwnerChanger extends AbstractService
         }
 
         $this->setLogModerator($logModerator);
+    }
+
+    /**
+     * @param bool $performValidations
+     */
+    public function setPerformValidations(bool $performValidations) : void
+    {
+        $this->performValidations = $performValidations;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPerformValidations() : bool
+    {
+        return $this->performValidations;
     }
 
     /**
@@ -612,40 +633,44 @@ abstract class AbstractOwnerChanger extends AbstractService
      */
     protected function _validate() : array
     {
-        $newOwner = $this->getNewOwner();
-        $handler = $this->getHandler();
         $errors = [];
 
-        foreach ($this->contents AS $id => $content)
+        if ($this->getPerformValidations())
         {
-            $oldTimestamp = $this->getOldTimestamp($content);
-            $newTimestamp = $this->getNewTimestamp($content);
+            $newOwner = $this->getNewOwner();
+            $handler = $this->getHandler();
 
-            if ($oldTimestamp !== $newTimestamp && !$content->canChangeDate($newTimestamp, $error))
+            foreach ($this->contents AS $id => $content)
             {
-                $fallbackError = count($this->contents) > 1
-                    ? 'tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_date'
-                    : 'tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_date';
+                $oldTimestamp = $this->getOldTimestamp($content);
+                $newTimestamp = $this->getNewTimestamp($content);
 
-                $errors[] = $error ?: \XF::phrase($fallbackError);
-            }
-            unset($error);
-
-            $oldOwner = $this->getOldOwner($content);
-            if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
-            {
-                if (!$content->canChangeOwner($newOwner, $error))
+                if ($oldTimestamp !== $newTimestamp && !$content->canChangeDate($newTimestamp, $error))
                 {
                     $fallbackError = count($this->contents) > 1
-                        ? 'tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_owner'
-                        : 'tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_owner';
+                        ? 'tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_date'
+                        : 'tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_date';
 
                     $errors[] = $error ?: \XF::phrase($fallbackError);
                 }
+                unset($error);
 
-                if (!$handler->canNewOwnerViewContent($content, $newOwner, $error))
+                $oldOwner = $this->getOldOwner($content);
+                if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
                 {
-                    $errors[] = $error ?: \XF::phrase('tckChangeContentOwner_new_owner_must_be_able_to_view_this_content');
+                    if (!$content->canChangeOwner($newOwner, $error))
+                    {
+                        $fallbackError = count($this->contents) > 1
+                            ? 'tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_owner'
+                            : 'tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_owner';
+
+                        $errors[] = $error ?: \XF::phrase($fallbackError);
+                    }
+
+                    if (!$handler->canNewOwnerViewContent($content, $newOwner, $error))
+                    {
+                        $errors[] = $error ?: \XF::phrase('tckChangeContentOwner_new_owner_must_be_able_to_view_this_content');
+                    }
                 }
             }
         }

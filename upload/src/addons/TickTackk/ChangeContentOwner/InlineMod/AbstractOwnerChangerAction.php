@@ -260,6 +260,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             $ownerChangerSvc->setTimeInterval($options['time_interval']);
         }
 
+        $ownerChangerSvc->setPerformValidations(false);
         if ($ownerChangerSvc->validate())
         {
             $ownerChangerSvc->save();
