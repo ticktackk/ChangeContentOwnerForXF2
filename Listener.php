@@ -3,7 +3,7 @@
 namespace TickTackk\ChangeContentOwner;
 
 use XF\InlineMod\AbstractHandler as InlineModAbstractHandler;
-use XF\Pub\App as XFApp;
+use XF\App as XFApp;
 
 /**
  * Class Listener
