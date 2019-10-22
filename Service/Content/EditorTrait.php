@@ -101,7 +101,6 @@ trait EditorTrait
 
     /**
      * @return Entity
-     * @throws \XF\PrintableException
      */
     protected function _save()
     {
@@ -109,13 +108,13 @@ trait EditorTrait
         $db = $this->db();
         $db->beginTransaction();
 
+        /** @noinspection PhpUndefinedClassInspection */
+        $content = parent::_save();
+
         if ($this->ownerChanger)
         {
             $this->ownerChanger->save();
         }
-
-        /** @noinspection PhpUndefinedClassInspection */
-        $content = parent::_save();
 
         $db->commit();
 
