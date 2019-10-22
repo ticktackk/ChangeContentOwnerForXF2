@@ -1,6 +1,6 @@
 {
     "permission_type": "flag",
     "interface_group_id": "xfa_csvgModerator",
-    "display_order": 40,
+    "display_order": 110,
     "depend_permission_id": ""
 }
