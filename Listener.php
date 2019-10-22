@@ -17,7 +17,7 @@ class Listener
      * @param XFApp                    $app
      * @param array                    $actions
      */
-    public static function inlineModActions(InlineModAbstractHandler $abstractHandler, XFApp $app, array &$actions) : void
+    public static function inlineModActions(/** @noinspection PhpUnusedParameterInspection */ InlineModAbstractHandler $abstractHandler, XFApp $app, array &$actions) : void
     {
         switch ($abstractHandler->getContentType())
         {

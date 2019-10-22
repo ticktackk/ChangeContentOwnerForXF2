@@ -101,6 +101,7 @@ trait EditorTrait
 
     /**
      * @return Entity
+     * @throws \XF\PrintableException
      */
     protected function _save()
     {
