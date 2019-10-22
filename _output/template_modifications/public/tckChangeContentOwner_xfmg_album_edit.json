@@ -1,7 +1,7 @@
 {
     "template": "xfmg_album_edit",
     "description": "Allow changing cotent owner and date when editing album (XFMG)",
-    "execution_order": 10,
+    "execution_order": 6124,
     "enabled": true,
     "action": "preg_replace",
     "find": "#<xf:if is=\"\\$album\\.canSendModeratorActionAlert\\(\\).*?\">.*?<\\/xf:if>#si",

@@ -1,7 +1,7 @@
 {
     "template": "post_edit",
     "description": "Allow changing cotent owner and date when editing post",
-    "execution_order": 10,
+    "execution_order": 6124,
     "enabled": true,
     "action": "preg_replace",
     "find": "#<xf:if is=\"\\$post\\.canSendModeratorActionAlert\\(\\).*?\">.*?<\\/xf:if>#si",

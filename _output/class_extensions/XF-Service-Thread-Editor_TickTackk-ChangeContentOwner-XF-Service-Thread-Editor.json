@@ -1,6 +1,6 @@
 {
     "from_class": "XF\\Service\\Thread\\Editor",
     "to_class": "TickTackk\\ChangeContentOwner\\XF\\Service\\Thread\\Editor",
-    "execute_order": 10,
+    "execute_order": 6124,
     "active": true
 }

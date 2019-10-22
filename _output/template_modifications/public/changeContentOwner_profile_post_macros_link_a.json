@@ -1,7 +1,7 @@
 {
     "template": "profile_post_macros",
     "description": "Add \"Change owner or date\" in action bar for profile post",
-    "execution_order": 10,
+    "execution_order": 6124,
     "enabled": true,
     "action": "preg_replace",
     "find": "#(<xf:if is=\"\\$profilePost\\.canWarn\\(\\)\">.*?)(<xf:if is=\"\\$hasActionBarMenu.*?\">)#si",

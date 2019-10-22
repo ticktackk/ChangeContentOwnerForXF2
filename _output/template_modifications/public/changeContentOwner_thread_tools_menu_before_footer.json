@@ -1,7 +1,7 @@
 {
     "template": "thread_view",
     "description": "Add \"Change owner or date\" for thread tools menu",
-    "execution_order": 10,
+    "execution_order": 6124,
     "enabled": true,
     "action": "str_replace",
     "find": "<!--[XF:thread_tools_menu:before_footer]-->",

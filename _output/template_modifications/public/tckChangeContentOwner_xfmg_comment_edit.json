@@ -1,7 +1,7 @@
 {
     "template": "xfmg_comment_edit",
     "description": "Allow changing cotent owner and date when editing comment (XFMG)",
-    "execution_order": 10,
+    "execution_order": 6124,
     "enabled": true,
     "action": "preg_replace",
     "find": "#<xf:if is=\"\\$comment\\.canSendModeratorActionAlert\\(\\).*?\">.*?<\\/xf:if>#si",

@@ -1,7 +1,7 @@
 {
     "template": "xfmg_media_view",
     "description": "Add \"Change owner or date\" in action bar for media item",
-    "execution_order": 10,
+    "execution_order": 6124,
     "enabled": true,
     "action": "str_replace",
     "find": "<xf:if is=\"$hasActionBarMenu\">",

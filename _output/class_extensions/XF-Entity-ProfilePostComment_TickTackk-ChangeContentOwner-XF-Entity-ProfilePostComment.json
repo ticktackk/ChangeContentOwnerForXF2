@@ -1,6 +1,6 @@
 {
     "from_class": "XF\\Entity\\ProfilePostComment",
     "to_class": "TickTackk\\ChangeContentOwner\\XF\\Entity\\ProfilePostComment",
-    "execute_order": 10,
+    "execute_order": 6124,
     "active": true
 }

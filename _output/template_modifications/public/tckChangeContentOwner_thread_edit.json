@@ -1,7 +1,7 @@
 {
     "template": "thread_edit",
     "description": "Allow changing cotent owner and date when editing thread",
-    "execution_order": 10,
+    "execution_order": 6124,
     "enabled": true,
     "action": "preg_replace",
     "find": "#<xf:macro template=\"helper_thread_options\" name=\"thread_status\".*?\\/>#si",

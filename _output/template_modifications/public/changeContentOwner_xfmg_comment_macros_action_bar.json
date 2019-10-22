@@ -1,7 +1,7 @@
 {
     "template": "xfmg_comment_macros",
     "description": "Add \"Change owner or date\" in action bar for comments (XFMG)",
-    "execution_order": 10,
+    "execution_order": 6124,
     "enabled": true,
     "action": "preg_replace",
     "find": "#<xf:elseif is=\"\\$comment\\.warning_id AND \\$xf\\.visitor\\.canViewWarnings\\(\\).*?\" \\/>.*?\\/xf:if>#si",
