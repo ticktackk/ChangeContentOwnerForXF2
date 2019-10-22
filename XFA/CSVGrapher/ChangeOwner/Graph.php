@@ -24,7 +24,8 @@ class Graph extends AbstractHandler
      */
     public function canNewOwnerViewContent(Entity $content, UserEntity $newOwner, &$error): bool
     {
-        $content->setBypassPrivacy();
+        $content->setOption('bypass_privacy', true);
+
         return parent::canNewOwnerViewContent($content, $newOwner, $error);
     }
 

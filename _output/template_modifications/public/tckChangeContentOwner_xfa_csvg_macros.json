@@ -3,7 +3,7 @@
     "description": "Add \"Change owner or date\" in graph tools menu",
     "execution_order": 10,
     "enabled": true,
-    "action": "preg_replace",
-    "find": "#(<xf:if is=\"\\$graph.canDelete\\(\\).*\">.*?<\\/xf:if>)(.*?)(<\\/xf:contentcheck>)#si",
-    "replace": "$1\n\n<xf:macro template=\"tckChangeContentOwner_macros\" name=\"menu_link_row\" arg-content=\"{$graph}\" arg-route=\"graphs\" />\n\n$2$3"
+    "action": "str_replace",
+    "find": "<xf:if is=\"$hasActionBarMenu\">",
+    "replace": "<xf:macro template=\"tckChangeContentOwner_macros\" name=\"action_link\"\n\t\t  arg-content=\"{$graph}\"\n\t\t  arg-route=\"graphs\" />\n\n$0"
 }

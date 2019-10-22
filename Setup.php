@@ -223,4 +223,21 @@ class Setup extends AbstractSetup
             $option->save();
         }
     }
+
+    /**
+     * @param array $errors
+     * @param array $warnings
+     */
+    public function checkRequirements(&$errors = [], &$warnings = [])
+    {
+        $xfaCSVGrapher = $this->app()->addOnManager()->getById('XFA/CSVGrapher');
+        if ($xfaCSVGrapher)
+        {
+            $installed = $xfaCSVGrapher->getInstalledAddOn();
+            if ($installed && $installed->version_id < 904000019)
+            {
+                $warnings[] = 'You must upgrade to [XFA] Datalogger 4.0.0 Alpha 9 or later.';
+            }
+        }
+    }
 }
