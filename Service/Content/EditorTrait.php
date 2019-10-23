@@ -92,7 +92,9 @@ trait EditorTrait
 
         if ($this->ownerChanger)
         {
-            $this->ownerChanger->validate($errors);
+            $this->ownerChanger->validate($ownerChangerErrors);
+
+            $errors = array_merge($errors, $ownerChangerErrors);
         }
 
         return $errors;
