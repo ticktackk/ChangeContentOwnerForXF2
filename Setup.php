@@ -224,6 +224,22 @@ class Setup extends AbstractSetup
         }
     }
 
+    public function upgrade2000270Step1() : void
+    {
+        $db = $this->db();
+
+        $contentTypesQuoted = $db->quote(['thread', 'post', 'xfmg_media', 'xfmg_album', 'xfmg_comment']);
+        $actionQuoted = $db->quote('change_');
+        $actionParamsQuoted = $db->quote('[]');
+
+        $db->delete(
+            'xf_moderator_log',
+            'content_type IN (' . $contentTypesQuoted . ')
+            AND action = ' . $actionQuoted . '
+            AND action_params = ' . $actionParamsQuoted
+        );
+    }
+
     /**
      * @param array $errors
      * @param array $warnings

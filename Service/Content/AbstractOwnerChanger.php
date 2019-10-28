@@ -475,10 +475,10 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @param Entity $content
      *
-     * @return array
+     * @return null|array
      * @throws \Exception
      */
-    public function getLogData(Entity $content) : array
+    public function getLogData(Entity $content) :? array
     {
         $actions = [];
         $extraData = [];
@@ -537,6 +537,11 @@ abstract class AbstractOwnerChanger extends AbstractService
 
                 $extraData['time_intervals'] = $extraData;
             }
+        }
+
+        if (!\count($actions))
+        {
+            return null;
         }
 
         return [
@@ -758,8 +763,12 @@ abstract class AbstractOwnerChanger extends AbstractService
 
             if ($logModerator)
             {
-                ['action' => $action, 'extraData' => $extraData] = $this->getLogData($content);
-                $logger->logModeratorAction($content->getEntityContentType(), $content, $action, $extraData);
+                $logData = $this->getLogData($content);
+                if ($logData)
+                {
+                    ['action' => $action, 'extraData' => $extraData] = $logData;
+                    $logger->logModeratorAction($content->getEntityContentType(), $content, $action, $extraData);
+                }
             }
         }
 
