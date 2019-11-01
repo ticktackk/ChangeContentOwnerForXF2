@@ -757,6 +757,14 @@ abstract class AbstractOwnerChanger extends AbstractService
         {
             $this->additionalEntitySave($content);
 
+            try
+            {
+                $content->setOption('log_moderator', false);
+            }
+            catch (\InvalidArgumentException $exception)
+            {
+            }
+
             $content->save(true, false);
 
             $this->postContentSave($content);
