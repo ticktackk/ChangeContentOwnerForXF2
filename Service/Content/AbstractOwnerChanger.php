@@ -370,7 +370,7 @@ abstract class AbstractOwnerChanger extends AbstractService
         {
             foreach ($timeIntervals AS $unit => $value)
             {
-                $multiplyIntervalBy = count($this->contentNewDateMapping);
+                $multiplyIntervalBy = count($this->contentNewDateMapping) + 1;
                 if ($multiplyIntervalBy && $value)
                 {
                     $dateTime->modify($value * $multiplyIntervalBy. ' ' . $unit);
@@ -505,7 +505,6 @@ abstract class AbstractOwnerChanger extends AbstractService
             if ($newDate)
             {
                 $actions[] = 'date';
-
                 $extraData['new_date_provided'] = $newDate;
             }
 
@@ -513,29 +512,14 @@ abstract class AbstractOwnerChanger extends AbstractService
             if ($newTime)
             {
                 $actions[] = 'time';
-
                 $extraData['new_time_provided'] = $newTime;
             }
 
             $timeIntervals = $this->getTimeIntervals();
             if ($timeIntervals)
             {
-                $isBump = false;
-                foreach ([] AS $possibleAction)
-                {
-                    if (in_array($possibleAction, $actions, true))
-                    {
-                        $isBump = false;
-                        break;
-                    }
-                }
-
-                if ($isBump)
-                {
-                    $actions[] = 'bump';
-                }
-
-                $extraData['time_intervals'] = $extraData;
+                $actions[] = 'bump';
+                $extraData['time_intervals'] = $timeIntervals;
             }
         }
 
@@ -775,7 +759,12 @@ abstract class AbstractOwnerChanger extends AbstractService
                 if ($logData)
                 {
                     ['action' => $action, 'extraData' => $extraData] = $logData;
-                    $logger->logModeratorAction($content->getEntityContentType(), $content, $action, $extraData);
+                    $logger->logModeratorAction(
+                        $content->getEntityContentType(),
+                        $content,
+                        $action,
+                        $extraData
+                    );
                 }
             }
         }
