@@ -4,7 +4,6 @@ namespace TickTackk\ChangeContentOwner\XF\Service\Post;
 
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
 use TickTackk\ChangeContentOwner\XF\Entity\Post as ExtendedPostEntity;
-use TickTackk\ChangeContentOwner\XF\Service\RebuildThreadUserPostCounterTrait;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Repository;
@@ -17,8 +16,6 @@ use XF\Repository\Thread as ThreadRepo;
  */
 class OwnerChanger extends AbstractOwnerChanger
 {
-    use RebuildThreadUserPostCounterTrait;
-
     /**
      * @return string
      */
@@ -48,18 +45,22 @@ class OwnerChanger extends AbstractOwnerChanger
             }
 
             $forum = $thread->Forum;
-            if ($forum && $forum->last_post_id === $content->post_id)
+            if ($forum)
             {
-                $forum->last_post_user_id = $newOwner->user_id;
-                $forum->last_post_username = $newOwner->username;
-            }
-        }
+                if ($forum->last_post_id === $content->post_id)
+                {
+                    $forum->last_post_user_id = $newOwner->user_id;
+                    $forum->last_post_username = $newOwner->username;
+                }
 
-        $oldUser = $this->getOldOwner($content);
-        if ($content->isVisible())
-        {
-            $this->increaseContentCount($newOwner, 'message_count');
-            $this->decreaseContentCount($oldUser, 'message_count');
+                if ($forum->count_messages && $content->isVisible())
+                {
+                    $oldUser = $this->getOldOwner($content);
+
+                    $this->increaseContentCount($newOwner, 'message_count');
+                    $this->decreaseContentCount($oldUser, 'message_count');
+                }
+            }
         }
 
         return $content;
@@ -120,13 +121,6 @@ class OwnerChanger extends AbstractOwnerChanger
      */
     protected function postContentSave(Entity $content): void
     {
-        $oldUser = $this->getOldOwner($content);
-        $newOwner = $this->getNewOwner();
-        if ($newOwner && $newOwner->user_id !== $oldUser->user_id)
-        {
-            $this->rebuildThreadUserPostCounters($content->thread_id);
-        }
-
         $oldTimestamp = $this->getOldTimestamp($content);
         $newTimestamp = $this->getNewTimestamp($content);
         if ($oldTimestamp !== $newTimestamp)

@@ -3,8 +3,9 @@
 namespace TickTackk\ChangeContentOwner\XF\Service\Thread;
 
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
+use TickTackk\ChangeContentOwner\XF\Entity\Forum as ExtendedForumEntity;
+use TickTackk\ThreadCount\XF\Entity\Forum as ExtendedForumEntityFromThreadCount;
 use TickTackk\ChangeContentOwner\XF\Entity\Thread as ExtendedThreadEntity;
-use TickTackk\ChangeContentOwner\XF\Service\RebuildThreadUserPostCounterTrait;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 
@@ -15,8 +16,6 @@ use XF\Mvc\Entity\Entity;
  */
 class OwnerChanger extends AbstractOwnerChanger
 {
-    use RebuildThreadUserPostCounterTrait;
-
     /**
      * @return string
      */
@@ -48,24 +47,36 @@ class OwnerChanger extends AbstractOwnerChanger
             $content->last_post_username = $newOwner->username;
         }
 
+        /** @var ExtendedForumEntity $forum */
         $forum = $content->Forum;
-        if ($forum->last_post_id === $firstPost->post_id)
+        if ($forum)
         {
-            $forum->last_post_user_id = $newOwner->user_id;
-            $forum->last_post_username = $newOwner->username;
-        }
-
-        $addOns = $this->app->container('addon.cache');
-        if ($content->isVisible())
-        {
-            $oldUser = $this->getOldOwner($content);
-            $this->increaseContentCount($newOwner, 'message_count');
-            $this->decreaseContentCount($oldUser, 'message_count');
-
-            if ($addOns['TickTackk/ThreadCount'] ?? 0 >= 1000092)
+            if ($forum->last_post_id === $firstPost->post_id)
             {
-                $this->increaseContentCount($newOwner, 'thread_count');
-                $this->decreaseContentCount($oldUser, 'thread_count');
+                $forum->last_post_user_id = $newOwner->user_id;
+                $forum->last_post_username = $newOwner->username;
+            }
+
+            if ($content->isVisible())
+            {
+                $oldUser = $this->getOldOwner($content);
+                
+                if ($forum->count_messages)
+                {
+                    $this->increaseContentCount($newOwner, 'message_count');
+                    $this->decreaseContentCount($oldUser, 'message_count');
+                }
+
+                $addOns = $this->app->container('addon.cache');
+                if ($addOns['TickTackk/ThreadCount'] ?? 0 >= 1000092)
+                {
+                    /** @var ExtendedForumEntityFromThreadCount $forum */
+                    if ($forum->count_threads)
+                    {
+                        $this->increaseContentCount($newOwner, 'thread_count');
+                        $this->decreaseContentCount($oldUser, 'thread_count');
+                    }
+                }
             }
         }
 
@@ -122,21 +133,6 @@ class OwnerChanger extends AbstractOwnerChanger
         if ($forum)
         {
             $forum->save(true, false);
-        }
-    }
-
-    /**
-     * @param Entity|ExtendedThreadEntity $content
-     *
-     * @throws \XF\Db\Exception
-     */
-    protected function postContentSave(Entity $content): void
-    {
-        $oldUser = $this->getOldOwner($content);
-        $newOwner = $this->getNewOwner();
-        if ($newOwner && $newOwner->user_id !== $oldUser->user_id)
-        {
-            $this->rebuildThreadUserPostCounters($content->thread_id);
         }
     }
 }
