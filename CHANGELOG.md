@@ -3,6 +3,7 @@ CHANGELOG
 
 ## 2.0.3 (`2000370`)
 
+- **Fix:** Content count value will be out of sync (#35)
 - **Fix:** Posts count for user is increased twice (#33)
 - **Fix:** Does not respect "Count messages posted in this forum towards user total" (#32)
 
