@@ -7,6 +7,7 @@ use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
 use XF\AddOn\StepRunnerUpgradeTrait;
 use XF\Entity\Option as OptionEntity;
+use XF\Job\Manager as JobManager;
 
 /**
  * Class Setup
@@ -240,6 +241,14 @@ class Setup extends AbstractSetup
         );
     }
 
+    public function upgrade2000470Step1() : void
+    {
+        $this->jobManager()->enqueueUnique(
+            'tckChangeContentOwner-' . __FUNCTION__,
+            'TickTackk\ChangeContentOwner:RebuildThreadUserPostCount
+        ');
+    }
+
     /**
      * @param array $errors
      * @param array $warnings
@@ -255,5 +264,13 @@ class Setup extends AbstractSetup
                 $warnings[] = 'You must upgrade to [XFA] Datalogger 4.0.0 Alpha 9 or later.';
             }
         }
+    }
+
+    /**
+     * @return JobManager
+     */
+    protected function jobManager() : JobManager
+    {
+        return $this->app()->jobManager();
     }
 }

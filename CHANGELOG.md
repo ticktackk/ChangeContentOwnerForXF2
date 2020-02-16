@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.4 (`2000470`)
+
+- **Fix:** User posts table is not updated on changing owner (#38)
+
 ## 2.0.3 (`2000370`)
 
 - **Fix:** Content count value will be out of sync (#35)

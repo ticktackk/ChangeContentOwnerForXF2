@@ -4,6 +4,8 @@ namespace TickTackk\ChangeContentOwner\XF\Service\Post;
 
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
 use TickTackk\ChangeContentOwner\XF\Entity\Post as ExtendedPostEntity;
+use XF\Entity\ThreadUserPost as ThreadUserPostEntity;
+use TickTackk\ChangeContentOwner\XF\Entity\Thread as ExtendedThreadEntity;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Repository;
@@ -25,16 +27,19 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
-     * @param Entity|ExtendedPostEntity     $content
+     * @param Entity|ExtendedPostEntity $content
      * @param UserEntity $newOwner
      *
      * @return Entity
+     *
+     * @throws \XF\PrintableException
      */
     protected function changeContentOwner(Entity $content, UserEntity $newOwner): Entity
     {
         $content->user_id = $newOwner->user_id;
         $content->username = $newOwner->username;
 
+        /** @var ExtendedThreadEntity $thread */
         $thread = $content->Thread;
         if ($thread)
         {
@@ -43,6 +48,33 @@ class OwnerChanger extends AbstractOwnerChanger
                 $thread->last_post_user_id = $newOwner->user_id;
                 $thread->last_post_username = $newOwner->username;
             }
+
+            $oldUser = $this->getOldOwner($content);
+
+            $oldUserThreadUserPost = $thread->UserPosts[$oldUser->user_id] ?? null;
+            if ($oldUserThreadUserPost)
+            {
+                if ($oldUserThreadUserPost->post_count <= 1)
+                {
+                    $oldUserThreadUserPost->delete();
+                }
+                else
+                {
+                    $oldUserThreadUserPost->post_count--;
+                    $oldUserThreadUserPost->save();
+                }
+            }
+
+            $newUserThreadUserPost = $thread->UserPosts[$newOwner->user_id] ?? null;
+            if (!$newUserThreadUserPost)
+            {
+                /** @var ThreadUserPostEntity $newUserThreadUserPost */
+                $newUserThreadUserPost = $this->em()->create('XF:ThreadUserPost');
+                $newUserThreadUserPost->user_id = $newOwner->user_id;
+                $newUserThreadUserPost->thread_id = $thread->thread_id;
+            }
+            $newUserThreadUserPost->post_count++;
+            $newUserThreadUserPost->save();
 
             $forum = $thread->Forum;
             if ($forum)
@@ -55,8 +87,6 @@ class OwnerChanger extends AbstractOwnerChanger
 
                 if ($forum->count_messages && $content->isVisible())
                 {
-                    $oldUser = $this->getOldOwner($content);
-
                     $this->increaseContentCount($newOwner, 'message_count');
                     $this->decreaseContentCount($oldUser, 'message_count');
                 }
