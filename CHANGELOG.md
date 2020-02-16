@@ -3,8 +3,15 @@ CHANGELOG
 
 ## 2.0.3 (`2000370`)
 
+- **Fix:** Content count value will be out of sync (#35)
 - **Fix:** Posts count for user is increased twice (#33)
 - **Fix:** Does not respect "Count messages posted in this forum towards user total" (#32)
+
+Note:** It is advised to run "Rebuild threads" with "Rebuild position and post counters" checked from Admin CP > Tools > Rebuild caches for small forums. If you this add-on a big forum, you'll be required to run the following command:
+
+```shell script
+php <path to xenforo installation>/cmd.php xf-rebuild:threads --position_rebuild
+```
 
 ## 2.0.2 (`2000270`)
 

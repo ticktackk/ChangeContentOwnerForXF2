@@ -693,10 +693,17 @@ abstract class AbstractOwnerChanger extends AbstractService
                 foreach ($columnAndValue AS $column => $value)
                 {
                     $db->query("
-                    UPDATE xf_user
-                    SET {$column} = GREATEST(0, {$column} + ?)
-                    WHERE user_id = ?
-                ", [$value, $userId]);
+                        UPDATE xf_user
+                        SET {$column} = GREATEST(0, {$column} + ?)
+                        WHERE user_id = ?
+                    ", [$value, $userId]);
+
+                    /** @var UserEntity $userEntity */
+                    $userEntity = $this->em()->findCached('XF:User', $userId);
+                    if ($userEntity)
+                    {
+                        $userEntity->setAsSaved($column, \max(0, $userEntity->get($column) + $value));
+                    }
                 }
             }
         }
@@ -800,7 +807,7 @@ abstract class AbstractOwnerChanger extends AbstractService
                         username = ?,
                         event_date = IF(action <> ?, ?, event_date)
                     WHERE content_type = ? AND content_id = ? AND user_id = ? AND username = ?
-            ', [$newOwner->user_id, $newOwner->username, 'insert', $newTimestamp, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
+                ', [$newOwner->user_id, $newOwner->username, 'insert', $newTimestamp, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
             }
             else
             {
@@ -808,7 +815,7 @@ abstract class AbstractOwnerChanger extends AbstractService
                     UPDATE xf_news_feed
                     SET event_date = IF(action <> ?, ?, event_date)
                     WHERE content_type = ? AND content_id = ? AND user_id = ? AND username = ?
-            ', ['insert', $newTimestamp, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
+                ', ['insert', $newTimestamp, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
             }
         }
 
@@ -833,6 +840,7 @@ abstract class AbstractOwnerChanger extends AbstractService
     {
         $newOwner = $this->getNewOwner();
         $reactedOrLikedContent = null;
+
         if ($newOwner)
         {
             $relationName = \XF::$versionId >= 2010010 ? $reactionsRelation : $likesRelation;
