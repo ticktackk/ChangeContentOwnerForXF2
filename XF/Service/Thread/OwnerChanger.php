@@ -8,6 +8,7 @@ use TickTackk\ThreadCount\XF\Entity\Forum as ExtendedForumEntityFromThreadCount;
 use TickTackk\ChangeContentOwner\XF\Entity\Thread as ExtendedThreadEntity;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
+use XF\Entity\ThreadUserPost as ThreadUserPostEntity;
 
 /**
  * Class OwnerChanger
@@ -47,6 +48,33 @@ class OwnerChanger extends AbstractOwnerChanger
             $content->last_post_username = $newOwner->username;
         }
 
+        $oldUser = $this->getOldOwner($content);
+
+        $oldUserThreadUserPost = $content->UserPosts[$oldUser->user_id] ?? null;
+        if ($oldUserThreadUserPost)
+        {
+            if ($oldUserThreadUserPost->post_count <= 1)
+            {
+                $oldUserThreadUserPost->delete();
+            }
+            else
+            {
+                $oldUserThreadUserPost->post_count--;
+                $oldUserThreadUserPost->save();
+            }
+        }
+
+        $newUserThreadUserPost = $content->UserPosts[$newOwner->user_id] ?? null;
+        if (!$newUserThreadUserPost)
+        {
+            /** @var ThreadUserPostEntity $newUserThreadUserPost */
+            $newUserThreadUserPost = $this->em()->create('XF:ThreadUserPost');
+            $newUserThreadUserPost->user_id = $newOwner->user_id;
+            $newUserThreadUserPost->thread_id = $content->thread_id;
+        }
+        $newUserThreadUserPost->post_count++;
+        $newUserThreadUserPost->save();
+
         /** @var ExtendedForumEntity $forum */
         $forum = $content->Forum;
         if ($forum)
@@ -59,8 +87,6 @@ class OwnerChanger extends AbstractOwnerChanger
 
             if ($content->isVisible())
             {
-                $oldUser = $this->getOldOwner($content);
-                
                 if ($forum->count_messages)
                 {
                     $this->increaseContentCount($newOwner, 'message_count');
