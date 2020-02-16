@@ -124,19 +124,4 @@ class OwnerChanger extends AbstractOwnerChanger
             $forum->save(true, false);
         }
     }
-
-    /**
-     * @param Entity|ExtendedThreadEntity $content
-     *
-     * @throws \XF\Db\Exception
-     */
-    protected function postContentSave(Entity $content): void
-    {
-        $oldUser = $this->getOldOwner($content);
-        $newOwner = $this->getNewOwner();
-        if ($newOwner && $newOwner->user_id !== $oldUser->user_id)
-        {
-            $this->rebuildThreadUserPostCounters($content->thread_id);
-        }
-    }
 }

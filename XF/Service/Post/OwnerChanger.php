@@ -120,13 +120,6 @@ class OwnerChanger extends AbstractOwnerChanger
      */
     protected function postContentSave(Entity $content): void
     {
-        $oldUser = $this->getOldOwner($content);
-        $newOwner = $this->getNewOwner();
-        if ($newOwner && $newOwner->user_id !== $oldUser->user_id)
-        {
-            $this->rebuildThreadUserPostCounters($content->thread_id);
-        }
-
         $oldTimestamp = $this->getOldTimestamp($content);
         $newTimestamp = $this->getNewTimestamp($content);
         if ($oldTimestamp !== $newTimestamp)
