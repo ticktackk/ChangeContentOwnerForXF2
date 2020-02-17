@@ -245,8 +245,7 @@ class Setup extends AbstractSetup
     {
         $this->jobManager()->enqueueUnique(
             'tckChangeContentOwner-' . __FUNCTION__,
-            'TickTackk\ChangeContentOwner:RebuildThreadUserPostCount
-        ');
+            'TickTackk\ChangeContentOwner:Upgrade\RebuildThreadUserPostCount');
     }
 
     /**
