@@ -65,7 +65,11 @@ class OwnerChanger extends AbstractOwnerChanger
                 }
             }
 
-            $newUserThreadUserPost = $thread->UserPosts[$newOwner->user_id] ?? null;
+            /** @var ThreadUserPostEntity $newUserThreadUserPost */
+            $newUserThreadUserPost = $this->finder('XF:ThreadUserPost')
+                ->where('thread_id', $thread->thread_id)
+                ->where('user_id', $newOwner->user_id)
+                ->fetchOne();
             if (!$newUserThreadUserPost)
             {
                 /** @var ThreadUserPostEntity $newUserThreadUserPost */
