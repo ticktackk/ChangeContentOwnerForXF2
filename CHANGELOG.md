@@ -1,9 +1,9 @@
 CHANGELOG
 ==========================
 
-## 2.0.4 (`2000470`)
+## 2.0.5 (`2000570`)
 
-- **Fix:** User posts table is not updated on changing owner (#38)
+- **Fix:** Bulk updating can cause duplicate primary key exception (#41)
 
 ## 2.0.4 (`2000470`)
 
