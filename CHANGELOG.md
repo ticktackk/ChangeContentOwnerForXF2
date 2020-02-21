@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.6 (`2000670`)
+
+- **Fix:** News feed event date does not update for the expected action (#44)
+
 ## 2.0.5 (`2000570`)
 
 - **Fix:** Bulk updating can cause duplicate primary key exception (#41)
