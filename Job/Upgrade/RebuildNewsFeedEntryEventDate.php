@@ -124,11 +124,13 @@ class RebuildNewsFeedEntryEventDate extends AbstractRebuildJob
         $supportsReaction = $this->supportsReaction();
         $finder = $supportsReaction ? $this->reactionContentFinder() : $this->likeContentFinder();
 
-        $this->applyReactionOrLikeContentConditions(
-            $finder,
-            $this->getContentFromNewsFeed($newsFeed),
-            $newsFeed->User ?: $newsFeed->user_id
-        );
+        $content = $this->getContentFromNewsFeed($newsFeed);
+        if (!$content)
+        {
+            return;
+        }
+
+        $this->applyReactionOrLikeContentConditions($finder, $content, $newsFeed->User ?: $newsFeed->user_id);
 
         /** @var ReactionContentEntity $likeContent */
         $likeContent = $finder->fetchOne();
