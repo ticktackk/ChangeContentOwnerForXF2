@@ -245,7 +245,20 @@ class Setup extends AbstractSetup
     {
         $this->jobManager()->enqueueUnique(
             'tckChangeContentOwner-' . __FUNCTION__,
-            'TickTackk\ChangeContentOwner:Upgrade\RebuildThreadUserPostCount');
+            'TickTackk\ChangeContentOwner:Upgrade\RebuildThreadUserPostCount',
+            [],
+            true
+        );
+    }
+
+    public function upgrade2000670Step1() : void
+    {
+        $this->jobManager()->enqueueUnique(
+            'tckChangeContentOwner-' . __FUNCTION__,
+            'TickTackk\ChangeContentOwner:Upgrade\RebuildNewsFeedEntryEventDate',
+            [],
+            true
+        );
     }
 
     /**

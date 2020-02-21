@@ -799,24 +799,26 @@ abstract class AbstractOwnerChanger extends AbstractService
 
         if (isset($structure->behaviors['XF:NewsFeedPublishable']))
         {
+            $newsFeedUpdates = [];
             if ($newOwner)
             {
-                $db->query('
-                    UPDATE xf_news_feed
-                    SET user_id = ?,
-                        username = ?,
-                        event_date = IF(action <> ?, ?, event_date)
-                    WHERE content_type = ? AND content_id = ? AND user_id = ? AND username = ?
-                ', [$newOwner->user_id, $newOwner->username, 'insert', $newTimestamp, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
+                $newsFeedUpdates['user_id'] = $newOwner->user_id;
+                $newsFeedUpdates['username'] = $newOwner->username;
             }
-            else
+
+            if ($newTimestamp)
             {
-                $db->query('
-                    UPDATE xf_news_feed
-                    SET event_date = IF(action <> ?, ?, event_date)
-                    WHERE content_type = ? AND content_id = ? AND user_id = ? AND username = ?
-                ', ['insert', $newTimestamp, $content->getEntityContentType(), $content->getEntityId(), $oldOwner->user_id, $oldOwner->username]);
+                $newsFeedUpdates['event_date'] = $newTimestamp;
             }
+
+            $db->update('xf_news_feed', $newsFeedUpdates,
+                'content_type = ? AND content_id = ? AND user_id = ? AND username = ? AND action = ?', [
+                    $content->getEntityContentType(),
+                    $content->getEntityId(),
+                    $oldOwner->user_id,
+                    $oldOwner->username,
+                    'insert'
+            ]);
         }
 
         if ($newOwner && isset($structure->behaviors['XF:Reactable']))
