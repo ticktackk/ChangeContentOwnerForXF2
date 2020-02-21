@@ -4,6 +4,7 @@ CHANGELOG
 ## 2.0.6 (`2000670`)
 
 - **Fix:** News feed event date does not update for the expected action (#44)
+  - **On upgrade:** Will make an attempt to fix wrong event date for likes/reactions and insert events.
 
 ## 2.0.5 (`2000570`)
 
