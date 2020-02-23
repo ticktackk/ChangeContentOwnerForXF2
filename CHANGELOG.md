@@ -3,7 +3,7 @@ CHANGELOG
 
 ## 2.0.7 (`2000770`)
 
-- **Change:** Tweaked how time interval is applied for better control extending
+- **Misc:** Tweaked how time interval is applied for better control extending
 - **Fix:** Moderator log action length can be higher than 25 characters (#47)
   - **On upgrade:** Will make an attempt to rename actions to new format.
 
