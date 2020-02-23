@@ -1,6 +1,12 @@
 CHANGELOG
 ==========================
 
+## 2.0.7 (`2000770`)
+
+- **Misc:** Tweaked how time interval is applied for better control extending
+- **Fix:** Moderator log action length can be higher than 25 characters (#47)
+  - **On upgrade:** Will make an attempt to rename actions to new format.
+
 ## 2.0.6 (`2000670`)
 
 - **Fix:** News feed event date does not update for the expected action (#44)

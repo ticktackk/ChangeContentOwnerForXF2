@@ -90,6 +90,11 @@ abstract class AbstractOwnerChanger extends AbstractService
     protected $contentNewDateMapping;
 
     /**
+     * @var null|int
+     */
+    protected $contentNewDateCounter;
+
+    /**
      * @var bool
      */
     protected $performValidations = true;
@@ -126,6 +131,14 @@ abstract class AbstractOwnerChanger extends AbstractService
         }
 
         $this->setLogModerator($logModerator);
+    }
+
+    /**
+     * @param int $contentNewDateCounter
+     */
+    public function setContentNewDateCounter(int $contentNewDateCounter) : void
+    {
+        $this->contentNewDateCounter = $contentNewDateCounter;
     }
 
     /**
@@ -345,6 +358,10 @@ abstract class AbstractOwnerChanger extends AbstractService
     public function getNewTimestamp(Entity $content) :? int
     {
         $this->contentNewDateMapping = $this->contentNewDateMapping ?? [];
+        if ($this->contentNewDateCounter === null)
+        {
+            $this->contentNewDateCounter = 0;
+        }
 
         $uniqueKey = $this->getContentUniqueKey($content);
         if (isset($this->contentNewDateMapping[$uniqueKey]))
@@ -353,7 +370,8 @@ abstract class AbstractOwnerChanger extends AbstractService
         }
 
         $dateTime = $this->getHandler()->getOldDateTime($content, true);
-        $newDate = $this->newDate;
+
+        $newDate = $this->getNewDate();
         if ($newDate)
         {
             $dateTime->setDate($newDate['year'], $newDate['month'], $newDate['day']);
@@ -370,15 +388,18 @@ abstract class AbstractOwnerChanger extends AbstractService
         {
             foreach ($timeIntervals AS $unit => $value)
             {
-                $multiplyIntervalBy = count($this->contentNewDateMapping) + 1;
-                if ($multiplyIntervalBy && $value)
+                if (!$value)
                 {
-                    $dateTime->modify($value * $multiplyIntervalBy. ' ' . $unit);
+                    continue;
                 }
+
+                $counter = $value + $this->contentNewDateCounter;
+                $dateTime->modify("+{$counter} {$unit}");
             }
         }
 
         $this->contentNewDateMapping[$uniqueKey] = $dateTime->getTimestamp();
+        $this->contentNewDateCounter++;
         return $this->contentNewDateMapping[$uniqueKey];
     }
 
@@ -487,7 +508,7 @@ abstract class AbstractOwnerChanger extends AbstractService
 
         if ($newOwner && $oldOwner->user_id !== $newOwner->user_id)
         {
-            $actions[] = 'owner';
+            $actions[] = 'ownr';
 
             $extraData['old_user_id'] = $oldOwner->user_id;
             $extraData['old_username'] = $oldOwner->username;
@@ -518,7 +539,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             $timeIntervals = $this->getTimeIntervals();
             if ($timeIntervals)
             {
-                $actions[] = 'bump';
+                $actions[] = 'bmp';
                 $extraData['time_intervals'] = $timeIntervals;
             }
         }
@@ -664,7 +685,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             }
         }
 
-        return array_unique($errors);
+        return \array_unique($errors);
     }
 
     /**
