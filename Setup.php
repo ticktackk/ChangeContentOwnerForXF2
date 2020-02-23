@@ -227,17 +227,11 @@ class Setup extends AbstractSetup
 
     public function upgrade2000270Step1() : void
     {
-        $db = $this->db();
-
-        $contentTypesQuoted = $db->quote(['thread', 'post', 'xfmg_media', 'xfmg_album', 'xfmg_comment']);
-        $actionQuoted = $db->quote('change_');
-        $actionParamsQuoted = $db->quote('[]');
-
-        $db->delete(
-            'xf_moderator_log',
-            'content_type IN (' . $contentTypesQuoted . ')
-            AND action = ' . $actionQuoted . '
-            AND action_params = ' . $actionParamsQuoted
+        $this->jobManager()->enqueueUnique(
+            'tckChangeContentOwner-' . __FUNCTION__,
+            'TickTackk\ChangeContentOwner:Upgrade\RebuildModeratorLogAction',
+            [],
+            true
         );
     }
 
@@ -256,6 +250,16 @@ class Setup extends AbstractSetup
         $this->jobManager()->enqueueUnique(
             'tckChangeContentOwner-' . __FUNCTION__,
             'TickTackk\ChangeContentOwner:Upgrade\RebuildNewsFeedEntryEventDate',
+            [],
+            true
+        );
+    }
+
+    public function upgrade2000770Step1() : void
+    {
+        $this->jobManager()->enqueueUnique(
+            'tckChangeContentOwner-' . __FUNCTION__,
+            'TickTackk\ChangeContentOwner:Upgrade\RebuildModeratorLogAction',
             [],
             true
         );

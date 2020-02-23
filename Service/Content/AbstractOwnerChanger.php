@@ -487,7 +487,7 @@ abstract class AbstractOwnerChanger extends AbstractService
 
         if ($newOwner && $oldOwner->user_id !== $newOwner->user_id)
         {
-            $actions[] = 'owner';
+            $actions[] = 'ownr';
 
             $extraData['old_user_id'] = $oldOwner->user_id;
             $extraData['old_username'] = $oldOwner->username;
@@ -518,7 +518,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             $timeIntervals = $this->getTimeIntervals();
             if ($timeIntervals)
             {
-                $actions[] = 'bump';
+                $actions[] = 'bmp';
                 $extraData['time_intervals'] = $timeIntervals;
             }
         }
