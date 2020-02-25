@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.8 (`2000870`)
+
+- **Fix:** Time interval is applied on first content (#49)
+
 ## 2.0.7 (`2000770`)
 
 - **Misc:** Tweaked how time interval is applied for better control extending
