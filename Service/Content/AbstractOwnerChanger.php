@@ -358,11 +358,6 @@ abstract class AbstractOwnerChanger extends AbstractService
     public function getNewTimestamp(Entity $content) :? int
     {
         $this->contentNewDateMapping = $this->contentNewDateMapping ?? [];
-        if ($this->contentNewDateCounter === null)
-        {
-            $this->contentNewDateCounter = 0;
-        }
-
         $uniqueKey = $this->getContentUniqueKey($content);
         if (isset($this->contentNewDateMapping[$uniqueKey]))
         {
@@ -386,20 +381,28 @@ abstract class AbstractOwnerChanger extends AbstractService
         $timeIntervals = $this->getTimeIntervals();
         if ($timeIntervals)
         {
-            foreach ($timeIntervals AS $unit => $value)
+            if ($this->contentNewDateCounter === null) // first content
             {
-                if (!$value)
+                $this->contentNewDateCounter = 0;
+            }
+            else
+            {
+                foreach ($timeIntervals AS $unit => $value)
                 {
-                    continue;
+                    if (!$value)
+                    {
+                        continue;
+                    }
+
+                    $counter = $value + $this->contentNewDateCounter;
+                    $dateTime->modify("+{$counter} {$unit}");
                 }
 
-                $counter = $value + $this->contentNewDateCounter;
-                $dateTime->modify("+{$counter} {$unit}");
+                $this->contentNewDateCounter++;
             }
         }
 
         $this->contentNewDateMapping[$uniqueKey] = $dateTime->getTimestamp();
-        $this->contentNewDateCounter++;
         return $this->contentNewDateMapping[$uniqueKey];
     }
 
