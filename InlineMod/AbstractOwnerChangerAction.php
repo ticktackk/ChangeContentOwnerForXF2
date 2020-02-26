@@ -204,6 +204,14 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
                 'day' => (int) $day
             ];
         }
+        else
+        {
+            $options['new_date'] = [
+                'year' => null,
+                'month' => null,
+                'day' => null
+            ];
+        }
         $options['new_time'] = $filterArray('new_time', [
             'hour' => 'int',
             'minute' => 'int',
