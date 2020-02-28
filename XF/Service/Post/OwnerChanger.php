@@ -173,7 +173,7 @@ class OwnerChanger extends AbstractOwnerChanger
     {
         $errors = parent::_validate();
 
-        if (!\count($errors))
+        if ($this->getPerformValidations())
         {
             /** @var ExtendedPostEntity $content */
             foreach ($this->contents AS $content)

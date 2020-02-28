@@ -245,7 +245,14 @@ abstract class AbstractHandler
     {
         $this->assertContentExtended($content);
 
-        return $content->canChangeOwner($newOwner, $error);
+        $canChangeDate = $content->canChangeOwner($newOwner, $error);
+
+        if (!$canChangeDate && $error === null)
+        {
+            $error = \XF::phraseDeferred('tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_owner');
+        }
+
+        return $canChangeDate;
     }
 
     /**
@@ -259,7 +266,14 @@ abstract class AbstractHandler
     {
         $this->assertContentExtended($content);
 
-        return $content->canChangeDate($newDate, $error);
+        $canChangeDate = $content->canChangeDate($newDate, $error);
+
+        if (!$canChangeDate && $error === null)
+        {
+            $error = \XF::phraseDeferred('tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_date');
+        }
+
+        return $canChangeDate;
     }
 
     /**

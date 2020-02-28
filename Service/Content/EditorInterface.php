@@ -3,6 +3,7 @@
 namespace TickTackk\ChangeContentOwner\Service\Content;
 
 use XF\Entity\User as UserEntity;
+use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger as AbstractOwnerChangerSvc;
 
 /**
  * Interface EditorInterface
@@ -32,4 +33,9 @@ interface EditorInterface
     public function setTimeInterval(array $timeInterval) : void;
 
     public function setupOwnerChanger() : void;
+
+    /**
+     * @return AbstractOwnerChanger
+     */
+    public function getOwnerChangerSvc() : AbstractOwnerChangerSvc;
 }

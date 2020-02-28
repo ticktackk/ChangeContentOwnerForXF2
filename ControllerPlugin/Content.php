@@ -118,6 +118,7 @@ class Content extends AbstractPlugin
      */
     protected function setNewOwnerDateTimeAndInterval(AbstractService $service, /** @noinspection PhpUnusedParameterInspection */ContentEntityInterface $content) : void
     {
+        $handler = $content->getChangeOwnerHandler(true);
         $newOwnerUsername = $this->filter('username', 'str');
 
         if ($newOwnerUsername)
@@ -126,6 +127,11 @@ class Content extends AbstractPlugin
             if (!$newOwner)
             {
                 throw $this->exception($this->error(\XF::phrase('please_enter_valid_name')));
+            }
+
+            if (!$handler->canChangeOwner($content, $newOwner, $error))
+            {
+                throw $this->exception($this->noPermission($error));
             }
 
             $service->setNewOwner($newOwner);
@@ -177,6 +183,23 @@ class Content extends AbstractPlugin
                 'minute' => 'int',
                 'second' => 'int'
             ]));
+        }
+
+        if ($service instanceof AbstractOwnerChangerSvc)
+        {
+            $oldTimestamp = $service->getOldTimestamp($content);
+            $newTimestamp = $service->getNewTimestamp($content);
+        }
+        else
+        {
+            $ownerChangerSvc = $service->getOwnerChangerSvc();
+            $oldTimestamp = $ownerChangerSvc->getOldTimestamp($content);
+            $newTimestamp = $ownerChangerSvc->getNewTimestamp($content);
+        }
+
+        if ($oldTimestamp !== $newTimestamp && !$handler->canChangeDate($content, $service->getNewTimestamp($content), $error))
+        {
+            throw $this->exception($this->noPermission($error));
         }
     }
 

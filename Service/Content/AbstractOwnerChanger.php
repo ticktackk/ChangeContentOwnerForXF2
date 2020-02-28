@@ -134,9 +134,9 @@ abstract class AbstractOwnerChanger extends AbstractService
     }
 
     /**
-     * @param int $contentNewDateCounter
+     * @param int|null $contentNewDateCounter
      */
-    public function setContentNewDateCounter(int $contentNewDateCounter) : void
+    public function setContentNewDateCounter(?int $contentNewDateCounter) : void
     {
         $this->contentNewDateCounter = $contentNewDateCounter;
     }
@@ -651,38 +651,16 @@ abstract class AbstractOwnerChanger extends AbstractService
         if ($this->getPerformValidations())
         {
             $newOwner = $this->getNewOwner();
-            $handler = $this->getHandler();
-
-            foreach ($this->contents AS $id => $content)
+            if ($newOwner)
             {
-                $oldTimestamp = $this->getOldTimestamp($content);
-                $newTimestamp = $this->getNewTimestamp($content);
+                $handler = $this->getHandler();
 
-                if ($oldTimestamp !== $newTimestamp && !$content->canChangeDate($newTimestamp, $error))
+                foreach ($this->contents AS $id => $content)
                 {
-                    $fallbackError = count($this->contents) > 1
-                        ? 'tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_date'
-                        : 'tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_date';
-
-                    $errors[] = $error ?: \XF::phrase($fallbackError);
-                }
-                unset($error);
-
-                $oldOwner = $this->getOldOwner($content);
-                if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
-                {
-                    if (!$content->canChangeOwner($newOwner, $error))
-                    {
-                        $fallbackError = count($this->contents) > 1
-                            ? 'tckChangeContentOwner_you_do_not_have_permission_to_change_selected_contents_owner'
-                            : 'tckChangeContentOwner_you_do_not_have_permission_to_change_this_content_owner';
-
-                        $errors[] = $error ?: \XF::phrase($fallbackError);
-                    }
-
                     if (!$handler->canNewOwnerViewContent($content, $newOwner, $error))
                     {
                         $errors[] = $error ?: \XF::phrase('tckChangeContentOwner_new_owner_must_be_able_to_view_this_content');
+                        break;
                     }
                 }
             }

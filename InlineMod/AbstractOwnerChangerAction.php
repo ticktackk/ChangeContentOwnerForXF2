@@ -3,12 +3,14 @@
 namespace TickTackk\ChangeContentOwner\InlineMod;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
+use TickTackk\ChangeContentOwner\Entity\ContentTrait as ContentEntityTrait;
 use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger as AbstractOwnerChangerSvc;
 use XF\Entity\User as UserEntity;
 use XF\Http\Request;
 use XF\InlineMod\AbstractAction;
 use XF\Mvc\Controller;
 use XF\Mvc\Entity\AbstractCollection;
+use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Reply\View as ReplyView;
 
@@ -23,6 +25,11 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
      * @var UserEntity
      */
     protected $newOwner;
+
+    /**
+     * @var null|int
+     */
+    protected $contentNewDateCounter;
 
     /**
      * @return \XF\Phrase
@@ -150,7 +157,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
      */
     protected function canApplyToEntity(Entity $content, array $options, &$error = null) : bool
     {
-        return $content->canChangeOwner(null,$error) || $content->canChangeDate(null, $error);
+        return $content->canChangeOwner(null, $error) || $content->canChangeDate(null, $error);
     }
 
     /**
@@ -162,7 +169,8 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             'username' => null,
             'date' => null,
             'date_time_interval' => null,
-            'bump_time' => null
+            'bump_time' => null,
+            'confirmed' => false
         ];
     }
 
@@ -178,7 +186,8 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             'username' => $request->filter('username', 'str'),
             'change_date' => $request->filter('change_date', 'bool'),
             'change_time' => $request->filter('change_time', 'bool'),
-            'apply_time_interval' => $request->filter('apply_time_interval', 'bool')
+            'apply_time_interval' => $request->filter('apply_time_interval', 'bool'),
+            'confirmed' => true
         ];
 
         /**
@@ -242,15 +251,22 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     }
 
     /**
-     * @param AbstractCollection $contents
-     * @param array              $options
+     * @param Entity|ContentEntityInterface|ContentEntityTrait $entity
+     * @param array $options
+     *
+     * @throws \Exception
      */
-    protected function applyInternal(AbstractCollection $contents, array $options) : void
+    protected function applyToEntity(Entity $entity, array $options) : void
     {
-        $ownerChangerSvc = $this->getOwnerChangerSvc($contents);
-        if ($this->newOwner)
+        $entities = new ArrayCollection([
+            $entity->getEntityId() => $entity
+        ]);
+        $ownerChangerSvc = $this->getOwnerChangerSvc($entities);
+        $newOwner = $this->newOwner;
+
+        if ($newOwner && $entity->canChangeOwner($newOwner))
         {
-            $ownerChangerSvc->setNewOwner($this->newOwner);
+            $ownerChangerSvc->setNewOwner($newOwner);
         }
 
         if ($options['change_date'])
@@ -268,20 +284,26 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             $ownerChangerSvc->setTimeInterval($options['time_interval']);
         }
 
-        $ownerChangerSvc->setPerformValidations(false);
-        if ($ownerChangerSvc->validate())
-        {
-            $ownerChangerSvc->save();
-        }
-    }
+        $oldTimestamp = $ownerChangerSvc->getOldTimestamp($entity);
+        $newTimestamp = $ownerChangerSvc->getNewTimestamp($entity);
 
-    /**
-     * @param Entity $entity
-     * @param array  $options
-     */
-    protected function applyToEntity(Entity $entity, array $options) : void
-    {
-        throw new \LogicException('An error occurred while applying selected action on the contents. Please try again later.'); // dont
+        if ($oldTimestamp !== $newTimestamp && !$entity->canChangeDate($newTimestamp))
+        {
+            return;
+        }
+
+        $ownerChangerSvc->setPerformValidations(false);
+        $ownerChangerSvc->setContentNewDateCounter($this->contentNewDateCounter);
+        $ownerChangerSvc->save();
+
+        if ($this->contentNewDateCounter === null)
+        {
+            $this->contentNewDateCounter = 0;
+        }
+        else
+        {
+            $this->contentNewDateCounter++;
+        }
     }
 
     /**
