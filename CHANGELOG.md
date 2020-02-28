@@ -1,6 +1,11 @@
 CHANGELOG
 ==========================
 
+## 2.0.9 (`2000970`)
+
+- **Fix:** Undefined index exception thrown when using inline moderation and invalid date is set (#52)
+- **Change:** Removed permission check if the user has permission to change owner or date from services (#54)
+
 ## 2.0.8 (`2000870`)
 
 - **Fix:** Time interval is applied on first content (#49)
