@@ -4,6 +4,6 @@
     "callback_class": "TickTackk\\ChangeContentOwner\\SetupListener",
     "callback_method": "addOnPostInstall",
     "active": true,
-    "hint": "",
+    "hint": "XFMG",
     "description": "When supported add-ons are installed, set default permissions for their supported content types"
 }

@@ -165,6 +165,37 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
+     * @return array
+     *
+     * @throws \Exception
+     */
+    protected function _validate(): array
+    {
+        $errors = parent::_validate();
+
+        if ($this->getPerformValidations())
+        {
+            /** @var ExtendedPostEntity $content */
+            foreach ($this->contents AS $content)
+            {
+                /** @var ExtendedThreadEntity $thread */
+                $thread = $content->Thread;
+
+                $oldTimestamp = $this->getOldTimestamp($content);
+                $newTimestamp = $this->getNewTimestamp($content);
+
+                if ($oldTimestamp !== $newTimestamp && $newTimestamp <= $thread->post_date)
+                {
+                    $errors[] = \XF::phraseDeferred('tckChangeContentOwner_new_date_must_be_older_than_thread_date');
+                    break;
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
      * @return Repository|ThreadRepo
      */
     protected function getThreadRepo() : ThreadRepo

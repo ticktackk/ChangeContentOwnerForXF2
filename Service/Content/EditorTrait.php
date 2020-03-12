@@ -71,6 +71,15 @@ trait EditorTrait
     }
 
     /**
+     * @return AbstractOwnerChanger
+     */
+    public function getOwnerChangerSvc() : AbstractOwnerChanger
+    {
+        $this->assertOwnerChangerHasBeenSetup();
+        return $this->ownerChanger;
+    }
+
+    /**
      * @throws \LogicException
      */
     protected function assertOwnerChangerHasBeenSetup() : void
@@ -99,7 +108,6 @@ trait EditorTrait
 
         return $errors;
     }
-
 
     /**
      * @return Entity
