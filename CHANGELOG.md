@@ -5,6 +5,7 @@ CHANGELOG
 
 - **Fix:** Undefined index exception thrown when using inline moderation and invalid date is set (#52)
 - **Change:** Removed permission check if the user has permission to change owner or date from services (#54)
+- **Change:** Set event hint for post add-on install code event listener (#55)
 
 ## 2.0.8 (`2000870`)
 
