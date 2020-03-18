@@ -197,7 +197,7 @@ class Content extends AbstractPlugin
             $newTimestamp = $ownerChangerSvc->getNewTimestamp($content);
         }
 
-        if ($oldTimestamp !== $newTimestamp && !$handler->canChangeDate($content, $service->getNewTimestamp($content), $error))
+        if ($oldTimestamp !== $newTimestamp && !$handler->canChangeDate($content, $newTimestamp, $error))
         {
             throw $this->exception($this->noPermission($error));
         }
