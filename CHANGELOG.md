@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.10 (`2001070`)
+
+- **Fix:** Call to undefined method getNewTimestamp (#57)
+
 ## 2.0.9 (`2000970`)
 
 - **Fix:** Undefined index exception thrown when using inline moderation and invalid date is set (#52)
