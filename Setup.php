@@ -265,6 +265,19 @@ class Setup extends AbstractSetup
         );
     }
 
+    public function upgrade2001170Step1() : void
+    {
+        foreach (['thread', 'post', 'xfmg_media', 'xfmg_album', 'xfmg_comment', 'graph'] AS $contentType)
+        {
+            $this->jobManager()->enqueueUnique(
+                'tckChangeContentOwner-' . __FUNCTION__ . '-' . $contentType,
+                'TickTackk\ChangeContentOwner:Upgrade\RebuildAttachmentOwner',
+                ['content_type' => $contentType],
+                true
+            );
+        }
+    }
+
     /**
      * @param array $errors
      * @param array $warnings
