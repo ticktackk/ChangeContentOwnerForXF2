@@ -776,6 +776,18 @@ abstract class AbstractOwnerChanger extends AbstractService
                     );
                 }
             }
+
+            $oldOwner = $this->getOldOwner($content);
+            if ($newOwner && $newOwner->user_id !== $oldOwner->user_id)
+            {
+                $db->query("
+                    UPDATE xf_attachment_data AS attachment_data
+                    INNER JOIN xf_attachment AS attachment
+                        ON (attachment_data.data_id = attachment.data_id)
+                    SET attachment_data.user_id = ?
+                    WHERE attachment.content_type = ? AND content_id = ?
+                ", [$newOwner->user_id, $content->getEntityContentType(), $content->getEntityId()]);
+            }
         }
 
         $this->applyContentCount();
