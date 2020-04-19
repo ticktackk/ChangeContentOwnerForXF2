@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.11 (`2001170`)
+
+- **Fix:** When changing content owner attachment owner is not updated (#61)
+
 ## 2.0.10 (`2001070`)
 
 - **Fix:** Call to undefined method getNewTimestamp (#57)
