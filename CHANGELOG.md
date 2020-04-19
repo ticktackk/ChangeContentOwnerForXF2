@@ -4,6 +4,7 @@ CHANGELOG
 ## 2.0.11 (`2001170`)
 
 - **Fix:** When changing content owner attachment owner is not updated (#61)
+  - **On upgrade:** Will make an attempt to rebuild attachment owners
 
 ## 2.0.10 (`2001070`)
 
