@@ -39,7 +39,7 @@ class RebuildAttachmentOwner extends AbstractRebuildJob
         }
 
         $app = $this->app();
-        $entityName = $app->getContentTypeEntity($contentType);
+        $entityName = $app->getContentTypeEntity($contentType, false);
         if (!$entityName)
         {
             return [];
