@@ -6,6 +6,7 @@ use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
 use XF\AddOn\StepRunnerUpgradeTrait;
+use XF\App as BaseApp;
 use XF\Entity\Option as OptionEntity;
 use XF\Job\Manager as JobManager;
 
@@ -65,7 +66,7 @@ class Setup extends AbstractSetup
 
     public function installStep2() : void
     {
-        $addOns = $this->app->container('addon.cache');
+        $addOns = $this->app()->container('addon.cache');
         $xfmgSupport = $addOns['XFMG'] ?? 0 >= 1000070;
         if ($xfmgSupport)
         {
@@ -159,7 +160,7 @@ class Setup extends AbstractSetup
             'profilePost', 'changeProfilePostDate'
         );
 
-        $addOns = $this->app->container('addon.cache');
+        $addOns = $this->app()->container('addon.cache');
         $xfmgSupport = $addOns['XFMG'] ?? 0 >= 1000070;
         if ($xfmgSupport)
         {
@@ -214,7 +215,7 @@ class Setup extends AbstractSetup
     public function upgrade2000013Step2() : void
     {
         /** @var OptionEntity $option */
-        $option = $this->app->find('XF:Option', 'tckChangeContentOwner_defaultNewDateTimeInterval');
+        $option = $this->app()->find('XF:Option', 'tckChangeContentOwner_defaultNewDateTimeInterval');
         if ($option)
         {
             $optionValue = $option->option_value;
@@ -282,7 +283,7 @@ class Setup extends AbstractSetup
      * @param array $errors
      * @param array $warnings
      */
-    public function checkRequirements(&$errors = [], &$warnings = [])
+    public function checkRequirements(&$errors = [], &$warnings = []) : void
     {
         $xfaCSVGrapher = $this->app()->addOnManager()->getById('XFA/CSVGrapher');
         if ($xfaCSVGrapher)
@@ -301,5 +302,18 @@ class Setup extends AbstractSetup
     protected function jobManager() : JobManager
     {
         return $this->app()->jobManager();
+    }
+
+    /**
+     * @return BaseApp
+     */
+    protected function app() : BaseApp
+    {
+        if (!\is_callable('parent::app'))
+        {
+            return $this->app;
+        }
+
+        return parent::app();
     }
 }

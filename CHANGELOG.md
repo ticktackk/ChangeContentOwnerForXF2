@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.12 (`2001270`)
+
+- **Fix:** Unable to install on XenForo 2.0 (#66)
+
 ## 2.0.11 (`2001170`)
 
 - **Fix:** When changing content owner attachment owner is not updated (#61)
