@@ -10,7 +10,6 @@ Requirements
 ------------
 
 - PHP 7.1.0+
-- PHP Calendar extension
 
 Options
 -------
