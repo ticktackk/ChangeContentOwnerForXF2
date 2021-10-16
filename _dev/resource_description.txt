@@ -1,6 +1,6 @@
 [HEADING=1]Change Content Owner for XenForo 2.0.10+[/HEADING]
 [HEADING=1]Description[/HEADING]
-Change Content Owner is an add-on that allows you to change content owner
+This add-on allows allows you to change the owner of content or the timestamp content.
 [HEADING=1]Requirements[/HEADING]
 [LIST]
 [*]PHP 7.1.0+
