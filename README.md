@@ -4,42 +4,53 @@ Change Content Owner for XenForo 2.0.10+
 Description
 -----------
 
-Change Content Owner is an add-on that allows you to change content owner
+This add-on allows allows you to change the owner of content or the timestamp content.
 
 Requirements
 ------------
 
 - PHP 7.1.0+
-- PHP Calendar extension
 
 Options
 -------
 
-| Group                | Name                  | Description |
-| -------------------- | --------------------- | ----------- |
-| Change content owner | Default time interval |             |
+#### Change content owner
+
+| Name                  | Description |
+| --------------------- | ----------- |
+| Default time interval |             |
 
 Permissions
 -----------
 
-| Group                                    | Permission                            |
-| ---------------------------------------- | ------------------------------------- |
-| \[XFA\] Datalogger moderator permissions | Can change graph owner                |
-| \[XFA\] Datalogger moderator permissions | Can change graph date                 |
-| XFMG: Album moderator permissions        | Can change album owner                |
-| Profile post moderator permissions       | Can change profile post owner         |
-| XFMG: Media moderator permissions        | Can change media owner                |
-| XFMG: Comment moderator permissions      | Can change comment owner              |
-| XFMG: Album moderator permissions        | Can change album date                 |
-| XFMG: Media moderator permissions        | Can change media date                 |
-| XFMG: Comment moderator permissions      | Can change comment date               |
-| Profile post moderator permissions       | Can change profile post date          |
-| Profile post moderator permissions       | Can change profile post comment owner |
-| Profile post moderator permissions       | Can change profile post comment date  |
-| Forum moderator permissions              | Can change thread owner               |
-| Forum moderator permissions              | Can change thread date                |
-| Forum moderator permissions              | Can change post owner                 |
-| Forum moderator permissions              | Can change post date                  |
+#### XFMG: Album moderator permissions
+
+- Can change album owner
+- Can change album date
+
+#### Profile post moderator permissions
+
+- Can change profile post owner
+- Can change profile post date
+- Can change profile post comment owner
+- Can change profile post comment date
+
+#### XFMG: Media moderator permissions
+
+- Can change media owner
+- Can change media date
+
+#### XFMG: Comment moderator permissions
+
+- Can change comment owner
+- Can change comment date
+
+#### Forum moderator permissions
+
+- Can change thread owner
+- Can change thread date
+- Can change post owner
+- Can change post date
 
 License
 -------

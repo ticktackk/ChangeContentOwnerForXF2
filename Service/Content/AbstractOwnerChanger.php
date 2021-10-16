@@ -235,8 +235,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             throw new \InvalidArgumentException('Invalid month provided.');
         }
 
-        $maxDay = cal_days_in_month(CAL_GREGORIAN, $newDate['month'], $newDate['year']);
-        if ($newDate['day'] > $maxDay || $newDate['day'] < 1)
+        if (!checkdate($newDate['month'], $newDate['day'], $newDate['year']))
         {
             throw new \InvalidArgumentException('Invalid day provided.');
         }
