@@ -232,7 +232,7 @@ class Setup extends AbstractSetup
             'tckChangeContentOwner-' . __FUNCTION__,
             'TickTackk\ChangeContentOwner:Upgrade\RebuildModeratorLogAction',
             [],
-            true
+            false
         );
     }
 
@@ -242,7 +242,7 @@ class Setup extends AbstractSetup
             'tckChangeContentOwner-' . __FUNCTION__,
             'TickTackk\ChangeContentOwner:Upgrade\RebuildThreadUserPostCount',
             [],
-            true
+            false
         );
     }
 
@@ -252,7 +252,7 @@ class Setup extends AbstractSetup
             'tckChangeContentOwner-' . __FUNCTION__,
             'TickTackk\ChangeContentOwner:Upgrade\RebuildNewsFeedEntryEventDate',
             [],
-            true
+            false
         );
     }
 
@@ -262,7 +262,7 @@ class Setup extends AbstractSetup
             'tckChangeContentOwner-' . __FUNCTION__,
             'TickTackk\ChangeContentOwner:Upgrade\RebuildModeratorLogAction',
             [],
-            true
+            false
         );
     }
 
@@ -274,7 +274,7 @@ class Setup extends AbstractSetup
                 'tckChangeContentOwner-' . __FUNCTION__ . '-' . $contentType,
                 'TickTackk\ChangeContentOwner:Upgrade\RebuildAttachmentOwner',
                 ['content_type' => $contentType],
-                true
+                false
             );
         }
     }
