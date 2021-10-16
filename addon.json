@@ -20,10 +20,6 @@
         "php": [
             "7.1.0",
             "PHP 7.1.0+"
-        ],
-        "php-ext/calendar": [
-            "*",
-            "PHP Calendar extension"
         ]
     },
     "icon": "fa-id-badge"
