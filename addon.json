@@ -1,7 +1,7 @@
 {
     "legacy_addon_id": "",
-    "title": "Change Content Owner",
-    "description": "Change Content Owner is an add-on that allows you to change content owner",
+    "title": "Change Content Owner or Date",
+    "description": "This add-on allows allows you to change the owner of content or the timestamp content.",
     "version_id": 2001370,
     "version_string": "2.0.13",
     "dev": "TickTackk",
