@@ -5,13 +5,10 @@
     "version_id": 2001370,
     "version_string": "2.0.13",
     "dev": "TickTackk",
-    "dev_url": "https://xenforo.com/community/members/batpool52.90375/",
+    "dev_url": "https://xenforo.com/community/members/90375/",
     "faq_url": "",
     "support_url": "https://xenforo.com/community/threads/change-content-owner.142141/",
-    "extra_urls": {
-        "Twitter": "https://twitter.com/t1cktackk",
-        "Discord": "https://discord.gg/qdwgUpP"
-    },
+    "extra_urls": [],
     "require": {
         "XF": [
             2001070,
