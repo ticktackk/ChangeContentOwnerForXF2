@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.13 (`2001370`)
+
+- **Change:** Drop PHP Calendar extension requirement (#79)
+
 ## 2.0.12 (`2001270`)
 
 - **Fix:** Unable to install on XenForo 2.0 (#66)
