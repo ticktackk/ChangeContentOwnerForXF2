@@ -4,6 +4,7 @@ CHANGELOG
 ## 2.0.13 (`2001370`)
 
 - **Change:** Drop PHP Calendar extension requirement (#79)
+- **Change:** Update add-on title and description to be more accurate with what the add-on does now
 - **Fix:** Rebuild jobs on upgrade are not behind the scenes (#81)
 
 ## 2.0.12 (`2001270`)

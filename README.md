@@ -1,5 +1,5 @@
-Change Content Owner for XenForo 2.0.10+
-========================================
+Change Content Owner or Date for XenForo 2.0.10+
+================================================
 
 Description
 -----------
