@@ -6,8 +6,12 @@ use TickTackk\ChangeContentOwner\Service\Content\AbstractOwnerChanger;
 use TickTackk\ChangeContentOwner\XFMG\Entity\Comment as ExtendedCommentEntity;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
+use XFMG\Entity\Album as AlbumEntity;
+use XFMG\Entity\MediaItem as MediaItemEntity;
 
 /**
+ * @version 2.0.14
+ *
  * Class OwnerChanger
  *
  * @package TickTackk\ChangeContentOwner\XFMG\Service\Comment
@@ -73,6 +77,23 @@ class OwnerChanger extends AbstractOwnerChanger
         }
 
         return $content;
+    }
+
+    /**
+     * @since 2.0.14
+     *
+     * @param Entity|ExtendedCommentEntity $content
+     *
+     * @return void
+     */
+    protected function postContentSave(Entity $content): void
+    {
+        $container = $content->Content;
+        if ($container instanceof MediaItemEntity || $container instanceof AlbumEntity)
+        {
+            $container->rebuildCounters();
+            $container->saveIfChanged();
+        }
     }
 
     /**

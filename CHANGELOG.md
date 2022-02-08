@@ -7,6 +7,7 @@ CHANGELOG
 - **Fix:** Changing post date does not rebuild counters on thread (#84)
 - **Fix:** Changing profile post comment does not rebuild counters on profile post (#85)
 - **Fix:** Changing thread date does not rebuild counters on thread (#86)
+- **Fix:** Changing media/album comment does not rebuild counters on media/album (#87)
 
 ## 2.0.13 (`2001370`)
 
