@@ -6,7 +6,7 @@ CHANGELOG
 - **Fix:** Time interval does not apply correctly (#75)
 - **Fix:** Changing post date does not rebuild last post info on thread/forum (#84)
 - **Fix:** Changing profile post comment does not rebuild counters on profile post (#85)
-- **Fix:** Changing thread date does not rebuild counters on thread (#86)
+- **Fix:** Changing thread date does not rebuild last post info on forum (#86)
 - **Fix:** Changing media/album comment does not rebuild last comment info on media/album (#87)
 
 ## 2.0.13 (`2001370`)

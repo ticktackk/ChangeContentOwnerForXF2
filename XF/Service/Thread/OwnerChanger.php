@@ -157,8 +157,12 @@ class OwnerChanger extends AbstractOwnerChanger
      */
     protected function postContentSave(Entity $content): void
     {
-        $content->rebuildCounters();
-        $content->saveIfChanged();
+        $forum = $content->Forum;
+        if ($forum)
+        {
+            $forum->rebuildLastPost();
+            $forum->saveIfChanged();
+        }
     }
 
     /**
