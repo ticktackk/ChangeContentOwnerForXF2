@@ -81,7 +81,6 @@ abstract class AbstractHandler
         $oldContentOwner = null;
         try
         {
-            /** @noinspection PhpUndefinedFieldInspection */
             $oldContentOwner = $content->User;
         }
         catch (\InvalidArgumentException $e)
@@ -229,7 +228,6 @@ abstract class AbstractHandler
 
         return \XF::asVisitor($newOwner, function () use($content, $error)
         {
-            /** @noinspection PhpUndefinedMethodInspection */
             return $content->canView($error);
         });
     }

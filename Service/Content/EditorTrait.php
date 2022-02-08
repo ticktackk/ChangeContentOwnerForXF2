@@ -96,7 +96,6 @@ trait EditorTrait
      */
     protected function _validate()
     {
-        /** @noinspection PhpUndefinedClassInspection */
         $errors = parent::_validate();
 
         if ($this->ownerChanger)
@@ -119,7 +118,6 @@ trait EditorTrait
         $db = $this->db();
         $db->beginTransaction();
 
-        /** @noinspection PhpUndefinedClassInspection */
         $content = parent::_save();
 
         if ($this->ownerChanger)

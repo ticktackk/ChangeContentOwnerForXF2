@@ -116,7 +116,7 @@ class Content extends AbstractPlugin
      * @throws ExceptionReply
      * @throws \Exception
      */
-    protected function setNewOwnerDateTimeAndInterval(AbstractService $service, /** @noinspection PhpUnusedParameterInspection */ContentEntityInterface $content) : void
+    protected function setNewOwnerDateTimeAndInterval(AbstractService $service, ContentEntityInterface $content) : void
     {
         $handler = $content->getChangeOwnerHandler(true);
         $newOwnerUsername = $this->filter('username', 'str');
