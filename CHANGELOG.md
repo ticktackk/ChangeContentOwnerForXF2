@@ -4,6 +4,7 @@ CHANGELOG
 ## 2.0.14 (`2001470`)
 
 - **Fix:** Time interval does not apply correctly (#75)
+- **Fix:** Changing post date does not rebuild first/last post info (#84)
 
 ## 2.0.13 (`2001370`)
 
