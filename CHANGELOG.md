@@ -6,6 +6,7 @@ CHANGELOG
 - **Fix:** Time interval does not apply correctly (#75)
 - **Fix:** Changing post date does not rebuild counters on thread (#84)
 - **Fix:** Changing profile post comment does not rebuild counters on profile post (#85)
+- **Fix:** Changing thread date does not rebuild counters on thread (#86)
 
 ## 2.0.13 (`2001370`)
 

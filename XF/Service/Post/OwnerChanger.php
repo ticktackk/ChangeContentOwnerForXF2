@@ -12,6 +12,8 @@ use XF\Mvc\Entity\Repository;
 use XF\Repository\Thread as ThreadRepo;
 
 /**
+ * @version 2.0.14
+ *
  * Class OwnerChanger
  *
  * @package TickTackk\ChangeContentOwner\XF\Service\Post
