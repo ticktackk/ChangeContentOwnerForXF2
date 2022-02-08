@@ -124,11 +124,6 @@ class Content extends AbstractPlugin
         if ($newOwnerUsername)
         {
             $newOwner = $this->assertViewableUser($newOwnerUsername);
-            if (!$newOwner)
-            {
-                throw $this->exception($this->error(\XF::phrase('please_enter_valid_name')));
-            }
-
             if (!$handler->canChangeOwner($content, $newOwner, $error))
             {
                 throw $this->exception($this->noPermission($error));
@@ -215,7 +210,7 @@ class Content extends AbstractPlugin
         $extraWith[] = 'Option';
         $extraWith[] = 'Privacy';
         $extraWith[] = 'Profile';
-        array_unique($extraWith);
+        $extraWith = array_unique($extraWith);
 
         /** @var UserEntity $user */
         $user = $this->em->findOne('XF:User', ['username' => $username], $extraWith);

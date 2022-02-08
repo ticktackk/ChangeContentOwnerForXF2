@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
 namespace TickTackk\ChangeContentOwner\Entity;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;

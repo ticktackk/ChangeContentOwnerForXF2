@@ -50,6 +50,8 @@ class ProfilePostComment extends AbstractHandler
      * @param Entity|ExtendedProfilePostCommentEntity $content
      *
      * @return string|void|\XF\Phrase
+     *
+     * @noinspection PhpReturnDocTypeMismatchInspection
      */
     public function getContentTitle(Entity $content)
     {

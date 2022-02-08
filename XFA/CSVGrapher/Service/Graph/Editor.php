@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection ALL */
+
 namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Service\Graph;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;

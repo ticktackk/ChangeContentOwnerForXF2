@@ -43,6 +43,8 @@ class Post extends AbstractHandler
      * @param Entity|ExtendedPostEntity $content
      *
      * @return string|\XF\Phrase
+     *
+     * @noinspection PhpReturnDocTypeMismatchInspection
      */
     public function getContentTitle(Entity $content)
     {

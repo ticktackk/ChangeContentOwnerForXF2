@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
 namespace TickTackk\ChangeContentOwner\Service\Content;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;
@@ -269,7 +271,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             throw new \InvalidArgumentException('Invalid hour provided.');
         }
 
-        if ($newTime['minute'] < 0 || $newTime['hour'] > 59)
+        if ($newTime['minute'] < 0 || $newTime['minute'] > 59)
         {
             throw new \InvalidArgumentException('Invalid minute provided.');
         }
@@ -652,7 +654,7 @@ abstract class AbstractOwnerChanger extends AbstractService
             {
                 $handler = $this->getHandler();
 
-                foreach ($this->contents AS $id => $content)
+                foreach ($this->contents AS $content)
                 {
                     if (!$handler->canNewOwnerViewContent($content, $newOwner, $error))
                     {
@@ -743,7 +745,7 @@ abstract class AbstractOwnerChanger extends AbstractService
         $logger = $this->app->logger();
         $logModerator = $this->getLogModerator();
 
-        foreach ($this->contents AS $id => $content)
+        foreach ($this->contents AS $content)
         {
             $this->additionalEntitySave($content);
 
@@ -795,7 +797,6 @@ abstract class AbstractOwnerChanger extends AbstractService
     /**
      * @param Entity|ContentEntityInterface $content
      *
-     * @throws \XF\Db\Exception
      * @throws \XF\PrintableException
      * @throws \Exception
      */

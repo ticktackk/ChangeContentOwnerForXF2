@@ -78,7 +78,6 @@ abstract class AbstractHandler
      */
     public function getOldOwner(Entity $content): UserEntity
     {
-        $oldContentOwner = null;
         try
         {
             $oldContentOwner = $content->User;

@@ -5,7 +5,6 @@ namespace TickTackk\ChangeContentOwner\Job\Upgrade;
 use XF\Entity\ModeratorLog as ModeratorLogEntity;
 use XF\Job\AbstractRebuildJob;
 use XF\App as BaseApp;
-use XF\Mvc\Entity\Finder;
 use XF\Phrase;
 
 /**

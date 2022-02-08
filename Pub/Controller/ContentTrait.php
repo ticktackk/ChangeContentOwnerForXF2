@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
 namespace TickTackk\ChangeContentOwner\Pub\Controller;
 
 use TickTackk\ChangeContentOwner\ControllerPlugin\Content as ContentPlugin;

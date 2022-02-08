@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection ALL */
+
 namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\Pub\Controller;
 
 use TickTackk\ChangeContentOwner\Pub\Controller\ContentTrait;

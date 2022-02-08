@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
 namespace TickTackk\ChangeContentOwner\InlineMod;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
