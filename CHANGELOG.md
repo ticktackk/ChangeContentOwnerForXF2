@@ -4,7 +4,7 @@ CHANGELOG
 ## 2.0.14 (`2001470`)
 
 - **Fix:** Time interval does not apply correctly (#75)
-- **Fix:** Changing post date does not rebuild counters on thread (#84)
+- **Fix:** Changing post date does not rebuild last post info on thread/forum (#84)
 - **Fix:** Changing profile post comment does not rebuild counters on profile post (#85)
 - **Fix:** Changing thread date does not rebuild counters on thread (#86)
 - **Fix:** Changing media/album comment does not rebuild last comment info on media/album (#87)

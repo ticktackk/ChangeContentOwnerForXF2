@@ -170,8 +170,15 @@ class OwnerChanger extends AbstractOwnerChanger
         $thread = $content->Thread;
         if ($thread)
         {
-            $thread->rebuildCounters();
+            $thread->rebuildLastPostInfo();
             $thread->saveIfChanged();
+
+            $forum = $thread->Forum;
+            if ($forum)
+            {
+                $forum->rebuildLastPost();
+                $forum->saveIfChanged();
+            }
         }
     }
 
