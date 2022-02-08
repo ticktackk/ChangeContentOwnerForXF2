@@ -79,7 +79,9 @@ class OwnerChanger extends AbstractOwnerChanger
         $profilePost = $content->ProfilePost;
         if ($profilePost)
         {
-            $profilePost->rebuildCounters();
+            $profilePost->rebuildFirstCommentInfo();
+            $profilePost->rebuildLastCommentInfo();
+            $profilePost->rebuildLatestCommentIds();
             $profilePost->saveIfChanged();
         }
     }
