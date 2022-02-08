@@ -66,6 +66,22 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
+     * @since 2.0.14
+     *
+     * @param Entity|ExtendedProfilePostCommentEntity $content
+     *
+     * @return void
+     */
+    protected function postContentSave(Entity $content): void
+    {
+        $profilePost = $content->ProfilePost;
+        if ($profilePost)
+        {
+            $profilePost->rebuildCounters();
+        }
+    }
+
+    /**
      * @param Entity|ExtendedProfilePostCommentEntity $content
      */
     protected function additionalEntitySave(Entity $content): void
