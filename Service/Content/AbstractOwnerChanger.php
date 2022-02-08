@@ -382,23 +382,21 @@ abstract class AbstractOwnerChanger extends AbstractService
         {
             if ($this->contentNewDateCounter === null) // first content
             {
-                $this->contentNewDateCounter = 0;
+                $this->contentNewDateCounter = 1;
             }
-            else
-            {
-                foreach ($timeIntervals AS $unit => $value)
-                {
-                    if (!$value)
-                    {
-                        continue;
-                    }
 
-                    $counter = $value + $this->contentNewDateCounter;
-                    $dateTime->modify("+{$counter} {$unit}");
+            foreach ($timeIntervals AS $unit => $value)
+            {
+                if (!$value)
+                {
+                    continue;
                 }
 
-                $this->contentNewDateCounter++;
+                $counter = $value * $this->contentNewDateCounter;
+                $dateTime->modify("+{$counter} {$unit}");
             }
+
+            $this->contentNewDateCounter++;
         }
 
         $this->contentNewDateMapping[$uniqueKey] = $dateTime->getTimestamp();

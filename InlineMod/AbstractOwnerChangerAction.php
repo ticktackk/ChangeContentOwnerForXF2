@@ -258,12 +258,22 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
      */
     protected function applyToEntity(Entity $entity, array $options) : void
     {
+        if ($this->contentNewDateCounter === null)
+        {
+            $this->contentNewDateCounter = 1;
+        }
+        else
+        {
+            $this->contentNewDateCounter++;
+        }
+
         $entities = new ArrayCollection([
             $entity->getEntityId() => $entity
         ]);
         $ownerChangerSvc = $this->getOwnerChangerSvc($entities);
-        $newOwner = $this->newOwner;
+        $ownerChangerSvc->setContentNewDateCounter($this->contentNewDateCounter);
 
+        $newOwner = $this->newOwner;
         if ($newOwner && $entity->canChangeOwner($newOwner))
         {
             $ownerChangerSvc->setNewOwner($newOwner);
@@ -293,17 +303,7 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
         }
 
         $ownerChangerSvc->setPerformValidations(false);
-        $ownerChangerSvc->setContentNewDateCounter($this->contentNewDateCounter);
         $ownerChangerSvc->save();
-
-        if ($this->contentNewDateCounter === null)
-        {
-            $this->contentNewDateCounter = 0;
-        }
-        else
-        {
-            $this->contentNewDateCounter++;
-        }
     }
 
     /**

@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.14 (`2001470`)
+
+- **Fix:** Time interval does not apply correctly (#75)
+
 ## 2.0.13 (`2001370`)
 
 - **Change:** Drop PHP Calendar extension requirement (#79)
