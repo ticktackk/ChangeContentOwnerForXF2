@@ -91,7 +91,7 @@ class OwnerChanger extends AbstractOwnerChanger
         $container = $content->Content;
         if ($container instanceof MediaItemEntity || $container instanceof AlbumEntity)
         {
-            $container->rebuildCounters();
+            $container->rebuildLastCommentInfo();
             $container->saveIfChanged();
         }
     }
