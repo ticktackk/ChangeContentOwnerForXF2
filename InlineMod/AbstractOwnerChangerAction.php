@@ -82,17 +82,17 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     abstract protected function getFormViewClass() : string;
 
     /**
-     * @param AbstractCollection|ContentEntityInterface[] $contents
+     * @param AbstractCollection|ContentEntityInterface[] $entities
      * @param Controller         $controller
      *
      * @return ReplyView
      */
-    public function renderForm(AbstractCollection $contents, Controller $controller) : ReplyView
+    public function renderForm(AbstractCollection $entities, Controller $controller) : ReplyView
     {
         $canChangeOwner = false;
         $canChangeDate = false;
 
-        foreach ($contents AS $content)
+        foreach ($entities AS $content)
         {
             if ($content->canChangeOwner())
             {
@@ -118,21 +118,21 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             'canChangeOwner' => $canChangeOwner,
             'canChangeDate' => $canChangeDate,
 
-            'contents' => $contents,
-            'total' => \count($contents)
+            'contents' => $entities,
+            'total' => \count($entities)
         ];
 
         return $controller->view($this->getFormViewClass(), 'inline_mod_content_change_owner', $viewParams);
     }
 
     /**
-     * @param AbstractCollection $contents
+     * @param AbstractCollection $entities
      * @param array              $options
      * @param                    $error
      *
      * @return bool
      */
-    protected function canApplyInternal(AbstractCollection $contents, array $options, &$error) : bool
+    protected function canApplyInternal(AbstractCollection $entities, array $options, &$error) : bool
     {
         $newOwnerUsername = $options['username'];
         if ($newOwnerUsername)
@@ -145,19 +145,19 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
             $this->newOwner = $user;
         }
 
-        return parent::canApplyInternal($contents, $options, $error);
+        return parent::canApplyInternal($entities, $options, $error);
     }
 
     /**
-     * @param Entity|ContentEntityInterface $content
+     * @param Entity|ContentEntityInterface $entity
      * @param array  $options
      * @param null   $error
      *
      * @return bool
      */
-    protected function canApplyToEntity(Entity $content, array $options, &$error = null) : bool
+    protected function canApplyToEntity(Entity $entity, array $options, &$error = null) : bool
     {
-        return $content->canChangeOwner(null, $error) || $content->canChangeDate(null, $error);
+        return $entity->canChangeOwner(null, $error) || $entity->canChangeDate(null, $error);
     }
 
     /**
@@ -175,12 +175,12 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
     }
 
     /**
-     * @param AbstractCollection $contents
+     * @param AbstractCollection $entities
      * @param Request            $request
      *
      * @return array
      */
-    public function getFormOptions(AbstractCollection $contents, Request $request) : array
+    public function getFormOptions(AbstractCollection $entities, Request $request) : array
     {
         $options = [
             'username' => $request->filter('username', 'str'),

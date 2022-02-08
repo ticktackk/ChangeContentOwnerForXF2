@@ -33,5 +33,5 @@ interface ContentInterface
      *
      * @return AbstractHandler
      */
-    public function getChangeOwnerHandler(bool $throw = false) : AbstractHandler;
+    public function getChangeOwnerHandler(bool $throw = false) :? AbstractHandler;
 }

@@ -16,12 +16,12 @@ class ProfilePostComment extends XFCP_ProfilePostComment implements ContentInter
     use ContentTrait;
 
     /**
-     * @param UserEntity|null $newUser
+     * @param UserEntity|null $newOwner
      * @param null      $error
      *
      * @return bool
      */
-    public function canChangeOwner(UserEntity $newUser = null, &$error = null): bool
+    public function canChangeOwner(UserEntity $newOwner = null, &$error = null): bool
     {
         $visitor = \XF::visitor();
 
@@ -30,7 +30,7 @@ class ProfilePostComment extends XFCP_ProfilePostComment implements ContentInter
             return false;
         }
 
-        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        if ($newOwner && $this->getExistingValue('user_id') === $newOwner->user_id)
         {
             return false;
         }
