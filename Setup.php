@@ -280,6 +280,438 @@ class Setup extends AbstractSetup
     }
 
     /**
+     * @since 2.0.14
+     *
+     * @param array $stepParams
+     *
+     * @return array|bool
+     */
+    public function upgrade2001470Step1(array $stepParams)
+    {
+        $position = !empty($stepParams[0]) ? $stepParams[0] : 0;
+        $perPage = 1000;
+
+        $db = $this->db();
+        $db->beginTransaction();
+
+        if (!isset($stepData['max']))
+        {
+            $stepData['max'] = $db->fetchOne("SELECT MAX(thread_id) FROM xf_thread");
+        }
+
+        $threadIds = $db->fetchAllColumn($db->limit(
+            "
+                SELECT DISTINCT post.thread_id
+                FROM xf_post AS post
+                INNER JOIN xf_thread AS thread
+                    ON (post.thread_id = thread.thread_id)
+                WHERE post.message_state = 'visible'
+                  AND thread.last_post_date < post.post_date
+				  AND thread.thread_id > ?
+                ORDER BY post.thread_id ASC
+			", $perPage
+        ), $position);
+        if (!$threadIds)
+        {
+            $db->commit();
+            return true;
+        }
+
+        $startTime = microtime(true);
+        $maxRunTime = $this->app()->config('jobMaxRunTime');
+
+        foreach ($threadIds AS $threadId)
+        {
+            $position = $threadId;
+
+            $lastPost = $db->fetchRow("
+                SELECT post_id, post_date, user_id, username
+                FROM xf_post USE INDEX (thread_id_post_date)
+                WHERE thread_id = ?
+                    AND message_state = 'visible'
+                ORDER BY post_date DESC
+                LIMIT 1
+            ", $threadId);
+            if (!$lastPost) // This can be first post as well :)
+            {
+                continue;
+            }
+
+            $db->update('xf_thread', [
+                'last_post_id' => (int) $lastPost['post_id'],
+                'last_post_date' => (int) $lastPost['post_date'],
+                'last_post_user_id' => (int) $lastPost['user_id'],
+                'last_post_username' => $lastPost['username'] ?: '-'
+            ], 'thread_id = ?', $threadId);
+
+            if ($maxRunTime && microtime(true) - $startTime > $maxRunTime)
+            {
+                break;
+            }
+        }
+
+        $db->commit();
+
+        return [
+            $position,
+            "{$position} / {$stepData['max']}",
+            $stepData
+        ];
+    }
+
+    /**
+     * @since 2.0.14
+     *
+     * @param array $stepParams
+     *
+     * @return array|bool
+     */
+    public function upgrade2001470Step2(array $stepParams)
+    {
+        $position = !empty($stepParams[0]) ? $stepParams[0] : 0;
+        $perPage = 1000;
+
+        $db = $this->db();
+        $db->beginTransaction();
+
+        if (!isset($stepData['max']))
+        {
+            $stepData['max'] = $db->fetchOne("SELECT MAX(node_id) FROM xf_forum");
+        }
+
+        $nodeIds = $db->fetchAllColumn($db->limit(
+            "
+                SELECT DISTINCT thread.node_id
+                FROM xf_thread AS thread
+                INNER JOIN xf_post AS post
+                	ON (post.thread_id = thread.thread_id)
+                WHERE thread.discussion_state = 'visible'
+                  AND post.message_state = 'visible'
+                  AND post.post_date > thread.last_post_date
+                  AND thread.last_post_id <> post.post_id
+                  AND thread.node_id > ?
+                ORDER BY thread.node_id
+			", $perPage
+        ), $position);
+        if (!$nodeIds)
+        {
+            $db->commit();
+            return true;
+        }
+
+        $startTime = microtime(true);
+        $maxRunTime = $this->app()->config('jobMaxRunTime');
+
+        foreach ($nodeIds AS $nodeId)
+        {
+            $position = $nodeId;
+
+            $lastThread = $db->fetchRow("
+                SELECT *
+                FROM xf_thread
+                WHERE node_id = ?
+                    AND discussion_state = 'visible'
+                    AND discussion_type <> 'redirect'
+                ORDER BY last_post_date DESC
+                LIMIT 1
+            ", $nodeId);
+            if (!$lastThread)
+            {
+                $lastThread = [
+                    'post_id' => 0,
+                    'post_date' => 0,
+                    'user_id' => 0,
+                    'username' => '', // this should be empty string or '-' ?
+                    'thread_id' => 0,
+                    'title' => '',
+                    'prefix_id' => 0
+                ];
+            }
+
+            $db->update('xf_forum', [
+                'last_post_id' => (int) $lastThread['post_id'],
+                'last_post_date' => (int) $lastThread['post_date'],
+                'last_post_user_id' => (int) $lastThread['user_id'],
+                'last_post_username' => $lastThread['username'] ?: '-',
+                'last_thread_id' => (int) $lastThread['thread_id'],
+                'last_thread_title' => (string) $lastThread['title'],
+                'last_thread_prefix_id' => (int) $lastThread['prefix_id']
+            ], 'node_id = ?', $nodeId);
+
+            if ($maxRunTime && microtime(true) - $startTime > $maxRunTime)
+            {
+                break;
+            }
+        }
+
+        $db->commit();
+
+        return [
+            $position,
+            "{$position} / {$stepData['max']}",
+            $stepData
+        ];
+    }
+
+    /**
+     * @since 2.0.14
+     *
+     * @param array $stepParams
+     *
+     * @return array|bool
+     */
+    public function upgrade2001470Step3(array $stepParams)
+    {
+        $position = !empty($stepParams[0]) ? $stepParams[0] : 0;
+        $perPage = 1000;
+
+        $db = $this->db();
+        $db->beginTransaction();
+
+        if (!isset($stepData['max']))
+        {
+            $stepData['max'] = $db->fetchOne("SELECT MAX(node_id) FROM xf_forum");
+        }
+
+        $profilePostIds = $db->fetchAllColumn($db->limit(
+            "
+                SELECT DISTINCT comment.profile_post_id
+                FROM xf_profile_post_comment AS comment
+                INNER JOIN xf_profile_post AS profile_post
+                	ON (comment.profile_post_id = profile_post.profile_post_id)
+                WHERE comment.message_state = 'visible'
+                  AND ((profile_post.first_comment_date < comment.comment_date) OR (profile_post.last_comment_date > comment.comment_date))
+				  AND comment.profile_post_id > ?
+                ORDER BY comment.profile_post_id ASC
+			", $perPage
+        ), $position);
+        if (!$profilePostIds)
+        {
+            $db->commit();
+            return true;
+        }
+
+        $startTime = microtime(true);
+        $maxRunTime = $this->app()->config('jobMaxRunTime');
+
+        foreach ($profilePostIds AS $profilePostId)
+        {
+            $position = $profilePostId;
+
+            $firstComment = $db->fetchRow("
+                SELECT profile_post_comment_id, comment_date, user_id, username
+                FROM xf_profile_post_comment
+                WHERE profile_post_id = ?
+                    AND message_state = 'visible'
+                ORDER BY comment_date 
+                LIMIT 1
+            ", $profilePostId);
+            if ($firstComment)
+            {
+                $lastComment = $db->fetchRow("
+                    SELECT profile_post_comment_id, comment_date, user_id, username
+                    FROM xf_profile_post_comment
+                    WHERE profile_post_id = ?
+                        AND message_state = 'visible'
+                    ORDER BY comment_date DESC
+                    LIMIT 1
+                ", $profilePostId); // this can be the first comment as well ;)
+            }
+            else
+            {
+                $firstComment = [
+                    'profile_post_comment_id' => 0,
+                    'comment_date' => 0,
+                    'user_id' => 0,
+                    'username' => ''
+                ];
+                $lastComment = $firstComment;
+            }
+
+            $latestCommentIds = [];
+            if ($firstComment['profile_post_comment_id'])
+            {
+                $comments = $db->fetchAllKeyed($db->limit(
+                    "
+                        SELECT profile_post_id, profile_post_comment_id, message_state, user_id
+                        FROM xf_profile_post_comment
+                        WHERE profile_post_id = ?
+                        ORDER BY comment_date DESC
+                    ", 20
+                ), 'profile_post_comment_id', $profilePostId);
+
+                $visCount = 0;
+                $latestComments = [];
+
+                foreach ($comments AS $commentId => $comment)
+                {
+                    if ($comment['message_state'] === 'visible')
+                    {
+                        $visCount++;
+                    }
+
+                    $latestComments[$commentId] = [$comment['message_state'], $comment['user_id']];
+
+                    if ($visCount === 3)
+                    {
+                        break;
+                    }
+                }
+
+                $latestCommentIds = array_reverse($latestComments, true);
+            }
+
+            $db->update('xf_profile_post', [
+                'first_comment_date' => (int) $firstComment['profile_post_comment_id'],
+                'last_comment_date' => (int) $lastComment['profile_post_comment_id'],
+                'latest_comment_ids' => json_encode($latestCommentIds)
+            ], 'profile_post_id = ?', $profilePostId);
+
+            if ($maxRunTime && microtime(true) - $startTime > $maxRunTime)
+            {
+                break;
+            }
+        }
+
+        $db->commit();
+
+        return [
+            $position,
+            "{$position} / {$stepData['max']}",
+            $stepData
+        ];
+    }
+
+    /**
+     * @since 2.0.14
+     *
+     * @param array $stepParams
+     *
+     * @return array|bool
+     */
+    public function upgrade2001470Step4(array $stepParams)
+    {
+        return $this->rebuildXFMGContentLastComment(
+            $stepParams,
+            'xf_mg_media_item',
+            'media_id',
+            'xfmg_media'
+        );
+    }
+
+    /**
+     * @since 2.0.14
+     *
+     * @param array $stepParams
+     *
+     * @return array|bool
+     */
+    public function upgrade2001470Step5(array $stepParams)
+    {
+        return $this->rebuildXFMGContentLastComment(
+            $stepParams,
+            'xf_mg_album',
+            'album_id',
+            'xfmg_album'
+        );
+    }
+
+    /**
+     * @since 2.0.14
+     *
+     * @param array $stepParams
+     * @param string $tableName
+     * @param string $primaryKey
+     * @param string $contentType
+     * @param int $perPage
+     *
+     * @return array|bool
+     */
+    protected function rebuildXFMGContentLastComment(
+        array $stepParams,
+        string $tableName,
+        string $primaryKey,
+        string $contentType,
+        int $perPage = 1000
+    )
+    {
+        $position = !empty($stepParams[0]) ? $stepParams[0] : 0;
+
+        $db = $this->db();
+        $db->beginTransaction();
+
+        if (!isset($stepData['max']))
+        {
+            $stepData['max'] = $db->fetchOne("SELECT MAX({$primaryKey}) FROM {$tableName}");
+        }
+
+        $quotedContentType = $db->quote($contentType);
+
+        $contentIds = $db->fetchAllColumn($db->limit(
+            "
+                SELECT DISTINCT comment.content_id
+                FROM xf_mg_comment AS comment
+                INNER JOIN {$tableName} AS content
+                   ON (content.{$primaryKey} = comment.content_id AND comment.content_type = {$quotedContentType})
+                WHERE comment.content_type = {$quotedContentType}
+                   AND comment.content_id > ?
+                   AND comment.comment_state = 'visible'
+                   AND content.last_comment_date < comment.comment_date
+                ORDER BY comment.content_id ASC
+			", $perPage
+        ), $position);
+        if (!$contentIds)
+        {
+            $db->commit();
+            return true;
+        }
+
+        $startTime = microtime(true);
+        $maxRunTime = $this->app()->config('jobMaxRunTime');
+
+        foreach ($contentIds AS $contentId)
+        {
+            $position = $contentId;
+            $lastComment = $db->fetchRow("
+                SELECT comment_id AS last_comment_id,
+                       comment_date AS last_comment_date,
+                       user_id AS last_comment_user_id,
+                       username AS last_comment_username
+                FROM xf_mg_comment
+                WHERE content_id = ?
+                  AND content_type = ?
+                  AND comment_state = 'visible'
+                ORDER BY comment_date DESC
+                LIMIT 1
+            ", [$contentId, $contentType]);
+            if (!$lastComment)
+            {
+                $lastComment = [
+                    'comment_id' => 0,
+                    'comment_date' => 0,
+                    'user_id' => 0,
+                    'username' => ''
+                ];
+            }
+
+            $db->update($tableName, $lastComment, "{$primaryKey} = ?", $contentId);
+
+            if ($maxRunTime && microtime(true) - $startTime > $maxRunTime)
+            {
+                break;
+            }
+        }
+
+        $db->commit();
+
+        return [
+            $position,
+            "{$position} / {$stepData['max']}",
+            $stepData
+        ];
+    }
+
+    /**
      * @param array $errors
      * @param array $warnings
      */
