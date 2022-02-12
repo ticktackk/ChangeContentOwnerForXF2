@@ -564,7 +564,7 @@ class Setup extends AbstractSetup
             $db->update('xf_profile_post', [
                 'first_comment_date' => (int) $firstComment['profile_post_comment_id'],
                 'last_comment_date' => (int) $lastComment['profile_post_comment_id'],
-                'latest_comment_ids' => json_encode($latestCommentIds)
+                'latest_comment_ids' => json_encode($latestCommentIds, JSON_PARTIAL_OUTPUT_ON_ERROR)
             ], 'profile_post_id = ?', $profilePostId);
 
             if ($maxRunTime && microtime(true) - $startTime > $maxRunTime)
