@@ -9,6 +9,8 @@ CHANGELOG
 - **Fix:** Changing thread date does not rebuild last post info on forum (#86)
 - **Fix:** Changing media/album comment does not rebuild last comment info on media/album (#87)
 
+On upgrade: Will attempt to rebuild last post info for both thread and forum, first and last profile post comment date with the latest comment ids for profile posts and last comment date for media items and albums.
+
 ## 2.0.13 (`2001370`)
 
 - **Change:** Drop PHP Calendar extension requirement (#79)
