@@ -635,6 +635,11 @@ class Setup extends AbstractSetup
         int $perPage = 1000
     )
     {
+        if (!$this->tableExists($tableName))
+        {
+            return true;
+        }
+
         $position = !empty($stepParams[0]) ? $stepParams[0] : 0;
 
         $db = $this->db();
