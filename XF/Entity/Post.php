@@ -19,12 +19,12 @@ class Post extends XFCP_Post implements ContentInterface
     use ContentTrait;
 
     /**
-     * @param UserEntity|null $newUser
+     * @param UserEntity|null $newOwner
      * @param null      $error
      *
      * @return bool
      */
-    public function canChangeOwner(UserEntity $newUser = null, &$error = null): bool
+    public function canChangeOwner(UserEntity $newOwner = null, &$error = null): bool
     {
         $thread = $this->Thread;
         if (!$thread)
@@ -37,12 +37,12 @@ class Post extends XFCP_Post implements ContentInterface
             return false;
         }
 
-        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        if ($newOwner && $this->getExistingValue('user_id') === $newOwner->user_id)
         {
             return false;
         }
 
-        return $thread->canChangePostOwner($newUser, $error);
+        return $thread->canChangePostOwner($newOwner, $error);
     }
 
     /**

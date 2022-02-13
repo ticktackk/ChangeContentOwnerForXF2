@@ -11,6 +11,8 @@ use XF\Mvc\Entity\Entity;
 use XF\Entity\ThreadUserPost as ThreadUserPostEntity;
 
 /**
+ * @version 2.0.14
+ *
  * Class OwnerChanger
  *
  * @package TickTackk\ChangeContentOwner\XF\Service\Thread
@@ -144,6 +146,23 @@ class OwnerChanger extends AbstractOwnerChanger
         }
 
         return $content;
+    }
+
+    /**
+     * @since 2.0.14
+     *
+     * @param Entity|ExtendedThreadEntity $content
+     *
+     * @return void
+     */
+    protected function postContentSave(Entity $content): void
+    {
+        $forum = $content->Forum;
+        if ($forum)
+        {
+            $forum->rebuildLastPost();
+            $forum->saveIfChanged();
+        }
     }
 
     /**

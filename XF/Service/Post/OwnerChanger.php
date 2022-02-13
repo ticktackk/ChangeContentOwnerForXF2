@@ -12,6 +12,8 @@ use XF\Mvc\Entity\Repository;
 use XF\Repository\Thread as ThreadRepo;
 
 /**
+ * @version 2.0.14
+ *
  * Class OwnerChanger
  *
  * @package TickTackk\ChangeContentOwner\XF\Service\Post
@@ -149,6 +151,8 @@ class OwnerChanger extends AbstractOwnerChanger
     }
 
     /**
+     * @version 2.0.14
+     *
      * @param Entity|ExtendedPostEntity $content
      *
      * @throws \Exception
@@ -161,6 +165,20 @@ class OwnerChanger extends AbstractOwnerChanger
         {
             $threadRepo = $this->getThreadRepo();
             $threadRepo->rebuildThreadPostPositions($content->thread_id);
+        }
+
+        $thread = $content->Thread;
+        if ($thread)
+        {
+            $thread->rebuildLastPostInfo();
+            $thread->saveIfChanged();
+
+            $forum = $thread->Forum;
+            if ($forum)
+            {
+                $forum->rebuildLastPost();
+                $forum->saveIfChanged();
+            }
         }
     }
 

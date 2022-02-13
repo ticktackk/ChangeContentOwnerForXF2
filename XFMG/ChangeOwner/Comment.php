@@ -64,6 +64,8 @@ class Comment extends AbstractHandler
      * @param Entity|ExtendedCommentEntity $content
      *
      * @return string|\XF\Phrase
+     *
+     * @noinspection PhpReturnDocTypeMismatchInspection
      */
     public function getContentTitle(Entity $content)
     {

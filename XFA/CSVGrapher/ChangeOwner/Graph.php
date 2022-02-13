@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection ALL */
+
 namespace TickTackk\ChangeContentOwner\XFA\CSVGrapher\ChangeOwner;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler;

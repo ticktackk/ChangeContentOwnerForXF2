@@ -8,6 +8,8 @@ use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 
 /**
+ * @version 2.0.14
+ *
  * Class OwnerChanger
  *
  * @package TickTackk\ChangeContentOwner\XF\Service\ProfilePostComment
@@ -63,6 +65,25 @@ class OwnerChanger extends AbstractOwnerChanger
         }
 
         return $content;
+    }
+
+    /**
+     * @since 2.0.14
+     *
+     * @param Entity|ExtendedProfilePostCommentEntity $content
+     *
+     * @return void
+     */
+    protected function postContentSave(Entity $content): void
+    {
+        $profilePost = $content->ProfilePost;
+        if ($profilePost)
+        {
+            $profilePost->rebuildFirstCommentInfo();
+            $profilePost->rebuildLastCommentInfo();
+            $profilePost->rebuildLatestCommentIds();
+            $profilePost->saveIfChanged();
+        }
     }
 
     /**

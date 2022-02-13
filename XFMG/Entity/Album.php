@@ -16,12 +16,12 @@ class Album extends XFCP_Album implements ContentInterface
     use ContentTrait;
 
     /**
-     * @param UserEntity|null $newUser
+     * @param UserEntity|null $newOwner
      * @param null      $error
      *
      * @return bool
      */
-    public function canChangeOwner(UserEntity $newUser = null, &$error = null): bool
+    public function canChangeOwner(UserEntity $newOwner = null, &$error = null): bool
     {
         $visitor = \XF::visitor();
         if (!$visitor->user_id)
@@ -29,7 +29,7 @@ class Album extends XFCP_Album implements ContentInterface
             return false;
         }
 
-        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        if ($newOwner && $this->getExistingValue('user_id') === $newOwner->user_id)
         {
             return false;
         }

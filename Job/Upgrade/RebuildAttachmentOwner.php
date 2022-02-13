@@ -3,7 +3,7 @@
 namespace TickTackk\ChangeContentOwner\Job\Upgrade;
 
 use TickTackk\ChangeContentOwner\ChangeOwner\AbstractHandler as AbstractChangeOwnerHandler;
-use XF\Entity\Attachment as AttachmentEntity;
+use TickTackk\ChangeContentOwner\Entity\ContentTrait as ContentEntityTrait;
 use XF\Job\AbstractRebuildJob;
 use XF\App as BaseApp;
 use XF\Mvc\Entity\Entity;
@@ -65,6 +65,7 @@ class RebuildAttachmentOwner extends AbstractRebuildJob
      * @param int $id
      *
      * @throws \XF\Db\Exception
+     * @throws \Exception
      */
     protected function rebuildById($id) : void
     {
@@ -74,7 +75,7 @@ class RebuildAttachmentOwner extends AbstractRebuildJob
             return;
         }
 
-        /** @var Entity $content */
+        /** @var Entity|ContentEntityTrait $content */
         $content = $this->app()->findByContentType($contentType, $id);
         if (!$content)
         {
@@ -95,7 +96,7 @@ class RebuildAttachmentOwner extends AbstractRebuildJob
 
         // current owner
         $oldUser = $changeOwnerHandler->getOldOwner($content);
-        if (!$oldUser)
+        if (!$oldUser->exists())
         {
             return;
         }

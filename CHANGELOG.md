@@ -1,6 +1,16 @@
 CHANGELOG
 ==========================
 
+## 2.0.14 (`2001470`)
+
+- **Fix:** Time interval does not apply correctly (#75)
+- **Fix:** Changing post date does not rebuild last post info on thread/forum (#84)
+- **Fix:** Changing profile post comment date does not rebuild first comment, last comment infos and latest comment ids on profile post (#85)
+- **Fix:** Changing thread date does not rebuild last post info on forum (#86)
+- **Fix:** Changing media/album comment does not rebuild last comment info on media/album (#87)
+
+On upgrade: Will attempt to rebuild last post info for both thread and forum, first and last profile post comment date with the latest comment ids for profile posts and last comment date for media items and albums.
+
 ## 2.0.13 (`2001370`)
 
 - **Change:** Drop PHP Calendar extension requirement (#79)

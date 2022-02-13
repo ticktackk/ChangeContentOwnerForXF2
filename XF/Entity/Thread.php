@@ -19,12 +19,12 @@ class Thread extends XFCP_Thread implements ContentInterface
     use ContentTrait;
 
     /**
-     * @param UserEntity|null $newUser
+     * @param UserEntity|null $newOwner
      * @param null            $error
      *
      * @return bool
      */
-    public function canChangeOwner(UserEntity $newUser = null, &$error = null): bool
+    public function canChangeOwner(UserEntity $newOwner = null, &$error = null): bool
     {
         $forum = $this->Forum;
         if (!$forum)
@@ -32,12 +32,12 @@ class Thread extends XFCP_Thread implements ContentInterface
             return false;
         }
 
-        if ($newUser && $this->getExistingValue('user_id') === $newUser->user_id)
+        if ($newOwner && $this->getExistingValue('user_id') === $newOwner->user_id)
         {
             return false;
         }
 
-        return $forum->canChangePostOwner($newUser, $error);
+        return $forum->canChangePostOwner($newOwner, $error);
     }
 
     /**

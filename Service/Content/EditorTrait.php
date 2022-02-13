@@ -1,9 +1,10 @@
 <?php
 
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
 namespace TickTackk\ChangeContentOwner\Service\Content;
 
 use TickTackk\ChangeContentOwner\Entity\ContentInterface as ContentEntityInterface;
-use XF\Db\AbstractAdapter;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
 
@@ -96,7 +97,6 @@ trait EditorTrait
      */
     protected function _validate()
     {
-        /** @noinspection PhpUndefinedClassInspection */
         $errors = parent::_validate();
 
         if ($this->ownerChanger)
@@ -111,15 +111,12 @@ trait EditorTrait
 
     /**
      * @return Entity
-     * @throws \XF\PrintableException
      */
     protected function _save()
     {
-        /** @var AbstractAdapter $db */
         $db = $this->db();
         $db->beginTransaction();
 
-        /** @noinspection PhpUndefinedClassInspection */
         $content = parent::_save();
 
         if ($this->ownerChanger)

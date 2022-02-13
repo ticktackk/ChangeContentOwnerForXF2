@@ -4,7 +4,7 @@ Change Content Owner or Date for XenForo 2.0.10+
 Description
 -----------
 
-This add-on allows allows you to change the owner of content or the timestamp content.
+This add-on allows you to change the owner of content or the timestamp content.
 
 Requirements
 ------------
@@ -16,9 +16,9 @@ Options
 
 #### Change content owner
 
-| Name                  | Description |
-| --------------------- | ----------- |
-| Default time interval |             |
+| Name | Description |
+|---|---|
+| Default time interval |  |
 
 Permissions
 -----------
