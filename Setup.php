@@ -360,107 +360,13 @@ class Setup extends AbstractSetup
     }
 
     /**
-     * @since 2.0.14
+     * @since 2.0.15
      *
      * @param array $stepParams
      *
      * @return array|bool
      */
     public function upgrade2001470Step2(array $stepParams)
-    {
-        $position = !empty($stepParams[0]) ? $stepParams[0] : 0;
-        $perPage = 1000;
-
-        $db = $this->db();
-        $db->beginTransaction();
-
-        if (!isset($stepData['max']))
-        {
-            $stepData['max'] = $db->fetchOne("SELECT MAX(node_id) FROM xf_forum");
-        }
-
-        $nodeIds = $db->fetchAllColumn($db->limit(
-            "
-                SELECT DISTINCT thread.node_id
-                FROM xf_thread AS thread
-                INNER JOIN xf_post AS post
-                	ON (post.thread_id = thread.thread_id)
-                WHERE thread.discussion_state = 'visible'
-                  AND post.message_state = 'visible'
-                  AND post.post_date > thread.last_post_date
-                  AND thread.last_post_id <> post.post_id
-                  AND thread.node_id > ?
-                ORDER BY thread.node_id
-			", $perPage
-        ), $position);
-        if (!$nodeIds)
-        {
-            $db->commit();
-            return true;
-        }
-
-        $startTime = microtime(true);
-        $maxRunTime = $this->app()->config('jobMaxRunTime');
-
-        foreach ($nodeIds AS $nodeId)
-        {
-            $position = $nodeId;
-
-            $lastThread = $db->fetchRow("
-                SELECT *
-                FROM xf_thread
-                WHERE node_id = ?
-                    AND discussion_state = 'visible'
-                    AND discussion_type <> 'redirect'
-                ORDER BY last_post_date DESC
-                LIMIT 1
-            ", $nodeId);
-            if (!$lastThread)
-            {
-                $lastThread = [
-                    'post_id' => 0,
-                    'post_date' => 0,
-                    'user_id' => 0,
-                    'username' => '', // this should be empty string or '-' ?
-                    'thread_id' => 0,
-                    'title' => '',
-                    'prefix_id' => 0
-                ];
-            }
-
-            $db->update('xf_forum', [
-                'last_post_id' => (int) $lastThread['post_id'],
-                'last_post_date' => (int) $lastThread['post_date'],
-                'last_post_user_id' => (int) $lastThread['user_id'],
-                'last_post_username' => $lastThread['username'] ?: '-',
-                'last_thread_id' => (int) $lastThread['thread_id'],
-                'last_thread_title' => (string) $lastThread['title'],
-                'last_thread_prefix_id' => (int) $lastThread['prefix_id']
-            ], 'node_id = ?', $nodeId);
-
-            if ($maxRunTime && microtime(true) - $startTime > $maxRunTime)
-            {
-                break;
-            }
-        }
-
-        $db->commit();
-
-        return [
-            $position,
-            "{$position} / {$stepData['max']}",
-            $stepData
-        ];
-    }
-
-    /**
-     * @since 2.0.14
-     *
-     * @param array $stepParams
-     *
-     * @return array|bool
-     */
-    public function upgrade2001470Step3(array $stepParams)
     {
         $position = !empty($stepParams[0]) ? $stepParams[0] : 0;
         $perPage = 1000;
@@ -583,13 +489,13 @@ class Setup extends AbstractSetup
     }
 
     /**
-     * @since 2.0.14
+     * @since 2.0.15
      *
      * @param array $stepParams
      *
      * @return array|bool
      */
-    public function upgrade2001470Step4(array $stepParams)
+    public function upgrade2001470Step3(array $stepParams)
     {
         return $this->rebuildXFMGContentLastComment(
             $stepParams,
@@ -600,13 +506,13 @@ class Setup extends AbstractSetup
     }
 
     /**
-     * @since 2.0.14
+     * @since 2.0.15
      *
      * @param array $stepParams
      *
      * @return array|bool
      */
-    public function upgrade2001470Step5(array $stepParams)
+    public function upgrade2001470Step4(array $stepParams)
     {
         return $this->rebuildXFMGContentLastComment(
             $stepParams,
@@ -700,6 +606,102 @@ class Setup extends AbstractSetup
             }
 
             $db->update($tableName, $lastComment, "{$primaryKey} = ?", $contentId);
+
+            if ($maxRunTime && microtime(true) - $startTime > $maxRunTime)
+            {
+                break;
+            }
+        }
+
+        $db->commit();
+
+        return [
+            $position,
+            "{$position} / {$stepData['max']}",
+            $stepData
+        ];
+    }
+
+    /**
+     * @since 2.0.15
+     *
+     * @param array $stepParams
+     *
+     * @return array|bool
+     */
+    public function upgrade2001570Step1(array $stepParams)
+    {
+        $position = !empty($stepParams[0]) ? $stepParams[0] : 0;
+        $perPage = 1000;
+
+        $db = $this->db();
+        $db->beginTransaction();
+
+        if (!isset($stepData['max']))
+        {
+            $stepData['max'] = $db->fetchOne("SELECT MAX(node_id) FROM xf_forum");
+        }
+
+        $nodeIds = $db->fetchAllColumn($db->limit(
+            "
+                SELECT DISTINCT forum.node_id
+                FROM xf_forum AS forum
+                INNER JOIN xf_thread AS thread
+                    ON (thread.node_id = forum.node_id)
+                WHERE thread.discussion_state = 'visible'
+                  AND thread.discussion_type <> 'redirect'
+                  AND thread.last_post_date > forum.last_post_date
+                  AND forum.node_id > ?
+                ORDER BY forum.node_id ASC
+			", $perPage
+        ), $position);
+        if (!$nodeIds)
+        {
+            $db->commit();
+            return true;
+        }
+
+        $startTime = microtime(true);
+        $maxRunTime = $this->app()->config('jobMaxRunTime');
+
+        foreach ($nodeIds AS $nodeId)
+        {
+            $position = $nodeId;
+
+            $lastThread = $db->fetchRow("
+                SELECT post.*, thread.*
+                FROM xf_thread AS thread
+                INNER JOIN xf_post AS post
+                    ON (post.thread_id = thread.thread_id)
+                WHERE thread.node_id = ?
+                  AND thread.discussion_state = 'visible'
+                  AND thread.discussion_type <> 'redirect'
+                  AND post.post_id = thread.last_post_id
+                ORDER BY thread.last_post_date DESC
+                LIMIT 1
+            ", $nodeId);
+            if (!$lastThread)
+            {
+                $lastThread = [
+                    'post_id' => 0,
+                    'post_date' => 0,
+                    'user_id' => 0,
+                    'username' => '', // this should be empty string or '-' ?
+                    'thread_id' => 0,
+                    'title' => '',
+                    'prefix_id' => 0
+                ];
+            }
+
+            $db->update('xf_forum', [
+                'last_post_id' => (int) $lastThread['post_id'],
+                'last_post_date' => (int) $lastThread['post_date'],
+                'last_post_user_id' => (int) $lastThread['user_id'],
+                'last_post_username' => $lastThread['username'] ?: '-',
+                'last_thread_id' => (int) $lastThread['thread_id'],
+                'last_thread_title' => (string) $lastThread['title'],
+                'last_thread_prefix_id' => (int) $lastThread['prefix_id']
+            ], 'node_id = ?', $nodeId);
 
             if ($maxRunTime && microtime(true) - $startTime > $maxRunTime)
             {
