@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.15 (`2001570`)
+
+- **Fix:** Slow upgrade query causes timeouts on large boards (#92)
+
 ## 2.0.14 (`2001470`)
 
 - **Fix:** Time interval does not apply correctly (#75)
