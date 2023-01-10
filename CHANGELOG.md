@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.16 (`2001670`)
+
+- **Change:** Change permission names to be consistent with that of XenForo itself (#94)
+
 ## 2.0.15 (`2001570`)
 
 - **Fix:** Slow upgrade query causes timeouts on large boards (#92)
