@@ -25,32 +25,32 @@ Permissions
 
 #### XFMG: Album moderator permissions
 
-- Can change album owner
-- Can change album date
+- Change album owner
+- Change album date
 
 #### Profile post moderator permissions
 
-- Can change profile post owner
-- Can change profile post date
-- Can change profile post comment owner
-- Can change profile post comment date
+- Change profile post owner
+- Change profile post date
+- Change profile post comment owner
+- Change profile post comment date
 
 #### XFMG: Media moderator permissions
 
-- Can change media owner
-- Can change media date
+- Change media owner
+- Change media date
 
 #### XFMG: Comment moderator permissions
 
-- Can change comment owner
-- Can change comment date
+- Change comment owner
+- Change comment date
 
 #### Forum moderator permissions
 
-- Can change thread owner
-- Can change thread date
-- Can change post owner
-- Can change post date
+- Change thread owner
+- Change thread date
+- Change post owner
+- Change post date
 
 License
 -------
