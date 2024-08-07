@@ -37,16 +37,17 @@
 	</xf:if>
 </xf:macro>
 
-<xf:macro name="change_owner_row">
-	<xf:textboxrow name="username"
+<xf:macro name="change_owner_row" arg-fullWidth="{{ false }}">
+	<xf:textboxrow rowclass="{{ ($fullWidth ? 'formRow--fullWidth' : '') }}" name="username"
 				   label="{{ phrase('tckChangeContentOwner_new_owner') }}"
 				   explain="{{ phrase('tckChangeContentOwner_new_owner_name_explain') }}"
 				   ac="true"
 				   data-single="true" />
 </xf:macro>
 
-<xf:macro name="change_date_row" arg-contentDate="{{ null }}" arg-contentTime="{{ null }}" arg-showApplyTimeInterval="{{ true }}">
-	<xf:checkboxrow label="{{ phrase('tckChangeContentOwner_change_date') }}">
+<xf:macro name="change_date_row" arg-contentDate="{{ null }}" arg-contentTime="{{ null }}" arg-showApplyTimeInterval="{{ true }}" arg-fullWidth="{{ false }}">
+	<xf:checkboxrow rowclass="{{ ($fullWidth ? 'formRow--fullWidth' : '') }}"
+					label="{{ phrase('tckChangeContentOwner_change_date') }}">
 		<xf:option name="change_date" label="{{ phrase('tckChangeContentOwner_new_date') }}" data-hide="true">
 			<xf:dependent>
 				<xf:dateinput name="new_date" value="{$contentDate}" />
@@ -251,11 +252,10 @@
 	</xf:checkboxrow>
 </xf:macro>
 
-<xf:macro name="change_rows" arg-handler="!" arg-content="!" arg-showApplyTimeInterval="{{ true }}">
+<xf:macro name="change_rows" arg-handler="!" arg-content="!" arg-showApplyTimeInterval="{{ true }}" arg-fullWidth="{{ false }}">
 	<xf:if is="$handler AND $content">
 		<xf:if is="$handler.canChangeOwner($content)">
-			<xf:macro template="tckChangeContentOwner_macros"
-					  name="change_owner_row" />
+			<xf:macro template="tckChangeContentOwner_macros" name="change_owner_row" arg-fullWidth="{$fullWidth}" />
 		</xf:if>
 		
 		<xf:if is="$handler.canChangeDate($content)">
@@ -266,7 +266,8 @@
 					  name="change_date_row"
 					  arg-contentDate="{{ $contentDate.year . '-' . $contentDate.month . '-' . $contentDate.day }}"
 					  arg-contentTime="{{ $contentTime }}"
-					  arg-showApplyTimeInterval="{{ $showApplyTimeInterval }}"/>
+					  arg-showApplyTimeInterval="{{ $showApplyTimeInterval }}"
+					  arg-fullWidth="{$fullWidth}" />
 		</xf:if>
 	</xf:if>
 </xf:macro>

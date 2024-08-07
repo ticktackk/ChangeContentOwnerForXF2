@@ -89,6 +89,7 @@ class Content extends AbstractPlugin
             {
                 $handler = $content->getChangeOwnerHandler(true);
                 $reply->setParam('changeOwnerHandler', $handler);
+                $reply->setParam('tckCCO_fullWidth', $this->filter('_xfWithData', 'bool'));
             }
         }
     }
