@@ -23,10 +23,12 @@ Options
 Permissions
 -----------
 
-#### XFMG: Album moderator permissions
+#### Forum moderator permissions
 
-- Change album owner
-- Change album date
+- Change thread owner
+- Change thread date
+- Change post owner
+- Change post date
 
 #### Profile post moderator permissions
 
@@ -40,17 +42,15 @@ Permissions
 - Change media owner
 - Change media date
 
+#### XFMG: Album moderator permissions
+
+- Change album owner
+- Change album date
+
 #### XFMG: Comment moderator permissions
 
 - Change comment owner
 - Change comment date
-
-#### Forum moderator permissions
-
-- Change thread owner
-- Change thread date
-- Change post owner
-- Change post date
 
 License
 -------

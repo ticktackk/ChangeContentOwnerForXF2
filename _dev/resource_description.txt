@@ -1,50 +1,49 @@
-[HEADING=1]Change Content Owner or Date for XenForo 2.0.10+[/HEADING]
-[HEADING=1]Description[/HEADING]
+[H1]Change Content Owner or Date for XenForo 2.0.10+[/H1]
+[H2]Description[/H2]
 This add-on allows you to change the owner of content or the timestamp content.
-[HEADING=1]Requirements[/HEADING]
+[H2]Requirements[/H2]
 [LIST]
 [*]PHP 7.1.0+
 [/LIST]
-[HEADING=1]Options[/HEADING]
-[HEADING=3]Change content owner[/HEADING]
-[TABLE]
+[H2]Options[/H2]
+[H4]Change content owner[/H4]
+[TABLE width="100%"]
 [TR]
-[TH]Name[/TH]
-[TH]Description[/TH]
+[th]Name[/th][th]Description[/th]
 [/TR]
 [TR]
-[TD]Default time interval[/TD]
+[td]Default time interval[/td]
 [/TR]
 [/TABLE]
-[HEADING=1]Permissions[/HEADING]
-[HEADING=3]XFMG: Album moderator permissions[/HEADING]
-[LIST]
-[*]Change album owner
-[*]Change album date
-[/LIST]
-[HEADING=3]Profile post moderator permissions[/HEADING]
-[LIST]
-[*]Change profile post owner
-[*]Change profile post date
-[*]Change profile post comment owner
-[*]Change profile post comment date
-[/LIST]
-[HEADING=3]XFMG: Media moderator permissions[/HEADING]
-[LIST]
-[*]Change media owner
-[*]Change media date
-[/LIST]
-[HEADING=3]XFMG: Comment moderator permissions[/HEADING]
-[LIST]
-[*]Change comment owner
-[*]Change comment date
-[/LIST]
-[HEADING=3]Forum moderator permissions[/HEADING]
+[H2]Permissions[/H2]
+[H4]Forum moderator permissions[/H4]
 [LIST]
 [*]Change thread owner
 [*]Change thread date
 [*]Change post owner
 [*]Change post date
 [/LIST]
-[HEADING=1]License[/HEADING]
+[H4]Profile post moderator permissions[/H4]
+[LIST]
+[*]Change profile post owner
+[*]Change profile post date
+[*]Change profile post comment owner
+[*]Change profile post comment date
+[/LIST]
+[H4]XFMG: Media moderator permissions[/H4]
+[LIST]
+[*]Change media owner
+[*]Change media date
+[/LIST]
+[H4]XFMG: Album moderator permissions[/H4]
+[LIST]
+[*]Change album owner
+[*]Change album date
+[/LIST]
+[H4]XFMG: Comment moderator permissions[/H4]
+[LIST]
+[*]Change comment owner
+[*]Change comment date
+[/LIST]
+[H2]License[/H2]
 This project is licensed under the MIT License - see the [URL='https://github.com/ticktackk/ChangeContentOwnerForXF2/blob/master/LICENSE.md']LICENSE.md[/URL] file for details.
