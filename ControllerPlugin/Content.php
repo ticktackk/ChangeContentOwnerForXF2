@@ -89,6 +89,7 @@ class Content extends AbstractPlugin
             {
                 $handler = $content->getChangeOwnerHandler(true);
                 $reply->setParam('changeOwnerHandler', $handler);
+                $reply->setParam('tckCCO_fullWidth', $this->filter('_xfWithData', 'bool'));
             }
         }
     }
@@ -163,11 +164,17 @@ class Content extends AbstractPlugin
         $changeTime = $this->filter('change_time', 'bool');
         if ($changeTime)
         {
-            $service->setNewTime($filterArray('new_time', [
-                'hour' => 'int',
-                'minute' => 'int',
-                'second' => 'int'
-            ]));
+            $newTimeArr = ['hour' => null, 'minute' => null, 'second' => null]; // fallback
+            $newTimeStr = $this->filter('new_time', 'str');
+            if (substr_count($newTimeStr, ':') === 2)
+            {
+                [$hour, $minute, $second] = explode(':', $newTimeStr);
+                $newTimeArr['hour'] = (int) $hour;
+                $newTimeArr['minute'] = (int) $minute;
+                $newTimeArr['second'] = (int) $second;
+            }
+
+            $service->setNewTime($newTimeArr);
         }
 
         $applyTimeInterval = $this->filter('apply_time_interval', 'bool');

@@ -748,9 +748,9 @@ class Setup extends AbstractSetup
      */
     protected function app() : BaseApp
     {
-        if (!\is_callable('parent::app'))
+        if (method_exists(get_parent_class($this), 'app'))
         {
-            return $this->app;
+            return parent::app();
         }
 
         return parent::app();

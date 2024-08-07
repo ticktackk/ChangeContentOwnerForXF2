@@ -1,1 +1,1 @@
-Can change thread owner
+Change thread owner

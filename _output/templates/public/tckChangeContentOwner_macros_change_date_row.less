@@ -1,0 +1,16 @@
+.input
+{
+	&.input--date,
+	&.input--time
+	{
+		height: 2.4em;
+		max-width: @_input-dateInputWidth;
+		position: relative;
+
+		&::-webkit-calendar-picker-indicator
+		{
+			right: @xf-paddingMedium;
+			position: absolute;
+		}
+	}
+}

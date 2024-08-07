@@ -5,5 +5,5 @@
     "enabled": true,
     "action": "preg_replace",
     "find": "#<xf:if is=\"\\$post\\.canSendModeratorActionAlert\\(\\).*?\">.*?<\\/xf:if>#si",
-    "replace": "$0\n\n<xf:macro template=\"tckChangeContentOwner_macros\"\n\t\t  name=\"change_rows\"\n\t\t  arg-handler=\"{$changeOwnerHandler}\"\n\t\t  arg-content=\"{$post}\"\n\t\t  arg-forceHR=\"{{ true }}\" />"
+    "replace": "$0\n\n<xf:macro template=\"tckChangeContentOwner_macros\"\n\t\t  name=\"change_rows\"\n\t\t  arg-handler=\"{$changeOwnerHandler}\"\n\t\t  arg-content=\"{$post}\"\n\t\t  arg-forceHR=\"{{ true }}\"\n\t\t  arg-fullWidth=\"{$tckCCO_fullWidth}\" />"
 }

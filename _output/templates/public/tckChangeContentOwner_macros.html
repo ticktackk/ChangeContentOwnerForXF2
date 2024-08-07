@@ -37,186 +37,33 @@
 	</xf:if>
 </xf:macro>
 
-<xf:macro name="change_owner_row">
-	<xf:textboxrow name="username"
+<xf:macro name="change_owner_row" arg-fullWidth="{{ false }}">
+	<xf:textboxrow rowclass="{{ ($fullWidth ? 'formRow--fullWidth' : '') }}" name="username"
 				   label="{{ phrase('tckChangeContentOwner_new_owner') }}"
 				   explain="{{ phrase('tckChangeContentOwner_new_owner_name_explain') }}"
 				   ac="true"
 				   data-single="true" />
 </xf:macro>
 
-<xf:macro name="change_date_row" arg-contentDate="{{ null }}" arg-contentTime="{{ null }}" arg-showApplyTimeInterval="{{ true }}">
-	<xf:checkboxrow label="{{ phrase('tckChangeContentOwner_change_date') }}">
+<xf:macro name="change_date_row" arg-contentDate="{{ null }}" arg-contentTime="{{ null }}" arg-showApplyTimeInterval="{{ true }}" arg-fullWidth="{{ false }}">
+	<xf:if is="$xf.versionId < 2030000">
+		<xf:css src="tckChangeContentOwner_macros_change_date_row.less" />
+	</xf:if>
+	
+	<xf:checkboxrow rowclass="{{ ($fullWidth ? 'formRow--fullWidth' : '') }}"
+					label="{{ phrase('tckChangeContentOwner_change_date') }}">
 		<xf:option name="change_date" label="{{ phrase('tckChangeContentOwner_new_date') }}" data-hide="true">
 			<xf:dependent>
-				<xf:dateinput name="new_date" value="{$contentDate}" />
+				<input type="date" name="new_date"
+					   class="input input--date input--inline input--autoSize"
+					   value="{$contentDate}" />
 			</xf:dependent>
 		</xf:option>
 		<xf:option name="change_time" label="{{ phrase('tckChangeContentOwner_new_time') }}" data-hide="true">
 			<xf:dependent>
-				<div class="inputGroup-container">
-					<div class="inputGroup inputGroup--inline">
-						<span class="inputGroup-text">{{ phrase('tckChangeContentOwner_units_hour:') }}</span>
-						<xf:select name="new_time[hour]" class="input--inline input--autoSize" value="{$contentTime.hour}">
-							<xf:option value="0">0 {{ phrase('(midnight)') }}</xf:option>
-							<xf:option value="01">01</xf:option>
-							<xf:option value="02">02</xf:option>
-							<xf:option value="03">03</xf:option>
-							<xf:option value="04">04</xf:option>
-							<xf:option value="05">05</xf:option>
-							<xf:option value="06">06</xf:option>
-							<xf:option value="07">07</xf:option>
-							<xf:option value="08">08</xf:option>
-							<xf:option value="09">09</xf:option>
-							<xf:option value="10">10</xf:option>
-							<xf:option value="11">11</xf:option>
-							<xf:option value="12">12 {{ phrase('(noon)') }}</xf:option>
-							<xf:option value="13">13</xf:option>
-							<xf:option value="14">14</xf:option>
-							<xf:option value="15">15</xf:option>
-							<xf:option value="16">16</xf:option>
-							<xf:option value="17">17</xf:option>
-							<xf:option value="18">18</xf:option>
-							<xf:option value="19">19</xf:option>
-							<xf:option value="20">20</xf:option>
-							<xf:option value="21">21</xf:option>
-							<xf:option value="22">22</xf:option>
-							<xf:option value="23">23</xf:option>
-						</xf:select>
-					</div>
-					
-					<div class="inputGroup inputGroup--inline">
-						<span class="inputGroup-text">{{ phrase('tckChangeContentOwner_units_minute:') }}</span>
-						<xf:select name="new_time[minute]" class="input--inline input--autoSize" value="{$contentTime.minute}">
-							<xf:option value="00">00</xf:option>
-							<xf:option value="01">01</xf:option>
-							<xf:option value="02">02</xf:option>
-							<xf:option value="03">03</xf:option>
-							<xf:option value="04">04</xf:option>
-							<xf:option value="05">05</xf:option>
-							<xf:option value="06">06</xf:option>
-							<xf:option value="07">07</xf:option>
-							<xf:option value="08">08</xf:option>
-							<xf:option value="09">09</xf:option>
-							<xf:option value="10">10</xf:option>
-							<xf:option value="11">11</xf:option>
-							<xf:option value="12">12</xf:option>
-							<xf:option value="13">13</xf:option>
-							<xf:option value="14">14</xf:option>
-							<xf:option value="15">15</xf:option>
-							<xf:option value="16">16</xf:option>
-							<xf:option value="17">17</xf:option>
-							<xf:option value="18">18</xf:option>
-							<xf:option value="19">19</xf:option>
-							<xf:option value="20">20</xf:option>
-							<xf:option value="21">21</xf:option>
-							<xf:option value="22">22</xf:option>
-							<xf:option value="23">23</xf:option>
-							<xf:option value="24">24</xf:option>
-							<xf:option value="25">25</xf:option>
-							<xf:option value="26">26</xf:option>
-							<xf:option value="27">27</xf:option>
-							<xf:option value="28">28</xf:option>
-							<xf:option value="29">29</xf:option>
-							<xf:option value="30">30</xf:option>
-							<xf:option value="31">31</xf:option>
-							<xf:option value="32">32</xf:option>
-							<xf:option value="33">33</xf:option>
-							<xf:option value="34">34</xf:option>
-							<xf:option value="35">35</xf:option>
-							<xf:option value="36">36</xf:option>
-							<xf:option value="37">37</xf:option>
-							<xf:option value="38">38</xf:option>
-							<xf:option value="39">39</xf:option>
-							<xf:option value="40">40</xf:option>
-							<xf:option value="41">41</xf:option>
-							<xf:option value="42">42</xf:option>
-							<xf:option value="43">43</xf:option>
-							<xf:option value="44">44</xf:option>
-							<xf:option value="45">45</xf:option>
-							<xf:option value="46">46</xf:option>
-							<xf:option value="47">47</xf:option>
-							<xf:option value="48">48</xf:option>
-							<xf:option value="49">49</xf:option>
-							<xf:option value="50">50</xf:option>
-							<xf:option value="51">51</xf:option>
-							<xf:option value="52">52</xf:option>
-							<xf:option value="53">53</xf:option>
-							<xf:option value="54">54</xf:option>
-							<xf:option value="55">55</xf:option>
-							<xf:option value="56">56</xf:option>
-							<xf:option value="57">57</xf:option>
-							<xf:option value="58">58</xf:option>
-							<xf:option value="59">59</xf:option>
-						</xf:select>
-					</div>
-					
-					<div class="inputGroup inputGroup--inline">
-						<span class="inputGroup-text">{{ phrase('tckChangeContentOwner_units_second:') }}</span>
-						<xf:select name="new_time[second]" class="input--inline input--autoSize" value="{$contentTime.second}">
-							<xf:option value="00">00</xf:option>
-							<xf:option value="01">01</xf:option>
-							<xf:option value="02">02</xf:option>
-							<xf:option value="03">03</xf:option>
-							<xf:option value="04">04</xf:option>
-							<xf:option value="05">05</xf:option>
-							<xf:option value="06">06</xf:option>
-							<xf:option value="07">07</xf:option>
-							<xf:option value="08">08</xf:option>
-							<xf:option value="09">09</xf:option>
-							<xf:option value="10">10</xf:option>
-							<xf:option value="11">11</xf:option>
-							<xf:option value="12">12</xf:option>
-							<xf:option value="13">13</xf:option>
-							<xf:option value="14">14</xf:option>
-							<xf:option value="15">15</xf:option>
-							<xf:option value="16">16</xf:option>
-							<xf:option value="17">17</xf:option>
-							<xf:option value="18">18</xf:option>
-							<xf:option value="19">19</xf:option>
-							<xf:option value="20">20</xf:option>
-							<xf:option value="21">21</xf:option>
-							<xf:option value="22">22</xf:option>
-							<xf:option value="23">23</xf:option>
-							<xf:option value="24">24</xf:option>
-							<xf:option value="25">25</xf:option>
-							<xf:option value="26">26</xf:option>
-							<xf:option value="27">27</xf:option>
-							<xf:option value="28">28</xf:option>
-							<xf:option value="29">29</xf:option>
-							<xf:option value="30">30</xf:option>
-							<xf:option value="31">31</xf:option>
-							<xf:option value="32">32</xf:option>
-							<xf:option value="33">33</xf:option>
-							<xf:option value="34">34</xf:option>
-							<xf:option value="35">35</xf:option>
-							<xf:option value="36">36</xf:option>
-							<xf:option value="37">37</xf:option>
-							<xf:option value="38">38</xf:option>
-							<xf:option value="39">39</xf:option>
-							<xf:option value="40">40</xf:option>
-							<xf:option value="41">41</xf:option>
-							<xf:option value="42">42</xf:option>
-							<xf:option value="43">43</xf:option>
-							<xf:option value="44">44</xf:option>
-							<xf:option value="45">45</xf:option>
-							<xf:option value="46">46</xf:option>
-							<xf:option value="47">47</xf:option>
-							<xf:option value="48">48</xf:option>
-							<xf:option value="49">49</xf:option>
-							<xf:option value="50">50</xf:option>
-							<xf:option value="51">51</xf:option>
-							<xf:option value="52">52</xf:option>
-							<xf:option value="53">53</xf:option>
-							<xf:option value="54">54</xf:option>
-							<xf:option value="55">55</xf:option>
-							<xf:option value="56">56</xf:option>
-							<xf:option value="57">57</xf:option>
-							<xf:option value="58">58</xf:option>
-							<xf:option value="59">59</xf:option>
-						</xf:select>
-					</div>
-				</div>
+				<input type="time" name="new_time" step="1"
+					   class="input input--time input--inline input--autoSize"
+					   value="{$contentTime.hour}:{$contentTime.minute}:{$contentTime.second}" />
 			</xf:dependent>
 		</xf:option>
 		<xf:if is="$showApplyTimeInterval">
@@ -251,11 +98,10 @@
 	</xf:checkboxrow>
 </xf:macro>
 
-<xf:macro name="change_rows" arg-handler="!" arg-content="!" arg-showApplyTimeInterval="{{ true }}">
+<xf:macro name="change_rows" arg-handler="!" arg-content="!" arg-showApplyTimeInterval="{{ true }}" arg-fullWidth="{{ false }}">
 	<xf:if is="$handler AND $content">
 		<xf:if is="$handler.canChangeOwner($content)">
-			<xf:macro template="tckChangeContentOwner_macros"
-					  name="change_owner_row" />
+			<xf:macro template="tckChangeContentOwner_macros" name="change_owner_row" arg-fullWidth="{$fullWidth}" />
 		</xf:if>
 		
 		<xf:if is="$handler.canChangeDate($content)">
@@ -266,7 +112,8 @@
 					  name="change_date_row"
 					  arg-contentDate="{{ $contentDate.year . '-' . $contentDate.month . '-' . $contentDate.day }}"
 					  arg-contentTime="{{ $contentTime }}"
-					  arg-showApplyTimeInterval="{{ $showApplyTimeInterval }}"/>
+					  arg-showApplyTimeInterval="{{ $showApplyTimeInterval }}"
+					  arg-fullWidth="{$fullWidth}" />
 		</xf:if>
 	</xf:if>
 </xf:macro>

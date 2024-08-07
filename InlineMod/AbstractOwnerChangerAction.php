@@ -223,11 +223,17 @@ abstract class AbstractOwnerChangerAction extends AbstractAction
                 'day' => null
             ];
         }
-        $options['new_time'] = $filterArray('new_time', [
-            'hour' => 'int',
-            'minute' => 'int',
-            'second' => 'int'
-        ]);
+
+        $options['new_time'] = ['hour' => null, 'minute' => null, 'second' => null]; // fallback
+        $newTimeStr = $request->filter('new_time', 'str');
+        if (substr_count($newTimeStr, ':') === 2)
+        {
+            [$hour, $minute, $second] = explode(':', $newTimeStr);
+            $options['new_time']['hour'] = (int) $hour;
+            $options['new_time']['minute'] = (int) $minute;
+            $options['new_time']['second'] = (int) $second;
+        }
+
         $options['time_interval'] = $filterArray('time_interval', [
             'hour' => 'int',
             'minute' => 'int',

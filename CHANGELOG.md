@@ -1,6 +1,13 @@
 CHANGELOG
 ==========================
 
+## 2.0.16 (`2001670`)
+
+- **Change:** Change permission names to be consistent with that of XenForo itself (#94)
+- **Change:** When inline editing post, form row is not using full width (#96)
+- **Change:** Switch to native HTML controls on both XF 2.2 and 2.3 (#97)
+- **Fix:** `\[E_DEPRECATED\]` Use of "parent" in callables is deprecated (#95)
+
 ## 2.0.15 (`2001570`)
 
 - **Fix:** Slow upgrade query causes timeouts on large boards (#92)
