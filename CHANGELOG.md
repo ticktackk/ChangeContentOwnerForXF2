@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.17 (`2001770`)
+
+- **Fix:** Error rendering template: variable `@_input-dateInputWidth` is undefined (#100)
+
 ## 2.0.16 (`2001670`)
 
 - **Change:** Change permission names to be consistent with that of XenForo itself (#94)

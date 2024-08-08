@@ -4,7 +4,6 @@
 	&.input--time
 	{
 		height: 2.4em;
-		max-width: @_input-dateInputWidth;
 		position: relative;
 
 		&::-webkit-calendar-picker-indicator
@@ -12,5 +11,10 @@
 			right: @xf-paddingMedium;
 			position: absolute;
 		}
+	}
+	
+	&.input--time
+	{
+		min-width: 125px;
 	}
 }
