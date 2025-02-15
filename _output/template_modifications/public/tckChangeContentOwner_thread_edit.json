@@ -4,6 +4,6 @@
     "execution_order": 6124,
     "enabled": true,
     "action": "preg_replace",
-    "find": "#<xf:macro template=\"helper_thread_options\" name=\"thread_status\".*?\\/>#si",
-    "replace": "$0\n\n<xf:macro template=\"tckChangeContentOwner_macros\"\n\t\t  name=\"change_rows\"\n\t\t  arg-handler=\"{$changeOwnerHandler}\"\n\t\t  arg-content=\"{$thread}\"\n\t\t  arg-forceHR=\"{{ true }}\"\n\t\t  arg-fullWidth=\"{$tckCCO_fullWidth}\" />"
+    "find": "{<xf:macro (?:template|id)=\"helper_thread_options(?:\" name=\"|::)thread_status\".*?>$}sim",
+    "replace": "$0\n\n\t\t\t<xf:macro template=\"tckChangeContentOwner_macros\"\n\t\t\t\t\t  name=\"change_rows\"\n\t\t\t\t\t  arg-handler=\"{$changeOwnerHandler}\"\n\t\t\t\t\t  arg-content=\"{$thread}\"\n\t\t\t\t\t  arg-forceHR=\"{{ true }}\"\n\t\t\t\t\t  arg-fullWidth=\"{$tckCCO_fullWidth}\" />"
 }
