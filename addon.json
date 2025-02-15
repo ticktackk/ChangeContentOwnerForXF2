@@ -17,6 +17,10 @@
         "php": [
             "7.2.0",
             "PHP 7.2.0+"
+        ],
+        "SV/StandardLib": [
+            2001210020,
+            "Standard Library v1.21+ by Xon"
         ]
     },
     "icon": "fa-id-badge"
