@@ -46,9 +46,7 @@
 </xf:macro>
 
 <xf:macro name="change_date_row" arg-contentDate="{{ null }}" arg-contentTime="{{ null }}" arg-showApplyTimeInterval="{{ true }}" arg-fullWidth="{{ false }}">
-	<xf:if is="$xf.versionId < 2030000">
-		<xf:css src="tckChangeContentOwner_macros_change_date_row.less" />
-	</xf:if>
+	<xf:css src="tckChangeContentOwner_macros_change_date_row.less" />
 	
 	<xf:checkboxrow rowclass="{{ ($fullWidth ? 'formRow--fullWidth' : '') }}"
 					label="{{ phrase('tckChangeContentOwner_change_date') }}">
