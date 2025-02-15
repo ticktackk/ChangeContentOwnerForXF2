@@ -1,6 +1,14 @@
 CHANGELOG
 ==========================
 
+## 2.0.18 (`2001870`)
+
+- **Change:** Require Standard Library to make the add-on work on older version of XF (#102)
+- **Change:** Increase PHP version requirement to 7.1 to match that of Standard Library add-on (#102)
+- **Change:** Increase XF version requirement to 2.2 to match that of Standard Library add-on (#102)
+- **Fix:** Template modification for `thread_edit` template fails to apply on XF 2.3 (#103)
+- **Fix:** Time input width still not wide enough to show AM/PM (#104)
+
 ## 2.0.17 (`2001770`)
 
 - **Fix:** Error rendering template: variable `@_input-dateInputWidth` is undefined (#100)
